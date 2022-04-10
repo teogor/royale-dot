@@ -1,0 +1,39 @@
+{
+  "name": "royale-dot",
+  "version": "1.0.0",
+  "description": "Clash Royale bot for discord (dot = discord + bot)",
+  "main": "src/js/application.js",
+  "scripts": {
+    "start": "node src/js/application.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeodorHMX1/royale-dot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.3.0",
+    "discord-api-types": "^0.31.0",
+    "axios": "^0.26.1",
+    "cron": "^1.8.2",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "glob": "^7.2.0",
+    "node-fetch": "^3.2.3",
+    "sqlite3": "^5.0.2",
+    "xhr2": "^0.2.1",
+    "xmlhttprequest": "^1.8.0",
+    "apiroyale": "github:DTrombett/apiroyale"
+  },
+  "bugs": {
+    "url": "https://github.com/TeodorHMX1/royale-dot/issues"
+  },
+  "homepage": "https://github.com/TeodorHMX1/royale-dot#readme",
+  "devDependencies": {
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.3"
+  }
+}
