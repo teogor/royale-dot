@@ -1,8 +1,9 @@
 const {Collection} = require("discord.js");
 const {playerSlashCommands} = require("./player");
-const {clanSlashCommands} = require("./clan");
+const {clanSlashCommands, clanSlashCommands2} = require("./clan");
 const {pingSlashCommands} = require("./ping");
 const {adminSlashCommands} = require("./updates");
+const interactionHandler = require("../interactions");
 
 class Commands {
 
@@ -34,13 +35,16 @@ class Commands {
         this.client.commands = new Collection();
         this.client.slashCommands = new Collection();
 
-        this.slashCommands = []
-        this.slashCommands.push(playerSlashCommands.slashCommand)
-        this.slashCommands.push(clanSlashCommands.slashCommand)
-        this.slashCommands.push(pingSlashCommands.slashCommand)
-        this.slashCommands.push(adminSlashCommands.slashCommand)
+        this.slashCommands = [
+            clanSlashCommands2
+        ]
+        // this.slashCommands.push(playerSlashCommands.slashCommand)
+        // this.slashCommands.push(clanSlashCommands.slashCommand)
+        // this.slashCommands.push(pingSlashCommands.slashCommand)
+        // this.slashCommands.push(adminSlashCommands.slashCommand)
 
         this.client.slashCommands = this.slashCommands
+        this.client.onInteractionCreated = interactionHandler
     }
 
     set(guild) {

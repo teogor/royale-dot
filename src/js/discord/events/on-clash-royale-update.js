@@ -36,6 +36,9 @@ class OnClashRoyaleUpdate {
     }
 
     listen() {
+        this.client.on("clash-royale-api", async (data) => {
+
+        })
         this.client.on("clash-royale", async (data) => {
             if (data.type === 'clan-update') {
                 const {clan, elements} = data
