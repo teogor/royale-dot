@@ -2,7 +2,7 @@ const {Collection} = require("discord.js");
 const {playerSlashCommands} = require("./player");
 const {clanSlashCommands} = require("./clan");
 const {pingSlashCommands} = require("./ping");
-const {adminSlashCommands} = require("./admin");
+const {adminSlashCommands} = require("./updates");
 
 class Commands {
 

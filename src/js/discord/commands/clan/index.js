@@ -62,6 +62,34 @@ class ClanSlashCommands {
                     ]
                 },
                 {
+                    name: "members",
+                    description: "Get clan members",
+                    type: 1,
+                    options: [
+                        {
+                            name: "tag",
+                            description: "Clan tag",
+                            type: 3,
+                            required: false,
+                            autocomplete: true
+                        }
+                    ]
+                },
+                {
+                    name: "river-race",
+                    description: "View current river race stats",
+                    type: 1,
+                    options: [
+                        {
+                            name: "tag",
+                            description: "Clan tag",
+                            type: 3,
+                            required: false,
+                            autocomplete: true
+                        }
+                    ]
+                },
+                {
                     name: "link",
                     description: "Link to a Clan",
                     type: 1,

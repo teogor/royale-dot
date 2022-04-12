@@ -1,8 +1,8 @@
-const {Client, Intents} = require("discord.js");
 const {OnReady} = require("./events/on-ready");
 const {OnInteractionCreate} = require("./events/on-interaction-create");
 const discordClient = require("./client");
 const {OnClashRoyaleUpdate} = require("./events/on-clash-royale-update");
+const {env} = require("../env");
 
 class Discord {
 
@@ -22,7 +22,7 @@ class Discord {
     }
 
     initialize() {
-        this.client.config = require("../../assets/config.json");
+        // this.client.config = require("../../assets/config.json");
 
         this.bindEvents()
         this.login()
@@ -36,7 +36,7 @@ class Discord {
 
     login() {
         this.client.login(
-            this.client.config.token
+            env.TOKEN
         ).then(() => {
             console.log("Logged In!")
         }).catch(error => {

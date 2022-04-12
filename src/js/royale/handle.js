@@ -1,8 +1,7 @@
 const {MessageEmbed} = require("discord.js");
-const {ColorsValues} = require("../../../res/values/colors");
-const {fetchClanInfo} = require("./fetch");
-const {isValidTag} = require("../../utils/validate");
-const {clansHandler} = require("../../database/handle/clans-handler");
+const {ColorsValues} = require("../../res/values/colors");
+const {isValidTag} = require("../utils/validate");
+const {clansHandler} = require("../database/handle/clans-handler");
 
 async function handleError(error) {
     const {
@@ -81,7 +80,6 @@ async function getClanInfo({interaction, tag}) {
         }
     }
 
-    clansHandler.connectClan(data)
     return {
         clan: data
     }

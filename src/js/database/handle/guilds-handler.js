@@ -81,6 +81,19 @@ class GuildsHandler {
         return this.guildsRepository.getRoles(guildID)
     }
 
+    getRoleID(guildID, type) {
+        switch (type) {
+            case 1:
+                return this.guildsRepository.getMemberRoleID(guildID)
+            case 2:
+                return this.guildsRepository.getElderRoleID(guildID)
+            case 3:
+                return this.guildsRepository.getColeaderRoleID(guildID)
+            case 4:
+                return this.guildsRepository.getLeaderRoleID(guildID)
+        }
+    }
+
     getLeaderRoleID(guildID) {
         return this.guildsRepository.getLeaderRoleID(guildID)
     }
@@ -115,6 +128,10 @@ class GuildsHandler {
 
     updateClanUpdatesChannel(guildID, channelID) {
         this.guildsRepository.updateClanUpdatesChannel(guildID, channelID)
+    }
+
+    async getUpdatesChannelsForClan() {
+        return await this.guildsRepository.getUpdatesChannelsForClan()
     }
 
     async getClanUpdateChannels(clanTag) {

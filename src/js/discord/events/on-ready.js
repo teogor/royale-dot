@@ -37,11 +37,28 @@ class OnReady {
     }
 
     listen() {
+        const getEmoji = false
         this.client.on("ready", () => {
-            this.deleteOldCommands()
-            this.handlePresence()
-            this.handleGuilds()
+            if (!getEmoji) {
+                this.deleteOldCommands()
+                this.handlePresence()
+                this.handleGuilds()
+            } else {
+                this.client.guilds.cache.filter(guild => guild.name.startsWith('royale-dot-')).each(guild => {
+                    console.log(`${guild.name} -> ${guild.emojis.cache.size}`)
+                    guild.emojis.cache.forEach(emoji => {
+                        console.log(`${emoji.name}: '<:${emoji.name}:${emoji.id}>',`)
+                    })
+                })
+            }
         });
+        this.client.on("guildCreate", guild => {
+            this.handlePresence()
+        })
+
+        this.client.on("guildDelete", guild => {
+            this.handlePresence()
+        })
     }
 
     deleteOldCommands() {
@@ -55,10 +72,10 @@ class OnReady {
     }
 
     handlePresence() {
-        console.log(`${this.client.user.tag} is up and ready to go!`)
+        const installedIn = this.client.guilds.cache.size
         this.client.user.setPresence({
             activities: [{
-                name: "Clash Royale v" + this.getRandomArbitrary(100, 999),
+                name: `installed in ${installedIn} servers`,
                 type: "PLAYING"
             }],
             status: "online"
@@ -66,7 +83,7 @@ class OnReady {
     }
 
     handleGuilds() {
-        this.client.guilds.cache.each(guild => {
+        this.client.guilds.cache.filter(guild => !guild.name.startsWith('royale-dot-')).each(guild => {
             this.commands.set(guild)
             guildsHandler
                 .connectGuild(guild)
@@ -75,10 +92,6 @@ class OnReady {
                 })
 
         })
-    }
-
-    getRandomArbitrary(min, max) {
-        return Math.trunc(Math.random() * (max - min) + min);
     }
 }
 

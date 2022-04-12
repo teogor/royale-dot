@@ -1,6 +1,7 @@
 const {action} = require("./action");
 const {autocomplete} = require("./autocomplete");
 const {selectMenu} = require("./select-menu");
+const {button} = require("./button");
 
 class PlayerSlashCommands {
 
@@ -26,7 +27,10 @@ class PlayerSlashCommands {
             menu_options: [
                 'select_member_to_25', 'select_member_to_50'
             ],
-            buttons: [],
+            buttons: [
+                'view_profile_overview',
+                'view_player'
+            ],
             filters: [],
             options: [
                 {
@@ -44,8 +48,22 @@ class PlayerSlashCommands {
                     ]
                 },
                 {
-                    name: "info",
-                    description: "View details about a user",
+                    name: "unlink",
+                    description: "Unlink a Clan",
+                    type: 1,
+                    options: [
+                        {
+                            name: "tag",
+                            description: "The clan's tag",
+                            type: 3,
+                            required: true,
+                            autocomplete: true
+                        }
+                    ]
+                },
+                {
+                    name: "overview",
+                    description: "View the overview for a player",
                     type: 1,
                     options: [
                         {
@@ -64,8 +82,28 @@ class PlayerSlashCommands {
                     ]
                 },
                 {
-                    name: "stats",
-                    description: "View stats for a player",
+                    name: "profile",
+                    description: "View the full clash royale profile for a player",
+                    type: 1,
+                    options: [
+                        {
+                            name: "user",
+                            description: "The targeted player",
+                            type: 6,
+                            required: false
+                        },
+                        {
+                            name: "tag",
+                            description: "The targeted player",
+                            type: 3,
+                            required: false,
+                            autocomplete: true
+                        }
+                    ]
+                },
+                {
+                    name: "river-race-contribution",
+                    description: "View the contribution in the river race for a player",
                     type: 1,
                     options: [
                         {
@@ -79,7 +117,8 @@ class PlayerSlashCommands {
             ],
             onAction: action,
             onAutocomplete: autocomplete,
-            onSelectMenu: selectMenu
+            onSelectMenu: selectMenu,
+            onButton: button
         }
     }
 

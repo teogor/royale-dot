@@ -1,14 +1,37 @@
 const {database} = require("./database");
 const {discord} = require("./discord");
+const {homePage} = require("./homepage");
+const {royaleRepository} = require("./royale/repository");
+const {guildsHandler} = require("./database/handle/guilds-handler");
 
 database.initialize()
 discord.initialize()
+homePage.initialize()
 
 const CronJob = require('cron').CronJob;
-console.log('Before job instantiation');
-const job = new CronJob('0 */1 * * * *', function () {
-    const d = new Date();
-    console.log('Every One Minutes:', d);
+const jobUpdateClans = new CronJob('*/20 * * * * *', function () {
+    guildsHandler.getUpdatesChannelsForClan().then(updatesChannels => {
+        updatesChannels.forEach(updatesChannel => {
+            royaleRepository.getClan(updatesChannel.clan_tag).then(result =>{
+
+            }).catch(error => {
+                console.log(error)
+            })
+        })
+    })
+
 }, null, true, 'America/Los_Angeles');
-console.log('After job instantiation');
-job.start();
+jobUpdateClans.start();
+const jobUpdatePlayers = new CronJob('0 */30 * * * *', function () {
+    guildsHandler.getUpdatesChannelsForClan().then(updatesChannels => {
+        updatesChannels.forEach(updatesChannel => {
+            royaleRepository.getClan(updatesChannel.clan_tag).then(result =>{
+
+            }).catch(error => {
+                console.log(error)
+            })
+        })
+    })
+
+}, null, true, 'America/Los_Angeles');
+// jobUpdatePlayers.start();

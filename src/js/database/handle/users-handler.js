@@ -1,7 +1,7 @@
 const {AppDAO} = require("../dao");
 const {UsersRepository} = require("../repository/users-repository");
 
-class PlayersHandler {
+class UsersHandler {
 
     //#region VARIABLES
     get usersRepository() {
@@ -26,5 +26,5 @@ class PlayersHandler {
 }
 
 module.exports = {
-    playersHandler: new PlayersHandler()
+    usersHandler: new UsersHandler()
 }
