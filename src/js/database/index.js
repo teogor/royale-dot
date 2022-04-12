@@ -84,15 +84,15 @@ class Database {
 
         // // users
         // this.usersRepository.deleteTable()
-        // this.usersRepository.createTable()
+        this.usersRepository.createTable()
         //
         // // players
         // this.playersRepository.deleteTable()
-        // this.playersRepository.createTable()
+        this.playersRepository.createTable()
         //
         // // linked accounts (player <-> user)
         // this.linkedAccountsRepository.deleteTable()
-        // this.linkedAccountsRepository.createTable()
+        this.linkedAccountsRepository.createTable()
     }
 }
 

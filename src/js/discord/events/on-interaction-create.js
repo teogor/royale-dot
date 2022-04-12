@@ -1,5 +1,6 @@
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../../res/values/colors");
+const {usersHandler} = require("../../database/handle/users-handler");
 
 class OnInteractionCreate {
 
@@ -33,6 +34,9 @@ class OnInteractionCreate {
 
     listen() {
         this.client.on("interactionCreate", async (interaction) => {
+
+            const userID = interaction.user.id
+            usersHandler.connectUser(userID)
 
             // Slash Command Autocomplete Handling
             if (interaction.isAutocomplete()) {

@@ -35,45 +35,78 @@ class PlayersRepository {
           clan_cards_collected INTEGER,
           star_points INTEGER,
           exp_points INTEGER,
-          UNIQUE(royale_tag)
+          clan_rank INTEGER,
+          UNIQUE(tag)
       )`
         return this.dao.run(sql)
     }
 
-    addPlayer(
-        player_id,
-        royale_tag,
-        clan_tag,
-        name,
-        exp_level,
-        trophies,
-        best_trophies,
-        wins,
-        losses,
-        battle_count,
-        three_crown_wins,
-        challenge_cards_won,
-        challenge_max_wins,
-        tournament_cards_won,
-        tournament_battle_count,
-        role,
-        donations,
-        donations_received,
-        total_donations,
-        war_day_wins,
-        clan_cards_collected,
-        star_points,
-        exp_points,
+    connectPlayer(
+        tag, name, clan_tag, exp_level, trophies, best_trophies, wins, losses,
+        battle_count, three_crown_wins, challenge_cards_won, challenge_max_wins, tournament_cards_won,
+        tournament_battle_count, role, donations, donations_received, total_donations, war_day_wins,
+        clan_cards_collected, star_points, exp_points, clan_rank
     ) {
         return this.dao.run(
-            'INSERT or IGNORE INTO players (player_id, royale_tag, clan_tag, name, exp_level, trophies, best_trophies, wins, losses, battle_count, three_crown_wins, challenge_cards_won, challenge_max_wins, tournament_cards_won, tournament_battle_count, role, donations, donations_received, total_donations, war_day_wins, clan_cards_collected, star_points, exp_points, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [player_id, royale_tag, clan_tag, name, exp_level, trophies, best_trophies, wins, losses, battle_count, three_crown_wins, challenge_cards_won, challenge_max_wins, tournament_cards_won, tournament_battle_count, role, donations, donations_received, total_donations, war_day_wins, clan_cards_collected, star_points, exp_points, Date.now(), Date.now()])
+            'INSERT or IGNORE INTO players (tag, name, clan_tag, exp_level, trophies, best_trophies, wins, losses, ' +
+            'battle_count, three_crown_wins, challenge_cards_won, challenge_max_wins, tournament_cards_won, ' +
+            'tournament_battle_count, role, donations, donations_received, total_donations, war_day_wins, ' +
+            'clan_cards_collected, star_points, exp_points, clan_rank, created_at, updated_at)' +
+            ' VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [
+                tag, name, clan_tag, exp_level, trophies, best_trophies, wins, losses,
+                battle_count, three_crown_wins, challenge_cards_won, challenge_max_wins, tournament_cards_won,
+                tournament_battle_count, role, donations, donations_received, total_donations, war_day_wins,
+                clan_cards_collected, star_points, exp_points, clan_rank, Date.now(), Date.now()
+            ]
+        )
+    }
+
+    updateClanMember(
+        name,
+        role,
+        exp_level,
+        trophies,
+        clan_rank,
+        donations,
+        donations_received,
+        tag
+    ) {
+        this.dao.run(
+            'UPDATE players SET name=?, role=?, exp_level=?, trophies=?, clan_rank=?, donations=?  WHERE tag=?',
+            [
+                name, role, exp_level, trophies, clan_rank, donations, tag
+            ]
+        )
+    }
+
+    exists(tag) {
+        return this.dao.get(
+            'SELECT id FROM players WHERE tag = ?',
+            [tag]
+        )
     }
 
     async getPlayer(player_id) {
         return this.dao.get(
-            `SELECT * FROM players WHERE AND player_id = ?`,
+            `SELECT * FROM players WHERE player_id = ?`,
             [player_id]
+        )
+    }
+
+    async getPlayerByTag(tag) {
+        return this.dao.get(
+            `SELECT * FROM players WHERE tag = ?`,
+            [tag]
+        )
+    }
+
+    async getForClan(clanTag, pattern) {
+        return this.dao.all(
+            `SELECT p.tag, p.name
+            FROM players p
+            WHERE p.clan_tag = ? AND p.name LIKE ? OR p.clan_tag = ? AND p.tag LIKE ?`,
+            [clanTag, pattern, clanTag, pattern]
         )
     }
 }

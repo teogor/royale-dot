@@ -9,6 +9,10 @@ const Colors = {
     colorRankColeader: "#ffa726",
     colorRankElder: "#2196f3",
     colorRankMember: "#9575cd",
+
+    // updates colors
+    colorClanUpdates: "#ff760d",
+    colorRiverRaceUpdates: "#7a30d2",
 }
 
 module.exports = {

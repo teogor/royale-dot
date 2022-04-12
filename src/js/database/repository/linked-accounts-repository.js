@@ -19,33 +19,38 @@ class LinkedAccountsRepository {
         return this.dao.run(sql)
     }
 
-    linkPlayer(
-        playerID,
-        playerTag,
-    ) {
+    linkPlayer(playerID, playerTag) {
         return this.dao.run(
             'INSERT or IGNORE INTO linked_accounts (player_id, player_tag, linked_at) VALUES (?, ?, ?)',
             [playerID, playerTag, Date.now()])
     }
 
-    unlinkPlayer(
-        playerID,
-        playerTag,
-    ) {
+    unlinkPlayer(playerID, playerTag) {
         return this.dao.run(
-            `DELETE FROM linked_accounts WHERE AND player_id = ? AND royale_tag = ?`,
+            `DELETE FROM linked_accounts WHERE player_id = ? AND player_tag = ?`,
             [playerID, playerTag]
         )
     }
 
-    isLinked(
-        guildID,
-        playerID,
-        playerTag,
-    ) {
+    isLinked(playerID, playerTag) {
         return this.dao.get(
-            `SELECT player_id FROM linked_accounts WHERE guild_id = ? AND player_id = ? AND royale_tag = ?`,
-            [guildID, playerID, playerTag]
+            `SELECT COUNT(la.id) as linked_accounts,
+            (SELECT COUNT(id) FROM linked_accounts WHERE linked_accounts.player_tag = ?) as tags,
+            p2.tag as linkedTag, p2.name as linkedName, p.tag as tag, p.name as name
+            FROM linked_accounts la
+            LEFT JOIN players p on p.tag = ?
+            LEFT JOIN players p2 on p2.tag = la.player_tag
+            WHERE la.player_id = ?`,
+            [playerTag, playerTag, playerID]
+        )
+    }
+
+    getLinkedData(playerTag) {
+        return this.dao.get(
+            `SELECT la.player_id, la.player_tag
+             FROM linked_accounts la
+             WHERE la.player_tag = ?`,
+            [playerTag]
         )
     }
 }

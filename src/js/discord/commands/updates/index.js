@@ -19,20 +19,33 @@ class AdminSlashCommands {
 
     prepareCommand() {
         this.slashCommand = {
-            name: "admin",
+            name: "updates",
             description: "-- players --",
             menu_options: [],
             buttons: [],
             filters: [],
             options: [
                 {
-                    name: "set-clan-updates-channel",
-                    description: "Link your CR account",
+                    name: "set-clan-channel",
+                    description: "Choose the channel where to receive the clan updates",
                     type: 1,
                     options: [
                         {
                             name: "channel",
-                            description: "CR account tag from profile",
+                            description: "Targeted Channel",
+                            type: 7,
+                            required: true,
+                        }
+                    ]
+                },
+                {
+                    name: "set-river-race-channel",
+                    description: "Choose the channel where to receive the river-race updates",
+                    type: 1,
+                    options: [
+                        {
+                            name: "channel",
+                            description: "Targeted Channel",
                             type: 7,
                             required: true,
                         }

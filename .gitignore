@@ -104,4 +104,4 @@ dist
 .tern-port
 
 # Database
-src/res/database
+src/res/database/*.sqlite3

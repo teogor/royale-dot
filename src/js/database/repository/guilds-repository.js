@@ -102,6 +102,14 @@ class GuildsRepository {
             [clanTag]
         )
     }
+
+    getUpdatesChannelsForClan() {
+        return this.dao.all(
+            `SELECT g.guild_id, g.clan_updates_channel_id, lc.clan_tag
+             FROM guilds g
+             LEFT JOIN linked_clans lc ON lc.guild_id = g.guild_id`,
+        )
+    }
 }
 
 module.exports = {GuildsRepository}
