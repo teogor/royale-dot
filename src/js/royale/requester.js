@@ -1,12 +1,9 @@
 const {env} = require("../env");
 const axios = require('axios')
 const queryString = require("querystring");
+const discordClient = require("../discord/client");
 
 class Requester {
-
-    constructor() {
-    }
-
     async get(route, query) {
         try {
             const request = {
@@ -18,7 +15,12 @@ class Requester {
                     authorization: `Bearer ${env.ROYALE_API}`
                 }
             }
-
+            axios(request).then(response => {
+                discordClient.emit('clash-royale-api', {
+                    response,
+                    data: response.data
+                });
+            })
             const response = await axios(request)
             return response.data
         } catch (error) {
