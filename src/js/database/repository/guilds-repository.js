@@ -31,21 +31,29 @@ class GuildsRepository {
             [guildID, Date.now(), Date.now()])
     }
 
-    updateLeaderRole(guildID, role_id) {
+    async disconnectGuild(guildID) {
+        await this.dao.run(
+            'UPDATE guilds ' +
+            'SET updated_at=?, commands_channel_id=null, clan_news_channel_id' +
+            'WHERE guild_id=?',
+            [Date.now(), guildID])
+    }
+
+    async updateLeaderRole(guildID, role_id) {
         return this.dao.run(
             `UPDATE guilds SET role_leader_id = ? WHERE guild_id = ?`,
             [role_id, guildID]
         )
     }
 
-    updateColeaderRole(guildID, role_id) {
+    async updateColeaderRole(guildID, role_id) {
         return this.dao.run(
             `UPDATE guilds SET role_coleader_id = ? WHERE guild_id = ?`,
             [role_id, guildID]
         )
     }
 
-    updateElderRole(guildID, role_id) {
+    async updateElderRole(guildID, role_id) {
         return this.dao.run(
             `UPDATE guilds SET role_elder_id = ? WHERE guild_id = ?`,
             [role_id, guildID]

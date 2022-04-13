@@ -3,10 +3,13 @@ const {discord} = require("./discord");
 const {homePage} = require("./homepage");
 const {royaleRepository} = require("./royale/repository");
 const {guildsHandler} = require("./database/handle/guilds-handler");
+const {isReleaseBuild} = require("./utils/dev");
 
 database.initialize()
 discord.initialize()
-homePage.initialize()
+if (isReleaseBuild()) {
+    homePage.initialize()
+}
 
 const CronJob = require('cron').CronJob;
 const jobUpdateClans = new CronJob('*/20 * * * * *', function () {

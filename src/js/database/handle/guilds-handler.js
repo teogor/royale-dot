@@ -112,12 +112,13 @@ class GuildsHandler {
                 )
                 rolesAndChannelsIDs.memberID = role
                 rolesAndChannels.memberRole = role
-                this.prepareChannels(guild, rolesAndChannelsIDs)
+                this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+            }).catch(e => {
+                console.log(e)
             })
         } else if (rolesAndChannels.leaderRole === undefined) {
             rolesAndChannels.leaderRole = guild.roles.cache.get(leaderID)
             this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
-
         } else if (rolesAndChannels.coleaderRole === undefined) {
             rolesAndChannels.coleaderRole = guild.roles.cache.get(coleaderID)
             this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
@@ -149,6 +150,11 @@ class GuildsHandler {
         const guildID = guild.id
         await this.guildsRepository.connectGuild(guildID)
         this.prepareRolesAndChannels(guild)
+    }
+
+    async disconnectGuild(guild) {
+        const guildID = guild.id
+        await this.guildsRepository.disconnectGuild(guildID)
     }
 
     async getRolesAndChannels(guildID) {

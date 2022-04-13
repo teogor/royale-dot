@@ -52,13 +52,6 @@ class OnReady {
                 })
             }
         });
-        this.client.on("guildCreate", guild => {
-            this.handlePresence()
-        })
-
-        this.client.on("guildDelete", guild => {
-            this.handlePresence()
-        })
     }
 
     deleteOldCommands() {
