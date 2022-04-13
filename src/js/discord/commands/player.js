@@ -78,28 +78,28 @@ const getClanRiverRaceParticipants = {
     ]
 }
 
-const linkClan = {
+const linkPlayer = {
     name: "link",
-    description: "Link to a clan",
+    description: "Link to a player",
     type: 1,
     options: [
         {
             name: "tag",
-            description: "The clan's tag that you want to link to",
+            description: "The player's tag that you want to link to",
             type: 3,
             required: true
         }
     ]
 }
 
-const unlinkClan = {
+const unlinkPlayer = {
     name: "unlink",
-    description: "Unlink from the current clan",
+    description: "Unlink from the current player",
     type: 1,
     options: [
         {
             name: "tag",
-            description: "The clan's tag that you want to unlink from",
+            description: "The player's tag that you want to unlink from",
             type: 3,
             required: true,
             autocomplete: true
@@ -107,20 +107,15 @@ const unlinkClan = {
     ]
 }
 
-const clanSlashCommands = {
-    name: "clan",
-    description: "View and manage clan details",
+const playerSlashCommands = {
+    name: "player",
+    description: "View and manage player details",
     options: [
-        updateClanRankColor,
-        getClanMembers,
-        getClanInfo,
-        getClanRiverRace,
-        getClanRiverRaceParticipants,
-        linkClan,
-        unlinkClan
+        linkPlayer,
+        unlinkPlayer
     ]
 }
 
 module.exports = {
-    clanSlashCommands
+    playerSlashCommands
 }

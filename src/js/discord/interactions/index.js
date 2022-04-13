@@ -1,8 +1,12 @@
 const {usersHandler} = require("../../database/handle/users-handler");
 const onAutocomplete = require("./autocomplete");
 const onSelectMenu = require("./select-menu");
+const onCommand = require("./command");
+const onSort = require("./sort");
+const onButton = require("./button");
+const onNavigate = require("./navigate");
 
-const interactionHandler = (interaction) => {
+const interactionHandler = (interaction, client) => {
 
     // const userID = interaction.user.id
     // usersHandler.connectUser(userID)
@@ -11,26 +15,37 @@ const interactionHandler = (interaction) => {
         interaction.handlerData = {
             type: "autocomplete"
         }
-        onAutocomplete(interaction)
+        onAutocomplete(interaction, client)
     } else if (interaction.isCommand()) {
         interaction.handlerData = {
             type: "command"
         }
+        onCommand(interaction, client)
     } else if (interaction.isContextMenu()) {
         interaction.handlerData = {
             type: "context-menu"
         }
     } else if (interaction.isSelectMenu()) {
-        interaction.handlerData = {
-            type: "select-menu"
-        }
         if (interaction.customId.includes("sort")) {
+            interaction.handlerData = {
+                type: "sort"
+            }
             interaction.handlerData.arguments = interaction.values[0].split("-").slice(1)
+            interaction.handlerData.isSort = true
+            interaction.handlerData.action = interaction.customId
+            onSort(interaction, client)
         }
-        onSelectMenu(interaction)
     } else if (interaction.isButton()) {
-        interaction.handlerData = {
-            type: "button"
+        if (interaction.customId.includes("navigate")) {
+            interaction.handlerData = {
+                type: "navigate"
+            }
+            onNavigate(interaction, client)
+        } else if (interaction.customId.includes("button")) {
+            interaction.handlerData = {
+                type: "button"
+            }
+            onButton(interaction, client)
         }
     }
     return

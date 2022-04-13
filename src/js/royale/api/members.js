@@ -4,10 +4,11 @@ class Members extends Response {
     constructor(data) {
         super(data)
 
-        this.members = this.data
+        this.items = this.data
 
         const memberList = []
-        this.members.forEach(member => {
+        this.total = this.items.length
+        this.items.forEach(member => {
             member.lastSeen = new Date(
                 member.lastSeen.slice(0, 4),
                 parseInt(member.lastSeen.slice(4, 6)) - 1,
@@ -49,18 +50,13 @@ class Members extends Response {
             }
             memberList.push(member)
         })
-        this.members = memberList
+        this.items = memberList
 
         delete this.data
     }
 
-    /**
-     *
-     * @param sortType type 1, 2, 3
-     * @returns {*}
-     */
     sortBy(sortType) {
-        this.members = this.members.sort((m1, m2) => {
+        this.items = this.items.sort((m1, m2) => {
             switch (sortType) {
                 case 1:
                     return m1.clanRank - m2.clanRank;
@@ -90,7 +86,33 @@ class Members extends Response {
                     return 0;
             }
         })
-        return this.members
+        return this.items
+    }
+
+    slice(page) {
+        const indexTop = parseInt(page) * 10
+        const indexBottom = (parseInt(page) + 1) * 10
+        const totalClanMembers = this.total
+        const members = this.items.slice(
+            indexTop,
+            indexBottom
+        )
+        if (indexBottom >= totalClanMembers) {
+            return {
+                clanMembersSorted: members,
+                reachedTop: true
+            }
+        } else {
+            return {
+                clanMembersSorted: members,
+                reachedTop: false
+            }
+        }
+    }
+
+    paginate(sortType, page) {
+        this.sortBy(sortType)
+        return this.slice(page)
     }
 
     get leader() {

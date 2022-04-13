@@ -125,5 +125,5 @@ class PlayerSlashCommands {
 }
 
 module.exports = {
-    playerSlashCommands: new PlayerSlashCommands()
+    playerSlashCommand1s: new PlayerSlashCommands()
 }

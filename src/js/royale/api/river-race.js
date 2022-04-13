@@ -14,10 +14,11 @@ class RiverRace extends Response {
 
     initDetails() {
         this.details = this.data
+        this.clan = this.details.clan
     }
 
     initParticipantsList() {
-        this.details.participants = this.details.clan.participants
+        this.participants = this.details.clan.participants
         delete this.details.clan.participants
     }
 
@@ -40,29 +41,11 @@ class RiverRace extends Response {
     }
 
     initBattleDays() {
-        switch (this.details.periodIndex) {
-            case 1:
-                this.details.battleDay = 4
-                break
-            case 2:
-                this.details.battleDay = 3
-                break
-            case 3:
-                this.details.battleDay = 2
-                break
-            case 4:
-                this.details.battleDay = 1
-                break
-            case 5:
-                this.details.battleDay = 3
-                break
-            case 6:
-                this.details.battleDay = 2
-                break
-            case 7:
-                this.details.battleDay = 1
-                break
-        }
+        this.monthDay = this.details.periodIndex + 1;
+        this.state = this.details.state;
+        this.type = this.details.periodType;
+        this.week = this.details.sectionIndex + 1;
+
         this.details.isTraining = this.details.periodType === 'training'
         if (this.isTraining) {
             delete this.details.periodLogs
@@ -92,32 +75,79 @@ class RiverRace extends Response {
         }
     }
 
+    /**
+     * The number of day from the start of this week
+     */
+    get day() {
+        return this.monthDay % 7 || 7;
+    }
+
+    /**
+     * The number of day from the start of this week
+     */
+    get battleDay() {
+        return this.isTraining ? this.day : this.day - 3
+    }
+
     get isTraining() {
         return this.details.periodType === 'training'
     }
 
-    get leader() {
-        if (!this.memberList) {
-            return false
-        }
-
-        return this.memberList.filter(item => item.role === 'leader')[0]
+    sortBy(sortType) {
+        sortType = sortType+1
+        this.participants = this.participants.sort((m1, m2) => {
+            switch (sortType) {
+                case 1:
+                    return m2.decksUsedToday - m1.decksUsedToday;
+                case 2:
+                    return m1.decksUsedToday - m2.decksUsedToday;
+                case 3:
+                    return m2.decksUsed - m1.decksUsed;
+                case 4:
+                    return m1.decksUsed - m2.decksUsed;
+                case 5:
+                    return m2.fame - m1.fame;
+                case 6:
+                    return m1.fame - m2.fame;
+                case 7:
+                    return m2.boatAttacks - m1.boatAttacks;
+                case 8:
+                    return m1.boatAttacks - m2.boatAttacks;
+                case 9:
+                    return m1.name.localeCompare(m2.name);
+                case 10:
+                    return m2.name.localeCompare(m1.name);
+                default:
+                    return 0;
+            }
+        })
+        return this.items
     }
 
-    get coleaders() {
-        if (!this.memberList) {
-            return false
+    slice(page) {
+        const indexTop = parseInt(page) * 10
+        const indexBottom = (parseInt(page) + 1) * 10
+        const totalClanMembers = this.participants.length
+        const members = this.participants.slice(
+            indexTop,
+            indexBottom
+        )
+        if (indexBottom >= totalClanMembers) {
+            return {
+                clanMembersSorted: members,
+                reachedTop: true
+            }
+        } else {
+            return {
+                clanMembersSorted: members,
+                reachedTop: false
+            }
         }
-
-        return this.memberList.filter(item => item.role === 'coleader')
     }
 
-    get elders() {
-        if (!this.memberList) {
-            return false
-        }
-
-        return this.memberList.filter(item => item.role === 'elder')
+    paginateParticipants(sortType, page) {
+        this.sortBy(sortType)
+        return this.slice(page)
     }
 }
 
