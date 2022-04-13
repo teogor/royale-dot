@@ -58,7 +58,7 @@ class RoyaleBeautifier {
             .addComponents(
                 new MessageButton()
                     .setCustomId(buildCustomId(
-                        'view_members_list',
+                        'button_clan_members',
                         clan.details.tag
                     ))
                     .setLabel('Members list')
@@ -251,7 +251,7 @@ class RoyaleBeautifier {
                     .setEmoji(Emojis.Clan),
                 new MessageButton()
                     .setCustomId(buildCustomId(
-                        'view_members_list',
+                        'button_clan_members',
                         tag
                     ))
                     .setLabel('Participants')

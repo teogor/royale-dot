@@ -7,22 +7,30 @@ class Clan extends Response {
         super(data)
 
         this.initDetails()
-        this.initMemberList()
+        this.initMembers()
 
         delete this.data
 
         clansHandler.connectClan(this.details)
-        if (this.memberList) {
-            this.memberList.forEach(member => {
+        if (this.members) {
+            this.members.forEach(member => {
                 member.clanTag = this.details.tag
                 playersHandler.connectPlayer(member)
             })
         }
     }
 
-    initMemberList() {
+    initDetails() {
+        const details = this.data
+        details.locationName = details.location.name
+        details.locationIsCountry = details.location.isCountry
+        delete details.location
+        this.details = details
+    }
+
+    initMembers() {
         if (this.data.memberList) {
-            const memberList = []
+            const members = []
             this.data.memberList.forEach(member => {
                 member.lastSeen = new Date(
                     member.lastSeen.slice(0, 4),
@@ -63,49 +71,37 @@ class Clan extends Response {
                         }
                         break
                 }
-                memberList.push(member)
+                members.push(member)
             })
-            this.memberList = memberList
             delete this.data.memberList
+            this.members = members
         } else {
-            this.memberList = false
+            this.members = false
         }
-    }
-
-    initDetails() {
-        const details = this.data
-        details.locationName = details.location.name
-        details.locationIsCountry = details.location.isCountry
-        delete details.location
-        this.details = details
-    }
-
-    get members() {
-        return this.memberList
     }
 
     get leader() {
-        if (!this.memberList) {
+        if (!this.members) {
             return false
         }
 
-        return this.memberList.filter(item => item.role === 'leader')[0]
+        return this.members.filter(item => item.role === 'leader')[0]
     }
 
     get coleaders() {
-        if (!this.memberList) {
+        if (!this.members) {
             return false
         }
 
-        return this.memberList.filter(item => item.role === 'coleader')
+        return this.members.filter(item => item.role === 'coleader')
     }
 
     get elders() {
-        if (!this.memberList) {
+        if (!this.members) {
             return false
         }
 
-        return this.memberList.filter(item => item.role === 'elder')
+        return this.members.filter(item => item.role === 'elder')
     }
 }
 

@@ -34,7 +34,7 @@ class OnInteractionCreate {
 
     listen() {
         this.client.on("interactionCreate", async (interaction) => {
-            return this.client.onInteractionCreated(interaction)
+            return this.client.onInteractionCreated(interaction, this.client)
 
             const userID = interaction.user.id
             usersHandler.connectUser(userID)

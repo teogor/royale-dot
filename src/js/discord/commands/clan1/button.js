@@ -3,7 +3,7 @@ const {buttonClanInfo} = require("./handlers/info");
 const {buttonCurrentRiverRace, buttonRiverRaceContribution} = require("./handlers/river-race");
 
 const button = async (client, interaction) => {
-    if (interaction.customId === 'view_members_list') {
+    if (interaction.customId === 'button_clan_members') {
         await buttonMembers(client, interaction)
     } else if (interaction.customId === 'view_clan') {
         await buttonClanInfo(client, interaction)
