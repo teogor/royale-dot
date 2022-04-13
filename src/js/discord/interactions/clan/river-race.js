@@ -12,7 +12,7 @@ async function showClanRiverRaceInfo(clanRiverRace) {
         details,
         participants
     } = clanRiverRace
-    const {
+    let {
         clans,
         periodType,
         isTraining,
@@ -86,6 +86,7 @@ async function showClanRiverRaceInfo(clanRiverRace) {
     })
 
     const components = []
+    isTraining = false
     if (!isTraining) {
         let limit25 = 25
         if (participantsPicker.length < 25) {
@@ -94,8 +95,8 @@ async function showClanRiverRaceInfo(clanRiverRace) {
         components.push(new MessageActionRow()
             .addComponents(
                 new MessageSelectMenu()
-                    .setCustomId('select_participants_list_to25')
-                    .setPlaceholder(`Participants List - 1-${limit25} by Medals`)
+                    .setCustomId('select_participant_list_to_25')
+                    .setPlaceholder(`Participants List - From 1 To ${limit25} Sorted by Medals`)
                     .addOptions(participantsPicker.slice(0, 25)),
             ))
         if (participantsPicker.length > 25) {
@@ -106,13 +107,13 @@ async function showClanRiverRaceInfo(clanRiverRace) {
             components.push(new MessageActionRow()
                 .addComponents(
                     new MessageSelectMenu()
-                        .setCustomId('select_participants_list_to50')
-                        .setPlaceholder(`Participants List - 26-${limit50} by Medals`)
+                        .setCustomId('select_participant_list_to_50')
+                        .setPlaceholder(`Participants List - From 26 To ${limit50} Sorted by Medals`)
                         .addOptions(participantsPicker.slice(25, 50)),
                 ))
         }
     }
-    if (!isTraining) {
+    if (isTraining) {
         components.push(new MessageActionRow()
             .addComponents(
                 new MessageButton()

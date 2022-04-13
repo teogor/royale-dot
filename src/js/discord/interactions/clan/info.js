@@ -2,7 +2,7 @@ const {royaleRepository} = require("../../../royale/repository");
 const {sendFollowUp, sendButtonResponse} = require("../response");
 const {EmojisValues, Emojis} = require("../../../../res/values/emojis");
 const {MessageActionRow, MessageSelectMenu, MessageButton, MessageEmbed} = require("discord.js");
-const {buildCustomId} = require("../../../utils/custom-builder");
+const {buildCustomId, buildArgs} = require("../../../utils/custom-builder");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {getBadge} = require("../../../../res/values/badges");
 
@@ -13,40 +13,44 @@ async function showClanInfo(clanData) {
     } = clanData
 
     let currentIndex = 0
-    let optionsTo25 = []
-    let optionsTo50 = []
+    let clanMembers = []
     members.forEach(member => {
         const option = {
             label: `#${currentIndex + 1} ${member.name} (${member.tag})`,
             description: `${EmojisValues.Rank}${member.role.nameUp} ⚬ ${member.trophies}${Emojis.Trophy} ⚬ ${member.expLevel}${EmojisValues.Star} `,
-            value: `${member.tag}`,
+            value: buildArgs(
+                member.tag
+            ),
             emoji: Emojis.UserDetails,
         }
-        if (currentIndex < 25) {
-            optionsTo25.push(option)
-        } else {
-            optionsTo50.push(option)
-        }
+        clanMembers.push(option)
         currentIndex++
     })
     const components = []
-    const rowMembersTo25 = new MessageActionRow()
+    let limit25 = 25
+    if (clanMembers.length < 25) {
+        limit25 = clanMembers.length
+    }
+    components.push(new MessageActionRow()
         .addComponents(
             new MessageSelectMenu()
                 .setCustomId('select_member_to_25')
-                .setPlaceholder('Clan members (ranked from 1 to 25)')
-                .addOptions(optionsTo25),
-        );
-    components.push(rowMembersTo25)
-    if (currentIndex >= 25) {
-        const rowMembersTo50 = new MessageActionRow()
+                .setPlaceholder(`Clan Members - From 1 To ${limit25} Sorted by Medals`)
+                .addOptions(clanMembers.slice(0, 25),
+        ))
+    )
+    if (clanMembers.length > 25) {
+        let limit50 = 50
+        if (clanMembers.length < 50) {
+            limit50 = clanMembers.length
+        }
+        components.push(new MessageActionRow()
             .addComponents(
                 new MessageSelectMenu()
                     .setCustomId('select_member_to_50')
-                    .setPlaceholder('Clan members (ranked from 26 to 50)')
-                    .addOptions(optionsTo50),
-            );
-        components.push(rowMembersTo50)
+                    .setPlaceholder(`Clan Members - From 26 To ${limit50} Sorted by Medals`)
+                    .addOptions(clanMembers.slice(25, 50)),
+            ))
     }
     const rowButtons = new MessageActionRow()
         .addComponents(

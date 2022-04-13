@@ -1,5 +1,4 @@
 const {royaleRepository} = require("../../../royale/repository");
-const {royaleBeautifier} = require("../../beautifier");
 const {MessageActionRow, MessageSelectMenu, MessageButton, MessageEmbed} = require("discord.js");
 const {buildCustomId, buildArgs} = require("../../../utils/custom-builder");
 const {Emojis} = require("../../../../res/values/emojis");

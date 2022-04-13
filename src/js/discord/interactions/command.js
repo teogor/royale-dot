@@ -8,6 +8,11 @@ const {commandRiverRaceParticipants} = require("./clan/river-race-participants")
 const {commandPing} = require("./ping/pong");
 const {commandPlayerLink} = require("./player/link");
 const {commandPlayerUnlink} = require("./player/unlink");
+const {commandPlayerOverview} = require("./player/overview");
+const {commandPlayerProfile} = require("./player/profile");
+const {commandRiverRaceContribution} = require("./player/river-race-contribution");
+const {commandSetClanNews} = require("./set/clan-news");
+const {commandSetRiverRaceNews} = require("./set/river-race-news");
 
 function onClanCommand(interaction, client) {
     if (interaction.options.getSubcommand() === 'rank-color') {
@@ -38,6 +43,24 @@ function onPlayerCommand(interaction, client) {
         commandPlayerLink(interaction, client)
     } else if (interaction.options.getSubcommand() === 'unlink') {
         commandPlayerUnlink(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'overview') {
+        commandPlayerOverview(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'profile') {
+        commandPlayerProfile(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'river-race-contribution') {
+        commandRiverRaceContribution(interaction, client)
+    } else {
+        console.log(`command not handled: ${interaction.options.getSubcommand()}`)
+    }
+}
+
+function onSetCommand(interaction, client) {
+    if (interaction.options.getSubcommand() === 'clan-news') {
+        commandSetClanNews(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'river-race-news') {
+        commandSetRiverRaceNews(interaction, client)
+    } else {
+        console.log(`command not handled: ${interaction.options.getSubcommand()}`)
     }
 }
 
@@ -63,6 +86,9 @@ const onCommand = (interaction, client) => {
             break
         case 'player':
             onPlayerCommand(interaction, client)
+            break
+        case 'set':
+            onSetCommand(interaction, client)
             break
     }
 }

@@ -75,7 +75,7 @@ function commandClanUnlink(interaction, client) {
     })
 }
 
-function autocompleteUnlink(interaction, client) {
+function autocompleteClanUnlink(interaction, client) {
     const guildID = interaction.guild.id
 
     linkedClansHandler.isLinked(guildID).then(linkedData => {
@@ -99,5 +99,5 @@ function autocompleteUnlink(interaction, client) {
 
 module.exports = {
     commandClanUnlink,
-    autocompleteUnlink
+    autocompleteClanUnlink
 }

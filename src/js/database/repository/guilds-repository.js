@@ -18,8 +18,9 @@ class GuildsRepository {
                   role_coleader_id TEXT,
                   role_elder_id TEXT,
                   role_member_id TEXT,
-                  clan_updates_channel_id TEXT,
-                  river_race_updates_channel_id TEXT
+                  clan_news_channel_id TEXT,
+                  river_race_news_channel_id TEXT,
+                  commands_channel_id TEXT
             )`
         return this.dao.run(sql)
     }
@@ -60,24 +61,42 @@ class GuildsRepository {
 
     updateClanUpdatesChannel(guildID, channelID) {
         return this.dao.run(
-            `UPDATE guilds SET clan_updates_channel_id = ? WHERE guild_id = ?`,
+            `UPDATE guilds SET clan_news_channel_id = ? WHERE guild_id = ?`,
             [channelID, guildID]
         )
     }
 
     updateRiverRaceUpdatesChannel(guildID, channelID) {
         return this.dao.run(
-            `UPDATE guilds SET river_race_updates_channel_id = ? WHERE guild_id = ?`,
+            `UPDATE guilds SET river_race_news_channel_id = ? WHERE guild_id = ?`,
             [channelID, guildID]
+        )
+    }
+
+    updateCommandsChannel(guildID, channelID) {
+        return this.dao.run(
+            `UPDATE guilds SET commands_channel_id = ? WHERE guild_id = ?`,
+            [channelID, guildID]
+        )
+    }
+
+    getRolesAndChannels(guildID) {
+        return this.dao.get(`SELECT role_leader_id AS leaderID,
+             role_coleader_id AS coleaderID,
+             role_elder_id AS elderID,
+             role_member_id AS memberID,
+             commands_channel_id as commandsChannelID FROM guilds WHERE guild_id = ? LIMIT 1`,
+             [guildID]
         )
     }
 
     getRoles(guildID) {
         return this.dao.get(`SELECT role_leader_id AS leader,
-      role_coleader_id AS coleader,
-      role_elder_id AS elder,
-      role_member_id AS member FROM guilds WHERE guild_id = ? LIMIT 1`,
-            [guildID])
+             role_coleader_id AS coleader,
+             role_elder_id AS elder,
+             role_member_id AS member FROM guilds WHERE guild_id = ? LIMIT 1`,
+             [guildID]
+        )
     }
 
     getLeaderRoleID(guildID) {
@@ -98,14 +117,14 @@ class GuildsRepository {
 
     getClanUpdateChannels(clanTag) {
         return this.dao.all(
-            `SELECT g.clan_updates_channel_id AS channelId FROM linked_clans lc JOIN guilds g ON lc.guild_id = g.guild_id WHERE lc.clan_tag = ?`,
+            `SELECT g.clan_news_channel_id AS channelId FROM linked_clans lc JOIN guilds g ON lc.guild_id = g.guild_id WHERE lc.clan_tag = ?`,
             [clanTag]
         )
     }
 
     getUpdatesChannelsForClan() {
         return this.dao.all(
-            `SELECT g.guild_id, g.clan_updates_channel_id, lc.clan_tag
+            `SELECT g.guild_id, g.clan_news_channel_id, lc.clan_tag
              FROM guilds g
              LEFT JOIN linked_clans lc ON lc.guild_id = g.guild_id`,
         )
