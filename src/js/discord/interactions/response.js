@@ -14,7 +14,6 @@ function sendButtonResponse(interaction, response) {
         ...response
     }).catch(_ => {
         interaction.deferReply({...response}).catch(_ => {
-            console.log(_)
             sendFollowUp(interaction, response)
         })
     })
@@ -28,8 +27,17 @@ function sendUpdate(interaction, response) {
     })
 }
 
+function sendNew(interaction, response) {
+    interaction.send({
+        ...response
+    }).catch(error => {
+        console.error(error)
+    })
+}
+
 module.exports = {
     sendFollowUp,
     sendButtonResponse,
-    sendUpdate
+    sendUpdate,
+    sendNew
 }

@@ -19,69 +19,147 @@ class GuildsHandler {
         this.guildsRepository = new GuildsRepository(AppDAO)
     }
 
+    prepareChannels(guild, rolesAndChannelsIDs, rolesAndChannels) {
+        const guildID = guild.id
+        const {
+            commandsChannelID
+        } = rolesAndChannelsIDs
+        const {
+            leaderRole,
+            coleaderRole
+        } = rolesAndChannels
+        if (commandsChannelID == null) {
+            guild.channels.create("royale-dot-command", {
+                type: "text",
+                permissionOverwrites: [
+                    {
+                        id: guild.roles.everyone,
+                        deny: ['VIEW_CHANNEL', 'READ_MESSAGE_HISTORY']
+                    },
+                    {
+                        id: leaderRole,
+                        allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'],
+                    },
+                    {
+                        id: coleaderRole,
+                        allow: ['VIEW_CHANNEL', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY'],
+                    }
+                ],
+            }).then(channel => {
+                this.updateCommandsChannel(
+                    guildID,
+                    channel.id
+                )
+            })
+        }
+    }
+
+    prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels) {
+        const guildID = guild.id
+        const {leaderID, coleaderID, elderID, memberID} = rolesAndChannelsIDs
+
+        if (leaderID === null) {
+            guild.roles.create({
+                name: "leader",
+                color: ColorsValues.colorRankLeader,
+                hoist: true
+            }).then(role => {
+                this.updateLeaderRole(
+                    guildID,
+                    role.id
+                )
+                rolesAndChannelsIDs.leaderID = role.id
+                rolesAndChannels.leaderRole = role
+                this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+            })
+        } else if (coleaderID == null) {
+            guild.roles.create({
+                name: "co-leader",
+                color: ColorsValues.colorRankColeader,
+                hoist: true
+            }).then(role => {
+                this.updateColeaderRole(
+                    guildID,
+                    role.id
+                )
+                rolesAndChannelsIDs.coleaderID = role
+                rolesAndChannels.coleaderRole = role
+                this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+            })
+        } else if (elderID == null) {
+            guild.roles.create({
+                name: "elder",
+                color: ColorsValues.colorRankElder,
+                hoist: true
+            }).then(role => {
+                this.updateElderRole(
+                    guildID,
+                    role.id
+                )
+                rolesAndChannelsIDs.elderID = role
+                rolesAndChannels.elderRole = role
+                this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+            })
+        } else if (memberID == null) {
+            guild.roles.create({
+                name: "member",
+                color: ColorsValues.colorRankMember,
+                hoist: true
+            }).then(role => {
+                this.updateMemberRole(
+                    guildID,
+                    role.id
+                )
+                rolesAndChannelsIDs.memberID = role
+                rolesAndChannels.memberRole = role
+                this.prepareChannels(guild, rolesAndChannelsIDs)
+            })
+        } else if (rolesAndChannels.leaderRole === undefined) {
+            rolesAndChannels.leaderRole = guild.roles.cache.get(leaderID)
+            this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+
+        } else if (rolesAndChannels.coleaderRole === undefined) {
+            rolesAndChannels.coleaderRole = guild.roles.cache.get(coleaderID)
+            this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+        } else if (rolesAndChannels.elderRole === undefined) {
+            rolesAndChannels.elderRole = guild.roles.cache.get(elderID)
+            this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+        } else if (rolesAndChannels.memberRole === undefined) {
+            rolesAndChannels.memberRole = guild.roles.cache.get(memberID)
+            this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+        } else {
+            this.prepareChannels(guild, rolesAndChannelsIDs, rolesAndChannels)
+        }
+    }
+
+    prepareRolesAndChannels(guild) {
+        this.getRolesAndChannels(guild.id).then(rolesAndChannelsIDs => {
+            const rolesAndChannels = {
+                leaderRole: undefined,
+                coleaderRole: undefined,
+                elderRole: undefined,
+                memberRole: undefined,
+                commandsChannel: undefined
+            }
+            this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+        }).catch(r => console.log(r))
+    }
+
     async connectGuild(guild) {
         const guildID = guild.id
         await this.guildsRepository.connectGuild(guildID)
-        this.getRoles(guildID).then(role => {
+        this.prepareRolesAndChannels(guild)
+    }
 
-            const {leader, coleader, elder, member} = role
-
-            if (leader == null) {
-                guild.roles.create({
-                    name: "leader",
-                    color: ColorsValues.colorRankLeader,
-                    hoist: true
-                }).then(role => {
-                    this.updateLeaderRole(
-                        guildID,
-                        role.id
-                    )
-                })
-            }
-            if (coleader == null) {
-                guild.roles.create({
-                    name: "co-leader",
-                    color: ColorsValues.colorRankColeader,
-                    hoist: true
-                }).then(role => {
-                    this.updateColeaderRole(
-                        guildID,
-                        role.id
-                    )
-                })
-            }
-            if (elder == null) {
-                guild.roles.create({
-                    name: "elder",
-                    color: ColorsValues.colorRankElder,
-                    hoist: true
-                }).then(role => {
-                    this.updateElderRole(
-                        guildID,
-                        role.id
-                    )
-                })
-            }
-            if (member == null) {
-                guild.roles.create({
-                    name: "member",
-                    color: ColorsValues.colorRankMember,
-                    hoist: true
-                }).then(role => {
-                    this.updateMemberRole(
-                        guildID,
-                        role.id
-                    )
-                })
-            }
-        }).catch(r => console.log(r))
+    async getRolesAndChannels(guildID) {
+        return this.guildsRepository.getRolesAndChannels(guildID)
     }
 
     getRoles(guildID) {
         return this.guildsRepository.getRoles(guildID)
     }
 
-    getRoleID(guildID, type) {
+    async getRoleID(guildID, type) {
         switch (type) {
             case 1:
                 return this.guildsRepository.getMemberRoleID(guildID)
@@ -128,6 +206,10 @@ class GuildsHandler {
 
     updateClanUpdatesChannel(guildID, channelID) {
         this.guildsRepository.updateClanUpdatesChannel(guildID, channelID)
+    }
+
+    updateCommandsChannel(guildID, channelID) {
+        this.guildsRepository.updateCommandsChannel(guildID, channelID)
     }
 
     async getUpdatesChannelsForClan() {
@@ -186,7 +268,7 @@ class GuildsHandler {
             }
         }
         if (roleData !== null) {
-            this.checkRoles(guild, role, ranksAdded+1)
+            this.checkRoles(guild, role, ranksAdded + 1)
             guild.roles.create(roleData).then(role => {
 
             })

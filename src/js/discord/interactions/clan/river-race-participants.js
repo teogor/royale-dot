@@ -219,13 +219,6 @@ async function showClanRiverRaceParticipants(
     const membersFields = []
     let rank = currentPage * 10 + 1
     clanMembersSorted.forEach(member => {
-        const differenceRank = member.clanRank - member.previousClanRank
-        let rankString = `${member.clanRank}`
-        if (differenceRank > 0) {
-            rankString += ` - ${differenceRank}${Emojis.ClanRankUp}`
-        } else if (differenceRank < 0) {
-            rankString += ` - ${-differenceRank}${Emojis.ClanRankDown}`
-        }
         membersFields.push({
             name: `${rank}) ${member.name} (\`${member.tag}\`)`,
             value: `**Fame**: ${member.fame} **Decks Used**: ${member.decksUsed} (**Today**: ${member.decksUsedToday}) - **Boats Attacked**: ${member.boatAttacks}`
@@ -266,7 +259,7 @@ function commandRiverRaceParticipants(interaction, client) {
 
         showClanRiverRaceParticipants(
             clanRiverRace,
-            1,
+            0,
             0
         ).then(followUpMessage => {
             sendFollowUp(interaction, followUpMessage)
@@ -289,7 +282,7 @@ function buttonRiverRaceParticipants(interaction, client) {
 
         showClanRiverRaceParticipants(
             clanRiverRace,
-            1,
+            0,
             0
         ).then(followUpMessage => {
             sendButtonResponse(interaction, followUpMessage)

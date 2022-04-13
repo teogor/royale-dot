@@ -1,11 +1,10 @@
 const {MessageEmbed} = require("discord.js");
 const {sendFollowUp} = require("../response");
 const {Emojis} = require("../../../../res/values/emojis");
-const {linkedClansHandler} = require("../../../database/handle/linked-clans-handler");
-const {clansHandler} = require("../../../database/handle/clans-handler");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {royaleRepository} = require("../../../royale/repository");
 const {linkedAccountsHandler} = require("../../../database/handle/linked-accounts-handler");
+const {guildsHandler} = require("../../../database/handle/guilds-handler");
 
 async function getLinkedPlayer(userID, tag) {
     const tagData = await royaleRepository.getTag(tag)
@@ -37,27 +36,65 @@ async function getLinkedPlayer(userID, tag) {
             ephemeral: true
         }
     }
+    playerLinked.tag = tag
     return playerLinked
 }
 
-async function linkPlayer(tag, guildID) {
-
-    const clanInfo = await royaleRepository.getClan(tag)
-    if (clanInfo.error) {
-        return clanInfo
+async function linkPlayer(tag, userID) {
+    const playerInfo = await royaleRepository.getPlayer(tag)
+    if (playerInfo.error) {
+        return playerInfo
     }
-    const clan = clanInfo.clan.details
-    linkedClansHandler.linkClan(guildID, clan.tag)
+
+    const player = playerInfo.player
+
+    await linkedAccountsHandler.linkPlayer(userID, player.tag)
 
     return {
-        error: false,
         embeds: [
             new MessageEmbed()
                 .setColor(ColorsValues.colorBotGreen)
-                .setDescription(`${Emojis.Check} Server linked to **${clan.name}** (\`${clan.tag}\`)!`)
+                .setDescription(`${Emojis.Check} Account linked to **${player.name}**(\`${player.tag}\`)!`)
         ],
-        ephemeral: true
+        ephemeral: false,
+        player
     }
+}
+
+function refreshAccountInfo(interaction, guildID, player) {
+    guildsHandler.getRoleID(guildID, player.role).then(roleID => {
+        let userNickname = interaction.user.username
+        if (interaction.member.id !== interaction.member.guild.ownerId) {
+            interaction.guild.roles.fetch().then(_ => {
+                interaction.guild.roles.cache.forEach(role => {
+                    if (roleID.id === role.id) {
+                        interaction.member.roles.add(role)
+                    }
+                });
+                if (interaction.member.id !== interaction.member.guild.ownerId) {
+                    try {
+                        interaction.member.setNickname(player.name).catch(e => {
+                            console.log(e)
+                        })
+                    } catch (e) {
+
+                    }
+                }
+            })
+        }
+        const response = {
+            embeds: [
+                new MessageEmbed()
+                    .setColor(ColorsValues.colorBotBlue)
+                    .setDescription(
+                        ` :mag_right: username changed from ~~**${userNickname}**~~ to **${player.name}**\n` +
+                        ` :bookmark_tabs: rank assigned: <@&${roleID.id}>`
+                    )
+            ],
+            ephemeral: false
+        }
+        sendFollowUp(interaction, response)
+    })
 }
 
 function commandPlayerLink(interaction, client) {
@@ -66,17 +103,18 @@ function commandPlayerLink(interaction, client) {
     const tag = interaction.options.getString('tag')
 
     getLinkedPlayer(userID, tag).then(linkedPlayerData => {
-        console.log(linkedPlayerData.tag)
         if (linkedPlayerData.error) {
             sendFollowUp(interaction, linkedPlayerData)
             return
         }
-        linkPlayer(linkedPlayerData.tag, guildID).then(linkedData => {
+        linkPlayer(linkedPlayerData.tag, userID).then(linkedData => {
             sendFollowUp(interaction, linkedData)
+            if (!linkedData.error) {
+                refreshAccountInfo(interaction, guildID, linkedData.player)
+            }
         })
     })
 }
-
 module.exports = {
-    commandPlayerLink
+    commandPlayerLink,
 }

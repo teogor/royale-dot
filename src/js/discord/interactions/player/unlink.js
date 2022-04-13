@@ -6,6 +6,7 @@ const {clansHandler} = require("../../../database/handle/clans-handler");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {royaleRepository} = require("../../../royale/repository");
 const {linkedAccountsHandler} = require("../../../database/handle/linked-accounts-handler");
+const {guildsHandler} = require("../../../database/handle/guilds-handler");
 
 async function getLinkedPlayer(userID, tag) {
     const tagData = await royaleRepository.getTag(tag)
@@ -26,37 +27,8 @@ async function getLinkedPlayer(userID, tag) {
             ],
             ephemeral: true
         }
-    } else if (playerLinked.isTagLinked) {
-        return {
-            error: true,
-            embeds: [
-                new MessageEmbed()
-                    .setColor(ColorsValues.colorBotRed)
-                    .setDescription(`${Emojis.Close} failed: tag is already linked to another player!`)
-            ],
-            ephemeral: true
-        }
     }
     return playerLinked
-}
-
-async function getLinkedClan(guildID) {
-    const guildLinked = await linkedClansHandler.isLinked(guildID)
-    if (!guildLinked.isGuildLinked) {
-        return {
-            error: true,
-            embeds: [
-                new MessageEmbed()
-                    .setColor(ColorsValues.colorBotBlue)
-                    .setDescription(`${Emojis.Close} Server is not linked to any clans!`)
-            ],
-            ephemeral: true
-        }
-    }
-    return {
-        error: false,
-        tag: guildLinked.tag
-    }
 }
 
 async function unlinkPlayer(tag, playerID) {
@@ -65,6 +37,32 @@ async function unlinkPlayer(tag, playerID) {
         tag
     )
 }
+
+function refreshAccountInfo(interaction, guildID) {
+    guildsHandler.getRoles(guildID).then(roles => {
+        let rolesIDs = []
+        for (const rolesKey in roles) {
+            rolesIDs.push(roles[rolesKey])
+        }
+        if (interaction.member.id !== interaction.member.guild.ownerId) {
+            interaction.guild.roles.cache.filter(role => {
+                return rolesIDs.includes(role.id)
+            }).forEach(role => {
+                interaction.member.roles.remove(role)
+            });
+            if (interaction.member.id !== interaction.member.guild.ownerId) {
+                try {
+                    interaction.member.setNickname(`former-${interaction.member.nickname}`).catch(e => {
+                        console.log(e)
+                    })
+                } catch (e) {
+
+                }
+            }
+        }
+    })
+}
+
 
 function commandPlayerUnlink(interaction, client) {
     const guildID = interaction.guildId
@@ -94,19 +92,19 @@ function commandPlayerUnlink(interaction, client) {
                         new MessageEmbed()
                             .setColor(ColorsValues.colorBotGreen)
                             .setDescription(
-                                `The clan was unlinked successfully`
+                                `${Emojis.Check} Player unlinked successfully`
                             )
                     ],
                 }
                 sendFollowUp(interaction, response)
+                refreshAccountInfo(interaction, guildID)
             })
         }
     })
 }
 
-function autocompleteUnlink(interaction, client) {
+function autocompletePlayerUnlink(interaction, client) {
     const userID = interaction.user.id
-
     linkedAccountsHandler.isLinked(userID, "").then(playerLinked => {
         if (playerLinked.isLinked) {
             const autocompleteClan = {
@@ -122,5 +120,5 @@ function autocompleteUnlink(interaction, client) {
 
 module.exports = {
     commandPlayerUnlink,
-    autocompleteUnlink
+    autocompletePlayerUnlink
 }
