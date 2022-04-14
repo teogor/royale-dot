@@ -71,7 +71,6 @@ function commandClanUnlink(interaction, client) {
                 sendFollowUp(interaction, response)
             })
         }
-        console.log(linkedClanData)
     })
 }
 

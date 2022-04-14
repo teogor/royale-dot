@@ -6,6 +6,12 @@ const discordClient = require("../discord/client");
 class Requester {
     async get(route, query) {
         try {
+
+            axios.defaults.headers = {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0',
+            };
             const request = {
                 method: 'get',
                 url: `${route}?${query ? queryString.stringify(query) : ''}`,
@@ -15,12 +21,6 @@ class Requester {
                     authorization: `Bearer ${env.ROYALE_API}`
                 }
             }
-            axios(request).then(response => {
-                discordClient.emit('clash-royale-api', {
-                    response,
-                    data: response.data
-                });
-            })
             const response = await axios(request)
             return response.data
         } catch (error) {

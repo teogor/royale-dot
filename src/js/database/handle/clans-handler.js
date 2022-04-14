@@ -22,7 +22,6 @@ class ClansHandler {
     }
 
     connectNewClan(clan) {
-        console.log('Clan does not exist!')
         this.clansRepository.connectClan(
             clan.tag,
             clan.name,
@@ -68,9 +67,9 @@ class ClansHandler {
             const changes = {}
             let hasChanges = false
             for (const key in diffs) {
-                hasChanges = true
                 const diff = diffs[key]
                 if (diff !== undefined) {
+                    hasChanges = true
                     changes[key] = {
                         key,
                         oldValue: diff.oldValue,

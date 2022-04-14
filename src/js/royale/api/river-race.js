@@ -1,13 +1,16 @@
 const Response = require('../response')
+const {riverRacesHandler} = require("../../database/handle/river-races-handler");
+const {guildsHandler} = require("../../database/handle/guilds-handler");
+const discordClient = require("../../discord/client");
 
 class RiverRace extends Response {
     constructor(data) {
         super(data)
 
         this.initDetails()
-        this.initParticipantsList()
         this.initClans()
         this.initBattleDays()
+        this.initParticipantsList()
 
         delete this.data
     }
@@ -18,8 +21,75 @@ class RiverRace extends Response {
     }
 
     initParticipantsList() {
+        const date = new Date();
+        const month = date.getUTCMonth() + 1
+        const year = date.getUTCFullYear()
         this.participants = this.details.clan.participants
+        this.participants.forEach(participant => {
+            riverRacesHandler.entryExists(
+                participant.tag,
+                this.monthDay,
+                this.week,
+                month,
+                year
+            ).then(r => {
+                if (r === undefined) {
+                    riverRacesHandler.create(
+                        participant.tag,
+                        this.monthDay,
+                        this.week,
+                        month,
+                        year,
+                        participant.boatAttacks,
+                        participant.decksUsed,
+                        participant.decksUsedToday,
+                        participant.repairPoints,
+                        participant.fame
+                    )
+                    if(participant.decksUsedToday === 4) {
+                        participant.clan = this.clan
+                        this.handleAllDecksUsed(participant)
+                    }
+                } else if (r.day === this.monthDay && r.week === this.week &&
+                    r.month === month && r.year === year) {
+                    // update handle
+                    const diffBoatAttacks = participant.boatAttacks - r.boatAttacks
+                    const diffDecksUsed = participant.decksUsed - r.decksUsed
+                    const diffDecksUsedToday = participant.decksUsedToday - r.decksUsedToday
+                    const diffRepairPoints = participant.repairPoints - r.repairPoints
+                    const diffFame = participant.fame - r.fame
+                    if (diffDecksUsedToday > 0 && participant.decksUsedToday === 4) {
+                        participant.clan = this.clan
+                        this.handleAllDecksUsed(participant)
+                    }
+                    riverRacesHandler.update(
+                        participant.tag,
+                        this.monthDay,
+                        this.week,
+                        month,
+                        year,
+                        participant.boatAttacks,
+                        participant.decksUsed,
+                        participant.decksUsedToday,
+                        participant.repairPoints,
+                        participant.fame
+                    )
+                }
+            })
+        })
         delete this.details.clan.participants
+    }
+
+    handleAllDecksUsed(participant) {
+        guildsHandler.getRiverRaceNewsChannels(participant.clan.tag).then(channels => {
+            discordClient.emit('clash-royale', {
+                update: true,
+                type: 'river-race-all-decks-used',
+                clan: participant.clan,
+                channels,
+                member: participant,
+            });
+        })
     }
 
     initClans() {
@@ -94,7 +164,7 @@ class RiverRace extends Response {
     }
 
     sortBy(sortType) {
-        sortType = sortType+1
+        sortType = sortType + 1
         this.participants = this.participants.sort((m1, m2) => {
             switch (sortType) {
                 case 1:

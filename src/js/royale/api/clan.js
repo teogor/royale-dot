@@ -12,12 +12,32 @@ class Clan extends Response {
         delete this.data
 
         clansHandler.connectClan(this.details)
-        if (this.members) {
+        playersHandler.getForClan(this.tag, "").then(previousMembers => {
+            const m1 = previousMembers.map(m => m.tag)
+            const m2 = this.members.map(m => m.tag)
+            let membersLeft = m1.filter(x => !m2.includes(x));
+            let membersJoined = m2.filter(x => !m1.includes(x));
             this.members.forEach(member => {
-                member.clanTag = this.details.tag
+                member.clan = {
+                    tag: this.tag,
+                    name: this.details.name,
+                    badgeId: this.details.badgeId
+                }
+                if (membersJoined.includes(member.tag)) {
+                    member.joined = true
+                }
                 playersHandler.connectPlayer(member)
             })
-        }
+            previousMembers.filter(m => membersLeft.includes(m.tag)).forEach(member => {
+                member.clan = {
+                    tag: this.tag,
+                    name: this.details.name,
+                    badgeId: this.details.badgeId
+                }
+                member.left = true
+                playersHandler.handlePlayerLeft(member)
+            })
+        })
     }
 
     initDetails() {
@@ -26,6 +46,7 @@ class Clan extends Response {
         details.locationIsCountry = details.location.isCountry
         delete details.location
         this.details = details
+        this.tag = this.data.tag
     }
 
     initMembers() {
