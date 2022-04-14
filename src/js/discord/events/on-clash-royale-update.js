@@ -6,6 +6,7 @@ const {Emojis} = require("../../../res/values/emojis");
 const {getBadge} = require("../../../res/values/badges");
 const {playersHandler} = require("../../database/handle/players-handler");
 const {guildsHandler} = require("../../database/handle/guilds-handler");
+const {getKingLevel} = require("../../../res/values/king-levels");
 
 class OnClashRoyaleUpdate {
 
@@ -252,7 +253,7 @@ class OnClashRoyaleUpdate {
                     embeds: [
                         new MessageEmbed()
                             .setTitle(`${getBadge(clan.badgeId)} ${clan.name} (${clan.tag}) | Logs`)
-                            .setDescription(`**Player Joined**\n${member.name} (\`${member.tag}\`) - ${Emojis.KingLevel} ${member.expLevel} - ${Emojis.Trophies} ${member.trophies}`)
+                            .setDescription(`**Player Joined**\n${member.name} (\`${member.tag}\`) - ${getKingLevel(member.expLevel)} - ${Emojis.Trophies} ${member.trophies}`)
                             .setFooter({
                                 text: 'Last Updated at'
                             })
@@ -284,7 +285,7 @@ class OnClashRoyaleUpdate {
                     embeds: [
                         new MessageEmbed()
                             .setTitle(`${getBadge(clan.badgeId)} ${clan.name} (${clan.tag}) | Logs`)
-                            .setDescription(`**Player Left**\n${member.name} (\`${member.tag}\`) - ${Emojis.KingLevel} ${member.expLevel} - ${Emojis.Trophies} ${member.trophies}`)
+                            .setDescription(`**Player Left**\n${member.name} (\`${member.tag}\`) - ${getKingLevel(member.expLevel)} - ${Emojis.Trophies} ${member.trophies}`)
                             .setFooter({
                                 text: 'Last Updated at'
                             })

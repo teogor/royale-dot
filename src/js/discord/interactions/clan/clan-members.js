@@ -6,6 +6,7 @@ const {TimestampStyles} = require("@discordjs/builders");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {clansHandler} = require("../../../database/handle/clans-handler");
 const {sendFollowUp, sendUpdate, sendButtonResponse} = require("../response");
+const {getKingLevel} = require("../../../../res/values/king-levels");
 
 function parseSortType(sortType) {
     switch (sortType) {
@@ -283,7 +284,7 @@ async function showClanMembers(
         membersFields.push({
             name: `${rank}) ${member.name} (\`${member.tag}\`)`,
             value:
-                `${member.role.nameUp} (#${rankString}) - ${Emojis.KingLevel} ${member.expLevel} - ${Emojis.Trophies} ${member.trophies}\n` +
+                `${member.role.nameUp} (#${rankString}) - ${getKingLevel(member.expLevel)} - ${Emojis.Trophies} ${member.trophies}\n` +
                 `${Emojis.LastSeen} <t:${member.lastSeen / 1000}:${TimestampStyles.ShortDateTime}> (<t:${member.lastSeen / 1000}:${TimestampStyles.RelativeTime}>)` +
                 `\n${Emojis.CardsDonated} ${member.donations} - ${Emojis.CardsReceived} ${member.donationsReceived} - ${member.arena.name}`
         })

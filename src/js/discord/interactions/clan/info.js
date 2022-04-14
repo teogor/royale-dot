@@ -105,7 +105,7 @@ async function showClanInfo(clanData) {
             },
             {
                 name: `Weekly Donations`,
-                value: `${Emojis.CardsDonated} ${details.donationsPerWeek}`,
+                value: `${Emojis.CardsFound} ${details.donationsPerWeek}`,
                 inline: true
             },
             {
@@ -120,7 +120,7 @@ async function showClanInfo(clanData) {
             },
             {
                 name: `Join Type`,
-                value: `${details.type}`,
+                value: `${Emojis.ClanMembers} ${details.type}`,
                 inline: true
             }
         )

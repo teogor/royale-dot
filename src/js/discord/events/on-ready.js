@@ -38,6 +38,7 @@ class OnReady {
 
     listen() {
         const getEmoji = false
+
         this.client.on("ready", () => {
             if (!getEmoji) {
                 this.deleteOldCommands()
