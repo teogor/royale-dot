@@ -221,7 +221,7 @@ async function showClanRiverRaceParticipants(
     clanMembersSorted.forEach(member => {
         membersFields.push({
             name: `${rank}) ${member.name} (\`${member.tag}\`)`,
-            value: `**Fame**: ${member.fame} **Decks Used**: ${member.decksUsed} (**Today**: ${member.decksUsedToday}) - **Boats Attacked**: ${member.boatAttacks}`
+            value: `${Emojis.Fame} ${member.fame} - ${Emojis.DecksUsed} ${member.decksUsed} - ${Emojis.DecksUsedToday} ${member.decksUsedToday} - ${Emojis.BoatBattle} ${member.boatAttacks}`
         })
         rank++
     })

@@ -38,6 +38,7 @@ class OnReady {
 
     listen() {
         const getEmoji = false
+
         this.client.on("ready", () => {
             if (!getEmoji) {
                 this.deleteOldCommands()
@@ -52,13 +53,6 @@ class OnReady {
                 })
             }
         });
-        this.client.on("guildCreate", guild => {
-            this.handlePresence()
-        })
-
-        this.client.on("guildDelete", guild => {
-            this.handlePresence()
-        })
     }
 
     deleteOldCommands() {

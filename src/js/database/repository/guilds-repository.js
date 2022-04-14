@@ -31,21 +31,29 @@ class GuildsRepository {
             [guildID, Date.now(), Date.now()])
     }
 
-    updateLeaderRole(guildID, role_id) {
+    async disconnectGuild(guildID) {
+        await this.dao.run(
+            'UPDATE guilds ' +
+            'SET updated_at=?, commands_channel_id=null ' +
+            'WHERE guild_id=?',
+            [Date.now(), guildID])
+    }
+
+    async updateLeaderRole(guildID, role_id) {
         return this.dao.run(
             `UPDATE guilds SET role_leader_id = ? WHERE guild_id = ?`,
             [role_id, guildID]
         )
     }
 
-    updateColeaderRole(guildID, role_id) {
+    async updateColeaderRole(guildID, role_id) {
         return this.dao.run(
             `UPDATE guilds SET role_coleader_id = ? WHERE guild_id = ?`,
             [role_id, guildID]
         )
     }
 
-    updateElderRole(guildID, role_id) {
+    async updateElderRole(guildID, role_id) {
         return this.dao.run(
             `UPDATE guilds SET role_elder_id = ? WHERE guild_id = ?`,
             [role_id, guildID]
@@ -117,7 +125,9 @@ class GuildsRepository {
 
     getClanUpdateChannels(clanTag) {
         return this.dao.all(
-            `SELECT g.clan_news_channel_id AS channelId FROM linked_clans lc JOIN guilds g ON lc.guild_id = g.guild_id WHERE lc.clan_tag = ?`,
+            `SELECT g.clan_news_channel_id AS channelId, g.guild_id AS guildId 
+            FROM linked_clans lc JOIN guilds g ON lc.guild_id = g.guild_id 
+            WHERE lc.clan_tag = ?`,
             [clanTag]
         )
     }
@@ -126,7 +136,26 @@ class GuildsRepository {
         return this.dao.all(
             `SELECT g.guild_id, g.clan_news_channel_id, lc.clan_tag
              FROM guilds g
-             LEFT JOIN linked_clans lc ON lc.guild_id = g.guild_id`,
+             LEFT JOIN linked_clans lc ON lc.guild_id = g.guild_id
+             WHERE g.clan_news_channel_id IS NOT NULL`,
+        )
+    }
+
+    getRiverRaceNewsChannels(clanTag) {
+        return this.dao.all(
+            `SELECT g.river_race_news_channel_id AS channelId, g.guild_id AS guildId 
+            FROM linked_clans lc JOIN guilds g ON lc.guild_id = g.guild_id 
+            WHERE lc.clan_tag = ? AND g.river_race_news_channel_id IS NOT NULL`,
+            [clanTag]
+        )
+    }
+
+    getRiverRaceNewsChannelsForClans() {
+        return this.dao.all(
+            `SELECT g.guild_id, g.river_race_news_channel_id, lc.clan_tag
+             FROM guilds g
+             LEFT JOIN linked_clans lc ON lc.guild_id = g.guild_id
+             WHERE g.river_race_news_channel_id IS NOT NULL`,
         )
     }
 }

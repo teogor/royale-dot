@@ -6,6 +6,7 @@ const {Emojis} = require("../../../../res/values/emojis");
 const {getBadge} = require("../../../../res/values/badges");
 const {buildCustomId} = require("../../../utils/custom-builder");
 const {linkedAccountsHandler} = require("../../../database/handle/linked-accounts-handler");
+const {KingLevels, getKingLevel} = require("../../../../res/values/king-levels");
 
 async function getPlayerOverviewInfo(player) {
     const embeds = new MessageEmbed()
@@ -17,8 +18,8 @@ async function getPlayerOverviewInfo(player) {
         .setTimestamp(Date.now())
         .addFields(
             {
-                name: `Level`,
-                value: `${Emojis.KingLevel} **${player.expLevel}**`,
+                name: `King Level`,
+                value: `${getKingLevel(player.expLevel)}`,
                 inline: true
             },
             {

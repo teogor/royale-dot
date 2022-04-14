@@ -1289,364 +1289,455 @@
     <table id="475" parent="163" name="linked_accounts"/>
     <table id="476" parent="163" name="linked_clans"/>
     <table id="477" parent="163" name="players"/>
-    <table id="478" parent="163" name="sqlite_master">
+    <table id="478" parent="163" name="river_races"/>
+    <table id="479" parent="163" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="479" parent="163" name="sqlite_sequence">
+    <table id="480" parent="163" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <table id="480" parent="163" name="users"/>
-    <column id="481" parent="473" name="id">
+    <table id="481" parent="163" name="users"/>
+    <column id="482" parent="473" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="482" parent="473" name="created_at">
+    <column id="483" parent="473" name="created_at">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="483" parent="473" name="updated_at">
+    <column id="484" parent="473" name="updated_at">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="484" parent="473" name="tag">
+    <column id="485" parent="473" name="tag">
       <DataType>TEXT|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="485" parent="473" name="name">
+    <column id="486" parent="473" name="name">
       <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="486" parent="473" name="type">
+    <column id="487" parent="473" name="type">
       <DataType>TEXT|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="487" parent="473" name="description">
+    <column id="488" parent="473" name="description">
       <DataType>TEXT|0s</DataType>
       <Position>7</Position>
     </column>
-    <column id="488" parent="473" name="badge_id">
+    <column id="489" parent="473" name="badge_id">
       <DataType>INTEGER|0s</DataType>
       <Position>8</Position>
     </column>
-    <column id="489" parent="473" name="clan_score">
+    <column id="490" parent="473" name="clan_score">
       <DataType>INTEGER|0s</DataType>
       <Position>9</Position>
     </column>
-    <column id="490" parent="473" name="clan_war_trophies">
+    <column id="491" parent="473" name="clan_war_trophies">
       <DataType>INTEGER|0s</DataType>
       <Position>10</Position>
     </column>
-    <column id="491" parent="473" name="required_trophies">
+    <column id="492" parent="473" name="required_trophies">
       <DataType>INTEGER|0s</DataType>
       <Position>11</Position>
     </column>
-    <column id="492" parent="473" name="donations_per_week">
+    <column id="493" parent="473" name="donations_per_week">
       <DataType>INTEGER|0s</DataType>
       <Position>12</Position>
     </column>
-    <column id="493" parent="473" name="members">
+    <column id="494" parent="473" name="members">
       <DataType>INTEGER|0s</DataType>
       <Position>13</Position>
     </column>
-    <index id="494" parent="473" name="sqlite_autoindex_clans_1">
+    <column id="495" parent="473" name="location_name">
+      <DataType>TEXT|0s</DataType>
+      <Position>14</Position>
+    </column>
+    <column id="496" parent="473" name="location_is_country">
+      <DataType>BIT|0s</DataType>
+      <Position>15</Position>
+    </column>
+    <index id="497" parent="473" name="sqlite_autoindex_clans_1">
       <ColNames>tag</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="495" parent="473">
+    <key id="498" parent="473">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="496" parent="473">
+    <key id="499" parent="473">
       <ColNames>tag</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_clans_1</UnderlyingIndexName>
     </key>
-    <column id="497" parent="474" name="id">
+    <column id="500" parent="474" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="498" parent="474" name="guild_id">
+    <column id="501" parent="474" name="guild_id">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="499" parent="474" name="created_at">
+    <column id="502" parent="474" name="created_at">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="500" parent="474" name="updated_at">
+    <column id="503" parent="474" name="updated_at">
       <DataType>TEXT|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="501" parent="474" name="role_leader_id">
+    <column id="504" parent="474" name="role_leader_id">
       <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="502" parent="474" name="role_coleader_id">
+    <column id="505" parent="474" name="role_coleader_id">
       <DataType>TEXT|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="503" parent="474" name="role_elder_id">
+    <column id="506" parent="474" name="role_elder_id">
       <DataType>TEXT|0s</DataType>
       <Position>7</Position>
     </column>
-    <column id="504" parent="474" name="role_member_id">
+    <column id="507" parent="474" name="role_member_id">
       <DataType>TEXT|0s</DataType>
       <Position>8</Position>
     </column>
-    <index id="505" parent="474" name="sqlite_autoindex_guilds_1">
+    <column id="508" parent="474" name="clan_news_channel_id">
+      <DataType>TEXT|0s</DataType>
+      <Position>9</Position>
+    </column>
+    <column id="509" parent="474" name="river_race_news_channel_id">
+      <DataType>TEXT|0s</DataType>
+      <Position>10</Position>
+    </column>
+    <column id="510" parent="474" name="commands_channel_id">
+      <DataType>TEXT|0s</DataType>
+      <Position>11</Position>
+    </column>
+    <index id="511" parent="474" name="sqlite_autoindex_guilds_1">
       <ColNames>guild_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="506" parent="474">
+    <key id="512" parent="474">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="507" parent="474">
+    <key id="513" parent="474">
       <ColNames>guild_id</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_guilds_1</UnderlyingIndexName>
     </key>
-    <column id="508" parent="475" name="id">
+    <column id="514" parent="475" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="509" parent="475" name="guild_id">
+    <column id="515" parent="475" name="player_id">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="510" parent="475" name="player_id">
+    <column id="516" parent="475" name="player_tag">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="511" parent="475" name="player_tag">
+    <column id="517" parent="475" name="linked_at">
       <DataType>TEXT|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="512" parent="475" name="timestamp">
-      <DataType>TEXT|0s</DataType>
-      <Position>5</Position>
-    </column>
-    <index id="513" parent="475" name="sqlite_autoindex_linked_accounts_1">
-      <ColNames>guild_id
-player_id
+    <index id="518" parent="475" name="sqlite_autoindex_linked_accounts_1">
+      <ColNames>player_id
 player_tag</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="514" parent="475">
+    <key id="519" parent="475">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="515" parent="475">
-      <ColNames>guild_id
-player_id
+    <key id="520" parent="475">
+      <ColNames>player_id
 player_tag</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_linked_accounts_1</UnderlyingIndexName>
     </key>
-    <column id="516" parent="476" name="id">
+    <column id="521" parent="476" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="517" parent="476" name="guild_id">
+    <column id="522" parent="476" name="guild_id">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="518" parent="476" name="clan_tag">
+    <column id="523" parent="476" name="clan_tag">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="519" parent="476" name="linked_at">
+    <column id="524" parent="476" name="linked_at">
       <DataType>TEXT|0s</DataType>
       <Position>4</Position>
     </column>
-    <index id="520" parent="476" name="sqlite_autoindex_linked_clans_1">
+    <index id="525" parent="476" name="sqlite_autoindex_linked_clans_1">
       <ColNames>guild_id
 clan_tag</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="521" parent="476">
+    <key id="526" parent="476">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="522" parent="476">
+    <key id="527" parent="476">
       <ColNames>guild_id
 clan_tag</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_linked_clans_1</UnderlyingIndexName>
     </key>
-    <column id="523" parent="477" name="id">
+    <column id="528" parent="477" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="524" parent="477" name="guild_id">
+    <column id="529" parent="477" name="created_at">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="525" parent="477" name="player_id">
+    <column id="530" parent="477" name="updated_at">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="526" parent="477" name="royale_tag">
+    <column id="531" parent="477" name="tag">
       <DataType>TEXT|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="527" parent="477" name="name">
+    <column id="532" parent="477" name="name">
       <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="528" parent="477" name="created_at">
+    <column id="533" parent="477" name="clan_tag">
       <DataType>TEXT|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="529" parent="477" name="clan_tag">
-      <DataType>TEXT|0s</DataType>
+    <column id="534" parent="477" name="exp_level">
+      <DataType>INTEGER|0s</DataType>
       <Position>7</Position>
     </column>
-    <column id="530" parent="477" name="exp_level">
+    <column id="535" parent="477" name="trophies">
       <DataType>INTEGER|0s</DataType>
       <Position>8</Position>
     </column>
-    <column id="531" parent="477" name="trophies">
+    <column id="536" parent="477" name="best_trophies">
       <DataType>INTEGER|0s</DataType>
       <Position>9</Position>
     </column>
-    <column id="532" parent="477" name="best_trophies">
+    <column id="537" parent="477" name="wins">
       <DataType>INTEGER|0s</DataType>
       <Position>10</Position>
     </column>
-    <column id="533" parent="477" name="wins">
+    <column id="538" parent="477" name="losses">
       <DataType>INTEGER|0s</DataType>
       <Position>11</Position>
     </column>
-    <column id="534" parent="477" name="losses">
+    <column id="539" parent="477" name="battle_count">
       <DataType>INTEGER|0s</DataType>
       <Position>12</Position>
     </column>
-    <column id="535" parent="477" name="battle_count">
+    <column id="540" parent="477" name="three_crown_wins">
       <DataType>INTEGER|0s</DataType>
       <Position>13</Position>
     </column>
-    <column id="536" parent="477" name="three_crown_wins">
+    <column id="541" parent="477" name="challenge_cards_won">
       <DataType>INTEGER|0s</DataType>
       <Position>14</Position>
     </column>
-    <column id="537" parent="477" name="challenge_cards_won">
+    <column id="542" parent="477" name="challenge_max_wins">
       <DataType>INTEGER|0s</DataType>
       <Position>15</Position>
     </column>
-    <column id="538" parent="477" name="challenge_max_wins">
+    <column id="543" parent="477" name="tournament_cards_won">
       <DataType>INTEGER|0s</DataType>
       <Position>16</Position>
     </column>
-    <column id="539" parent="477" name="tournament_cards_won">
+    <column id="544" parent="477" name="tournament_battle_count">
       <DataType>INTEGER|0s</DataType>
       <Position>17</Position>
     </column>
-    <column id="540" parent="477" name="tournament_battle_count">
+    <column id="545" parent="477" name="role">
       <DataType>INTEGER|0s</DataType>
       <Position>18</Position>
     </column>
-    <column id="541" parent="477" name="role">
+    <column id="546" parent="477" name="donations">
       <DataType>INTEGER|0s</DataType>
       <Position>19</Position>
     </column>
-    <column id="542" parent="477" name="donations">
+    <column id="547" parent="477" name="donations_received">
       <DataType>INTEGER|0s</DataType>
       <Position>20</Position>
     </column>
-    <column id="543" parent="477" name="donations_received">
+    <column id="548" parent="477" name="total_donations">
       <DataType>INTEGER|0s</DataType>
       <Position>21</Position>
     </column>
-    <column id="544" parent="477" name="total_donations">
+    <column id="549" parent="477" name="war_day_wins">
       <DataType>INTEGER|0s</DataType>
       <Position>22</Position>
     </column>
-    <column id="545" parent="477" name="war_day_wins">
+    <column id="550" parent="477" name="clan_cards_collected">
       <DataType>INTEGER|0s</DataType>
       <Position>23</Position>
     </column>
-    <column id="546" parent="477" name="clan_cards_collected">
+    <column id="551" parent="477" name="star_points">
       <DataType>INTEGER|0s</DataType>
       <Position>24</Position>
     </column>
-    <column id="547" parent="477" name="star_points">
+    <column id="552" parent="477" name="exp_points">
       <DataType>INTEGER|0s</DataType>
       <Position>25</Position>
     </column>
-    <column id="548" parent="477" name="exp_points">
+    <column id="553" parent="477" name="clan_rank">
       <DataType>INTEGER|0s</DataType>
       <Position>26</Position>
     </column>
-    <index id="549" parent="477" name="sqlite_autoindex_players_1">
-      <ColNames>guild_id
-royale_tag</ColNames>
+    <index id="554" parent="477" name="sqlite_autoindex_players_1">
+      <ColNames>tag</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="550" parent="477">
+    <key id="555" parent="477">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="551" parent="477">
-      <ColNames>guild_id
-royale_tag</ColNames>
+    <key id="556" parent="477">
+      <ColNames>tag</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_players_1</UnderlyingIndexName>
     </key>
-    <column id="552" parent="478" name="type">
-      <DataType>text|0s</DataType>
-      <Position>1</Position>
-    </column>
-    <column id="553" parent="478" name="name">
-      <DataType>text|0s</DataType>
-      <Position>2</Position>
-    </column>
-    <column id="554" parent="478" name="tbl_name">
-      <DataType>text|0s</DataType>
-      <Position>3</Position>
-    </column>
-    <column id="555" parent="478" name="rootpage">
-      <DataType>int|0s</DataType>
-      <Position>4</Position>
-    </column>
-    <column id="556" parent="478" name="sql">
-      <DataType>text|0s</DataType>
-      <Position>5</Position>
-    </column>
-    <column id="557" parent="479" name="name">
-      <Position>1</Position>
-    </column>
-    <column id="558" parent="479" name="seq">
-      <Position>2</Position>
-    </column>
-    <column id="559" parent="480" name="id">
+    <column id="557" parent="478" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="560" parent="480" name="player_id">
+    <column id="558" parent="478" name="tag">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="561" parent="480" name="timestamp">
+    <column id="559" parent="478" name="day">
+      <DataType>INTEGER|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="560" parent="478" name="week">
+      <DataType>INTEGER|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <column id="561" parent="478" name="month">
+      <DataType>INTEGER|0s</DataType>
+      <Position>5</Position>
+    </column>
+    <column id="562" parent="478" name="year">
+      <DataType>INTEGER|0s</DataType>
+      <Position>6</Position>
+    </column>
+    <column id="563" parent="478" name="created_at">
+      <DataType>TEXT|0s</DataType>
+      <Position>7</Position>
+    </column>
+    <column id="564" parent="478" name="updated_at">
+      <DataType>TEXT|0s</DataType>
+      <Position>8</Position>
+    </column>
+    <column id="565" parent="478" name="boat_attacks">
+      <DataType>INTEGER|0s</DataType>
+      <Position>9</Position>
+    </column>
+    <column id="566" parent="478" name="decks_used">
+      <DataType>INTEGER|0s</DataType>
+      <Position>10</Position>
+    </column>
+    <column id="567" parent="478" name="decks_used_today">
+      <DataType>INTEGER|0s</DataType>
+      <Position>11</Position>
+    </column>
+    <column id="568" parent="478" name="repair_points">
+      <DataType>INTEGER|0s</DataType>
+      <Position>12</Position>
+    </column>
+    <column id="569" parent="478" name="fame">
+      <DataType>INTEGER|0s</DataType>
+      <Position>13</Position>
+    </column>
+    <index id="570" parent="478" name="sqlite_autoindex_river_races_1">
+      <ColNames>tag
+day
+week
+month
+year</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="571" parent="478">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="572" parent="478">
+      <ColNames>tag
+day
+week
+month
+year</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_river_races_1</UnderlyingIndexName>
+    </key>
+    <column id="573" parent="479" name="type">
+      <DataType>text|0s</DataType>
+      <Position>1</Position>
+    </column>
+    <column id="574" parent="479" name="name">
+      <DataType>text|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <column id="575" parent="479" name="tbl_name">
+      <DataType>text|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="576" parent="479" name="rootpage">
+      <DataType>int|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <column id="577" parent="479" name="sql">
+      <DataType>text|0s</DataType>
+      <Position>5</Position>
+    </column>
+    <column id="578" parent="480" name="name">
+      <Position>1</Position>
+    </column>
+    <column id="579" parent="480" name="seq">
+      <Position>2</Position>
+    </column>
+    <column id="580" parent="481" name="id">
+      <AutoIncrement>1</AutoIncrement>
+      <DataType>INTEGER|0s</DataType>
+      <Position>1</Position>
+    </column>
+    <column id="581" parent="481" name="player_id">
+      <DataType>TEXT|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <column id="582" parent="481" name="created_at">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <index id="562" parent="480" name="sqlite_autoindex_users_1">
+    <column id="583" parent="481" name="updated_at">
+      <DataType>TEXT|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <index id="584" parent="481" name="sqlite_autoindex_users_1">
       <ColNames>player_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="563" parent="480">
+    <key id="585" parent="481">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="564" parent="480">
+    <key id="586" parent="481">
       <ColNames>player_id</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_users_1</UnderlyingIndexName>
     </key>

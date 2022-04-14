@@ -50,6 +50,11 @@ const Emojis = {
     AnnouncementBlue: '<:announcementred:963262781669388349>',
     Battles: '<:battles:963265740855738408>',
     CardsFound: '<:cardsfound:963266904477274122>',
+    BoatBattle: '<:boatbattle:964077879988191233>',
+    BoatPoints: '<:boatpoints:964077543646978088>',
+    DecksUsed: '<:decksused:964077880395042826>',
+    DecksUsedToday: '<:decksusedtoday:964077880189542421>',
+    Fame: '<:fame:964077543655362580>',
 
     User: '<:user:963172109155201084>',
     Trophy: '🏆',

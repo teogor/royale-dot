@@ -3,6 +3,7 @@ const {OnInteractionCreate} = require("./events/on-interaction-create");
 const discordClient = require("./client");
 const {OnClashRoyaleUpdate} = require("./events/on-clash-royale-update");
 const {env} = require("../env");
+const {OnGuild} = require("./events/on-guild");
 
 class Discord {
 
@@ -30,6 +31,7 @@ class Discord {
 
     bindEvents() {
         OnReady.bind(this.client)
+        OnGuild.bind(this.client)
         OnInteractionCreate.bind(this.client)
         OnClashRoyaleUpdate.bind(this.client)
     }

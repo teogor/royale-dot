@@ -82,7 +82,7 @@ class GuildsHandler {
                     guildID,
                     role.id
                 )
-                rolesAndChannelsIDs.coleaderID = role
+                rolesAndChannelsIDs.coleaderID = role.id
                 rolesAndChannels.coleaderRole = role
                 this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
             })
@@ -96,7 +96,7 @@ class GuildsHandler {
                     guildID,
                     role.id
                 )
-                rolesAndChannelsIDs.elderID = role
+                rolesAndChannelsIDs.elderID = role.id
                 rolesAndChannels.elderRole = role
                 this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
             })
@@ -110,14 +110,15 @@ class GuildsHandler {
                     guildID,
                     role.id
                 )
-                rolesAndChannelsIDs.memberID = role
+                rolesAndChannelsIDs.memberID = role.id
                 rolesAndChannels.memberRole = role
-                this.prepareChannels(guild, rolesAndChannelsIDs)
+                this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
+            }).catch(e => {
+                console.log(e)
             })
         } else if (rolesAndChannels.leaderRole === undefined) {
             rolesAndChannels.leaderRole = guild.roles.cache.get(leaderID)
             this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
-
         } else if (rolesAndChannels.coleaderRole === undefined) {
             rolesAndChannels.coleaderRole = guild.roles.cache.get(coleaderID)
             this.prepareRoles(guild, rolesAndChannelsIDs, rolesAndChannels)
@@ -133,6 +134,7 @@ class GuildsHandler {
     }
 
     prepareRolesAndChannels(guild) {
+        guild.roles.fetch()
         this.getRolesAndChannels(guild.id).then(rolesAndChannelsIDs => {
             const rolesAndChannels = {
                 leaderRole: undefined,
@@ -151,11 +153,16 @@ class GuildsHandler {
         this.prepareRolesAndChannels(guild)
     }
 
+    async disconnectGuild(guild) {
+        const guildID = guild.id
+        await this.guildsRepository.disconnectGuild(guildID)
+    }
+
     async getRolesAndChannels(guildID) {
         return this.guildsRepository.getRolesAndChannels(guildID)
     }
 
-    getRoles(guildID) {
+    async getRoles(guildID) {
         return this.guildsRepository.getRoles(guildID)
     }
 
@@ -218,6 +225,14 @@ class GuildsHandler {
 
     async getClanUpdateChannels(clanTag) {
         return await this.guildsRepository.getClanUpdateChannels(clanTag)
+    }
+
+    async getRiverRaceNewsChannelsForClans() {
+        return await this.guildsRepository.getRiverRaceNewsChannelsForClans()
+    }
+
+    async getRiverRaceNewsChannels(clanTag) {
+        return await this.guildsRepository.getRiverRaceNewsChannels(clanTag)
     }
 
     updateRiverRaceUpdatesChannel(guildID, channelID) {

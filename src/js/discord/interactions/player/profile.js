@@ -6,6 +6,7 @@ const {Emojis} = require("../../../../res/values/emojis");
 const {getBadge} = require("../../../../res/values/badges");
 const {buildCustomId} = require("../../../utils/custom-builder");
 const {linkedAccountsHandler} = require("../../../database/handle/linked-accounts-handler");
+const {getKingLevel} = require("../../../../res/values/king-levels");
 
 async function getPlayerProfileInfo(player) {
     let link = "https://link.clashroyale.com/deck/en?deck="
@@ -31,8 +32,8 @@ async function getPlayerProfileInfo(player) {
     const fields = []
     fields.push(
         {
-            name: `Level`,
-            value: `${Emojis.KingLevel} **${player.expLevel}** (${Emojis.XP} **${player.expPoints}** XP)`,
+            name: `King Level`,
+            value: `${getKingLevel(player.expLevel)} (${Emojis.XP} **${player.expPoints}** XP)`,
             inline: true
         },
         {

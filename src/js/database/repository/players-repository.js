@@ -103,10 +103,28 @@ class PlayersRepository {
 
     async getForClan(clanTag, pattern) {
         return this.dao.all(
-            `SELECT p.tag, p.name
+            `SELECT p.tag, p.name, p.exp_level AS expLevel, p.trophies
             FROM players p
             WHERE p.clan_tag = ? AND p.name LIKE ? OR p.clan_tag = ? AND p.tag LIKE ?`,
             [clanTag, pattern, clanTag, pattern]
+        )
+    }
+
+    async removeFromClan(tag) {
+        this.dao.run(
+            `UPDATE players 
+             SET clan_tag=NULL 
+             WHERE tag=?`,
+            [tag]
+        )
+    }
+
+    async addToClan(tag, clanTag) {
+        this.dao.run(
+            `UPDATE players 
+             SET clan_tag=? 
+             WHERE tag=?`,
+            [clanTag, tag]
         )
     }
 }

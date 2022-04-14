@@ -1,5 +1,7 @@
 const {PlayersRepository} = require("../repository/players-repository");
 const {AppDAO} = require("../dao");
+const {guildsHandler} = require("./guilds-handler");
+const discordClient = require("../../discord/client");
 
 class PlayersHandler {
 
@@ -52,21 +54,10 @@ class PlayersHandler {
     }
 
     reconnectPlayer(player) {
-        player.role = player.role.type
-        // const tag = clan.tag
-        // const newData = clan
-        // newData.location_name = newData.locationName
-        // newData.location_is_country = newData.locationIsCountry ? 1 : 0
-        // delete newData.location
-        // delete newData.clanChestMaxLevel
-        // delete newData.clanChestLevel
-        // delete newData.clanChestStatus
-        // delete newData.memberList
-        // delete newData.tag
         this.getPlayerByTag(player.tag).then(oldData => {
             this.playersRepository.updateClanMember(
                 player.name,
-                player.role,
+                player.role.type,
                 player.expLevel,
                 player.trophies,
                 player.clanRank,
@@ -74,12 +65,60 @@ class PlayersHandler {
                 player.donationsReceived,
                 player.tag
             )
+            if (player.role.type !== oldData.role) {
+                switch (oldData.role) {
+                    case 4:
+                        oldData.role = {
+                            type: 4,
+                            name: "leader",
+                            nameUp: "Leader"
+                        }
+                        break
+                    case 3:
+                        oldData.role = {
+                            type: 3,
+                            name: "coleader",
+                            nameUp: "Co-Leader"
+                        }
+                        break
+                    case 2:
+                        oldData.role = {
+                            type: 2,
+                            name: "elder",
+                            nameUp: "Elder"
+                        }
+                        break
+                    case 1:
+                        oldData.role = {
+                            type: 1,
+                            name: "member",
+                            nameUp: "Member"
+                        }
+                        break
+                }
+                const changes = {
+                    role: {
+                        oldValue: oldData.role,
+                        newValue: player.role
+                    }
+                }
+                const clan = player.clan
+                delete player.clan
+                guildsHandler.getClanUpdateChannels(clan.tag).then(channels => {
+                    discordClient.emit('clash-royale', {
+                        update: true,
+                        type: 'rank-update',
+                        elements: changes,
+                        clan,
+                        channels,
+                        member: player,
+                    });
+                })
+            }
         })
     }
 
-    connectPlayer(
-        player
-    ) {
+    connectPlayer(player) {
         const tag = player.tag
         this.exists(tag).then(exists => {
             if (!exists) {
@@ -90,6 +129,50 @@ class PlayersHandler {
                 this.reconnectPlayer(player)
             }
         })
+        if (player.joined) {
+            this.handlePlayerJoin(player)
+        } else if (player.left) {
+            this.handlePlayerLeft(player)
+        }
+    }
+
+    handlePlayerJoin(player) {
+        this.addToClan(player)
+        guildsHandler.getClanUpdateChannels(player.clan.tag).then(channels => {
+            discordClient.emit('clash-royale', {
+                update: true,
+                type: 'player-joined',
+                clan: player.clan,
+                channels,
+                member: player,
+            });
+        })
+    }
+
+    addToClan(player) {
+        this.playersRepository.addToClan(
+            player.tag,
+            player.clan.tag
+        )
+    }
+
+    handlePlayerLeft(player) {
+        this.removeFromClan(player)
+        guildsHandler.getClanUpdateChannels(player.clan.tag).then(channels => {
+            discordClient.emit('clash-royale', {
+                update: true,
+                type: 'player-left',
+                clan: player.clan,
+                channels,
+                member: player,
+            });
+        })
+    }
+
+    removeFromClan(player) {
+        this.playersRepository.removeFromClan(
+            player.tag
+        )
     }
 
     async getPlayer(playerID) {

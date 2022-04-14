@@ -5,6 +5,7 @@ const {PlayersRepository} = require("./repository/players-repository");
 const {LinkedAccountsRepository} = require("./repository/linked-accounts-repository");
 const {LinkedClansRepository} = require("./repository/linked-clans-repository");
 const {UsersRepository} = require("./repository/users-repository");
+const {RiverRaceRepository} = require("./repository/river-races-repository");
 
 class Database {
 
@@ -56,6 +57,14 @@ class Database {
     set usersRepository(value) {
         this._usersRepository = value;
     }
+
+    get riverRaceRepository() {
+        return this._riverRaceRepository;
+    }
+
+    set riverRaceRepository(value) {
+        this._riverRaceRepository = value;
+    }
     //#endregion VARIABLES
 
     constructor() {
@@ -65,34 +74,62 @@ class Database {
         this.playersRepository = new PlayersRepository(AppDAO)
         this.linkedAccountsRepository = new LinkedAccountsRepository(AppDAO)
         this.linkedClansRepository = new LinkedClansRepository(AppDAO)
+        this.riverRaceRepository = new RiverRaceRepository(AppDAO)
     }
 
     initialize() {
-        // guilds
-        // this.guildsRepository.deleteTable()
+        // // guilds
         this.guildsRepository.createTable()
-
-        // clans
-        // this.clansRepository.deleteTable()
+        //
+        // // clans
         this.clansRepository.createTable()
-
-        // linked clans (clan <-> guild)
-        // this.linkedClansRepository.deleteTable()
+        //
+        // // linked clans (clan <-> guild)
         this.linkedClansRepository.createTable()
 
         // ------------------------------------------------
-
+        //
         // // users
-        // this.usersRepository.deleteTable()
         this.usersRepository.createTable()
         //
         // // players
-        // this.playersRepository.deleteTable()
         this.playersRepository.createTable()
         //
         // // linked accounts (player <-> user)
-        // this.linkedAccountsRepository.deleteTable()
         this.linkedAccountsRepository.createTable()
+
+        // ------------------------------------------------
+        //
+        // // river-races
+        this.riverRaceRepository.createTable()
+    }
+
+    clean() {
+        // // guilds
+        this.guildsRepository.deleteTable()
+        //
+        // // clans
+        this.clansRepository.deleteTable()
+        //
+        // // linked clans (clan <-> guild)
+        this.linkedClansRepository.deleteTable()
+
+        // ------------------------------------------------
+        //
+        // // users
+        this.usersRepository.deleteTable()
+        //
+        // // players
+        this.playersRepository.deleteTable()
+        //
+        // // linked accounts (player <-> user)
+        this.linkedAccountsRepository.deleteTable()
+
+        // ------------------------------------------------
+        //
+        // // river-races
+        this.riverRaceRepository.deleteTable()
+
     }
 }
 
