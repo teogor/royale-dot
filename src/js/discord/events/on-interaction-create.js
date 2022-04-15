@@ -1,6 +1,6 @@
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../../res/values/colors");
-const {usersHandler} = require("../../database/handle/users-handler");
+const {usersHandler} = require("../../database2/handle/users-handler");
 
 class OnInteractionCreate {
 

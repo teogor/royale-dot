@@ -1,8 +1,8 @@
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../res/values/colors");
-const {linkedClansHandler} = require("../database/handle/linked-clans-handler");
+const {linkedClansHandler} = require("../database2/handle/linked-clans-handler");
 const {royaleDAO} = require("./dao");
-const {linkedAccountsHandler} = require("../database/handle/linked-accounts-handler");
+const {linkedAccountsHandler} = require("../database2/handle/linked-accounts-handler");
 const {Emojis} = require("../../res/values/emojis");
 
 class RoyaleRepository {

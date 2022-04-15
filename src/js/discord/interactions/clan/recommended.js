@@ -1,5 +1,5 @@
-const {linkedClansHandler} = require("../../../database/handle/linked-clans-handler");
-const {clansHandler} = require("../../../database/handle/clans-handler");
+const {linkedClansHandler} = require("../../../database2/handle/linked-clans-handler");
+const {clansHandler} = require("../../../database2/handle/clans-handler");
 
 async function getClans(tag, guildID) {
     let recommendedClans = []

@@ -1,5 +1,5 @@
 const Response = require('../response')
-const {playersHandler} = require("../../database/handle/players-handler");
+const {playersHandler} = require("../../database2/handle/players-handler");
 
 class Player extends Response {
     constructor(data) {

@@ -1,5 +1,5 @@
-const {linkedClansHandler} = require("../../../database/handle/linked-clans-handler");
-const {playersHandler} = require("../../../database/handle/players-handler");
+const {linkedClansHandler} = require("../../../database2/handle/linked-clans-handler");
+const {playersHandler} = require("../../../database2/handle/players-handler");
 
 async function getPlayers(tag, guildID) {
     const guildLinked = await linkedClansHandler.isLinked(guildID)

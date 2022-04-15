@@ -1,11 +1,11 @@
-const {linkedClansHandler} = require("../../database/handle/linked-clans-handler");
+const {linkedClansHandler} = require("../../database2/handle/linked-clans-handler");
 const discordClient = require("../client");
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../../res/values/colors");
 const {Emojis} = require("../../../res/values/emojis");
 const {getBadge} = require("../../../res/values/badges");
-const {playersHandler} = require("../../database/handle/players-handler");
-const {guildsHandler} = require("../../database/handle/guilds-handler");
+const {playersHandler} = require("../../database2/handle/players-handler");
+const {guildsHandler} = require("../../database2/handle/guilds-handler");
 const {getKingLevel} = require("../../../res/values/king-levels");
 
 class OnClashRoyaleUpdate {

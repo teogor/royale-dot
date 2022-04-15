@@ -4,7 +4,7 @@ const {buildCustomId, buildArgs} = require("../../../utils/custom-builder");
 const {Emojis} = require("../../../../res/values/emojis");
 const {TimestampStyles} = require("@discordjs/builders");
 const {ColorsValues} = require("../../../../res/values/colors");
-const {clansHandler} = require("../../../database/handle/clans-handler");
+const {clansHandler} = require("../../../database2/handle/clans-handler");
 const {sendFollowUp, sendUpdate, sendButtonResponse} = require("../response");
 const {getKingLevel} = require("../../../../res/values/king-levels");
 

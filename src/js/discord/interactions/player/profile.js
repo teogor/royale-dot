@@ -5,7 +5,7 @@ const {ColorsValues} = require("../../../../res/values/colors");
 const {Emojis} = require("../../../../res/values/emojis");
 const {getBadge} = require("../../../../res/values/badges");
 const {buildCustomId} = require("../../../utils/custom-builder");
-const {linkedAccountsHandler} = require("../../../database/handle/linked-accounts-handler");
+const {linkedAccountsHandler} = require("../../../database2/handle/linked-accounts-handler");
 const {getKingLevel} = require("../../../../res/values/king-levels");
 
 async function getPlayerProfileInfo(player) {

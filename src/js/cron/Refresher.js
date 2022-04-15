@@ -1,4 +1,4 @@
-const {guildsHandler} = require("../database/handle/guilds-handler");
+const {guildsHandler} = require("../database2/handle/guilds-handler");
 const {royaleRepository} = require("../royale/repository");
 const CronJob = require('cron').CronJob;
 

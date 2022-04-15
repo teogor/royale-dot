@@ -1,6 +1,6 @@
 const Response = require('../response')
-const {riverRacesHandler} = require("../../database/handle/river-races-handler");
-const {guildsHandler} = require("../../database/handle/guilds-handler");
+const {riverRacesHandler} = require("../../database2/handle/river-races-handler");
+const {guildsHandler} = require("../../database2/handle/guilds-handler");
 const discordClient = require("../../discord/client");
 
 class RiverRace extends Response {

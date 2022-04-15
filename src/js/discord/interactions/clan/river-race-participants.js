@@ -3,7 +3,7 @@ const {MessageActionRow, MessageSelectMenu, MessageButton, MessageEmbed} = requi
 const {buildCustomId, buildArgs} = require("../../../utils/custom-builder");
 const {Emojis} = require("../../../../res/values/emojis");
 const {ColorsValues} = require("../../../../res/values/colors");
-const {clansHandler} = require("../../../database/handle/clans-handler");
+const {clansHandler} = require("../../../database2/handle/clans-handler");
 const {sendFollowUp, sendUpdate, sendButtonResponse} = require("../response");
 
 const sortOptionsTypes = [

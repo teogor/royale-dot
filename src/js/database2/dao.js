@@ -4,9 +4,9 @@ class DAO {
     constructor(dbFilePath) {
         this.db = new sqlite3.Database(dbFilePath, (err) => {
             if (err) {
-                console.log('Could not connect to database', err)
+                console.log('Could not connect to database2', err)
             } else {
-                console.log('Connected to database')
+                console.log('Connected to database2')
             }
         })
     }
@@ -54,7 +54,7 @@ class DAO {
     }
 }
 
-const AppDAO = new DAO('./src/res/database/database.sqlite3')
+const AppDAO = new DAO('./src/res/database2/database2.sqlite3')
 
 module.exports = {
     AppDAO

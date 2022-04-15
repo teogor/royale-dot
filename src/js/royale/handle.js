@@ -1,7 +1,7 @@
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../res/values/colors");
 const {isValidTag} = require("../utils/validate");
-const {clansHandler} = require("../database/handle/clans-handler");
+const {clansHandler} = require("../database2/handle/clans-handler");
 
 async function handleError(error) {
     const {

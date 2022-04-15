@@ -1,12 +1,12 @@
 const {MessageEmbed, Emoji} = require("discord.js");
 const {sendFollowUp} = require("../response");
 const {Emojis} = require("../../../../res/values/emojis");
-const {linkedClansHandler} = require("../../../database/handle/linked-clans-handler");
-const {clansHandler} = require("../../../database/handle/clans-handler");
+const {linkedClansHandler} = require("../../../database2/handle/linked-clans-handler");
+const {clansHandler} = require("../../../database2/handle/clans-handler");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {royaleRepository} = require("../../../royale/repository");
-const {linkedAccountsHandler} = require("../../../database/handle/linked-accounts-handler");
-const {guildsHandler} = require("../../../database/handle/guilds-handler");
+const {linkedAccountsHandler} = require("../../../database2/handle/linked-accounts-handler");
+const {guildsHandler} = require("../../../database2/handle/guilds-handler");
 
 async function getLinkedPlayer(userID, tag) {
     const tagData = await royaleRepository.getTag(tag)

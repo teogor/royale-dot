@@ -1,6 +1,6 @@
 const Response = require('../response')
-const {clansHandler} = require("../../database/handle/clans-handler");
-const {playersHandler} = require("../../database/handle/players-handler");
+const {clansHandler} = require("../../database2/handle/clans-handler");
+const {playersHandler} = require("../../database2/handle/players-handler");
 
 class Clan extends Response {
     constructor(data) {

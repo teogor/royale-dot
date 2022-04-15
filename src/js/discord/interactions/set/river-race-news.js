@@ -1,5 +1,5 @@
 const {sendFollowUp, sendNew} = require("../response");
-const {guildsHandler} = require("../../../database/handle/guilds-handler");
+const {guildsHandler} = require("../../../database2/handle/guilds-handler");
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../../../res/values/colors");
 

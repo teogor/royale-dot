@@ -1,5 +1,5 @@
 const {Commands} = require("../commands");
-const {guildsHandler} = require("../../database/handle/guilds-handler");
+const {guildsHandler} = require("../../database2/handle/guilds-handler");
 
 class OnGuild {
 

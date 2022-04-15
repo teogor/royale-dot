@@ -1,8 +1,8 @@
 const {MessageEmbed} = require("discord.js");
 const {sendFollowUp} = require("../response");
 const {Emojis} = require("../../../../res/values/emojis");
-const {linkedClansHandler} = require("../../../database/handle/linked-clans-handler");
-const {clansHandler} = require("../../../database/handle/clans-handler");
+const {linkedClansHandler} = require("../../../database2/handle/linked-clans-handler");
+const {clansHandler} = require("../../../database2/handle/clans-handler");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {royaleRepository} = require("../../../royale/repository");
 

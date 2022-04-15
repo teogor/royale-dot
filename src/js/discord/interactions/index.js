@@ -1,4 +1,4 @@
-const {usersHandler} = require("../../database/handle/users-handler");
+const {usersHandler} = require("../../database2/handle/users-handler");
 const onAutocomplete = require("./autocomplete");
 const onCommand = require("./command");
 const onSort = require("./sort");
