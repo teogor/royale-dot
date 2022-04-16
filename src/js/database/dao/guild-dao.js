@@ -76,7 +76,7 @@ class GuildDAO {
              g.channel_clan_news_id AS channelClanNewsId,
              g.tag AS tag
              FROM guilds g
-             WHERE g.channel_clan_news_id IS NOT NULL`
+             WHERE g.channel_clan_news_id IS NOT NULL AND g.tag IS NOT NULL`
 
         return await this.db.all(
             sql
@@ -88,7 +88,7 @@ class GuildDAO {
              g.channel_river_race_news_id AS channelRiverRaceNewsId,
              g.tag AS tag
              FROM guilds g
-             WHERE g.channel_river_race_news_id IS NOT NULL`
+             WHERE g.channel_river_race_news_id IS NOT NULL AND g.tag IS NOT NULL`
 
         return await this.db.all(
             sql
@@ -181,6 +181,23 @@ class GuildDAO {
         return this.db.run(
             sql,
             values
+        )
+    }
+
+    async getRiverRaceNewsChannelsFor(hours, minutes) {
+        const sql = `SELECT g.guild_id                   AS guildId,
+                           g.channel_river_race_news_id AS channelRiverRaceNewsId,
+                           g.tag                        AS tag,
+                           r.minutes,
+                           r.hours
+                    FROM guilds g
+                    INNER JOIN reports r on g.guild_id = r.guild_id
+                    WHERE g.channel_river_race_news_id IS NOT NULL
+                      AND g.tag IS NOT NULL AND r.hours=? AND r.minutes=? AND r.type=1`
+
+        return this.db.all(
+            sql,
+            [hours, minutes]
         )
     }
 

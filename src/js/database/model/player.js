@@ -179,6 +179,17 @@ class Player {
         return player
     }
 
+    /**
+     * @param playerAPI
+     */
+    static fromAPIMemberLeftModel(playerAPI) {
+        const player = new Player()
+        player.tag = playerAPI.tag
+        player.clanTag = playerAPI.clan.tag
+        player.name = playerAPI.name
+        return player
+    }
+
     static fromAPIModel(playerAPI) {
         const player = new Player()
         player.tag = playerAPI.tag

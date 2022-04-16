@@ -63,6 +63,36 @@ const setNewsChannel = {
     ]
 }
 
+const receiveNewsAt = {
+    name: "receive-news-at",
+    description: "Choose the channel where to receive news about the river race",
+    type: 1,
+    options: [
+        {
+            name: "time",
+            description: "Select the time that you want to receive the news at",
+            type: 3,
+            required: true,
+            autocomplete: true
+        }
+    ]
+}
+
+const cancelNewsAt = {
+    name: "cancel-news-at",
+    description: "Choose the channel where to receive news about the river race",
+    type: 1,
+    options: [
+        {
+            name: "time",
+            description: "Select the time that you want to cancel the news at",
+            type: 3,
+            required: true,
+            autocomplete: true
+        }
+    ]
+}
+
 const riverRaceSlashCommands = {
     name: "river-race",
     description: "View river-race details and relevant commands",
@@ -70,7 +100,9 @@ const riverRaceSlashCommands = {
         getInfo,
         getParticipants,
         getContribution,
-        setNewsChannel
+        setNewsChannel,
+        receiveNewsAt,
+        cancelNewsAt
     ]
 }
 

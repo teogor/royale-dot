@@ -48,7 +48,7 @@ class ClanAPI extends Response {
                 if (index !== -1) {
                     m2.splice(index, 1);
                 }
-                const player = Player.fromAPIMemberModel(member)
+                const player = Player.fromAPIMemberLeftModel(member)
                 playerRepository.insertFromMember(player)
             })
             // todo handle remained players `m2`

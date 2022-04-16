@@ -13,6 +13,8 @@ const {commandSetClanNewsChannel} = require("./clan/news-channel");
 const {commandSetRiverRaceNewsChannel} = require("./river-race/news-channel");
 const {commandRiverRaceInfo} = require("./river-race/info");
 const {commandRiverRaceParticipants} = require("./river-race/participants");
+const {commandReceiveClanNewsAt, commandCancelClanNewsAt} = require("./clan/news-at");
+const {commandReceiveRiverRaceNewsAt, commandCancelRiverRaceNewsAt} = require("./river-race/news-at");
 
 function onClanCommand(interaction, client) {
     if (interaction.options.getSubcommand() === 'rank-color') {
@@ -27,6 +29,10 @@ function onClanCommand(interaction, client) {
         commandClanUnlink(interaction, client)
     } else if (interaction.options.getSubcommand() === 'set-news-channel') {
         commandSetClanNewsChannel(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'receive-news-at') {
+        commandReceiveClanNewsAt(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'cancel-news-at') {
+        commandCancelClanNewsAt(interaction, client)
     } else {
         console.log(`command not handled: ${interaction.options.getSubcommand()}`)
     }
@@ -49,6 +55,7 @@ function onPlayerCommand(interaction, client) {
         console.log(`command not handled: ${interaction.options.getSubcommand()}`)
     }
 }
+
 function onRiverRaceCommand(interaction, client) {
     if (interaction.options.getSubcommand() === 'set-news-channel') {
         commandSetRiverRaceNewsChannel(interaction, client)
@@ -58,7 +65,11 @@ function onRiverRaceCommand(interaction, client) {
         commandRiverRaceInfo(interaction, client)
     } else if (interaction.options.getSubcommand() === 'participants') {
         commandRiverRaceParticipants(interaction, client)
-    }  else {
+    } else if (interaction.options.getSubcommand() === 'receive-news-at') {
+        commandReceiveRiverRaceNewsAt(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'cancel-news-at') {
+        commandCancelRiverRaceNewsAt(interaction, client)
+    } else {
         console.log(`command not handled: ${interaction.options.getSubcommand()}`)
     }
 }
