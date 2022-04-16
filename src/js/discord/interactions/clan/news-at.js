@@ -108,22 +108,22 @@ function autocompleteCancelClanNewsAt(interaction, client) {
         const elements = []
         reports.forEach(report => {
             const {
-                hour,
+                hours,
                 minutes
             } = report
-            const time24H = `${hour}:${minutes}`
-            if (parseInt(hour) >= 12) {
-                const time12H = `${parseInt(hour) === 0 ? 12 : parseInt(hour) / 2}:${minutes} PM`
+            const time24H = `${hours}:${minutes}`
+            if (parseInt(hours) >= 12) {
+                const time12H = `${parseInt(hours) === 0 ? 12 : parseInt(hours) / 2}:${minutes} PM`
                 const autocompleteTime = {
                     name: `at ${time24H} (${time12H})`,
-                    value: `${hour}:${minutes}`
+                    value: `${hours}:${minutes}`
                 }
                 elements.push(autocompleteTime)
             } else {
-                const time12H = `${parseInt(hour) === 0 ? 12 : hour}:${minutes} AM`
+                const time12H = `${parseInt(hours) === 0 ? 12 : hours}:${minutes} AM`
                 const autocompleteTime = {
                     name: `at ${time24H} (${time12H})`,
-                    value: `${hour}:${minutes}`
+                    value: `${hours}:${minutes}`
                 }
                 elements.push(autocompleteTime)
             }
@@ -138,18 +138,18 @@ function autocompleteCancelClanNewsAt(interaction, client) {
 function commandCancelClanNewsAt(interaction, client) {
     const guildId = interaction.guild.id
     const time = interaction.options.getString('time').split(':')
-    const hour = parseInt(time[0])
+    const hours = parseInt(time[0])
     const minutes = parseInt(time[1])
-    if (hour >= 0 && hour <= 23 && (minutes === 0 || minutes === 15 || minutes === 30 || minutes === 45)) {
+    if (hours >= 0 && hours <= 23 && (minutes === 0 || minutes === 15 || minutes === 30 || minutes === 45)) {
         reportRepository.deleteReport(Report.forClan(
             guildId,
-            hour,
+            hours,
             minutes
         ))
         const response = {
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`Daily clan news will not be received anymore at \`${hour}:${minutes}\``)
+                    .setDescription(`Daily clan news will not be received anymore at \`${hours}:${minutes}\``)
                     .setColor(ColorsValues.colorBotGreen)
             ]
         }
