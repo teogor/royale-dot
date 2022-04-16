@@ -5,6 +5,8 @@ const {Emojis} = require("../../../res/values/emojis");
 const {getBadge} = require("../../../res/values/badges");
 const {getKingLevel} = require("../../../res/values/king-levels");
 const guildRepository = require("../../database/repository/guild-repository");
+const {royaleRepository} = require("../../royale/repository");
+const {newsRiverRaceInfo} = require("../interactions/river-race/news");
 
 class OnClashRoyaleUpdate {
 
@@ -241,6 +243,8 @@ class OnClashRoyaleUpdate {
                 this.handlePlayerLeft(data)
             } else if (data.type === 'river-race-all-decks-used') {
                 this.handlePlayerUsedAllDecksRiverRace(data)
+            } else if (data.type === 'river-race-news') {
+                this.handleRiverRaceNews(data)
             }
         })
     }
@@ -338,6 +342,28 @@ class OnClashRoyaleUpdate {
                 }).catch(e => {
                     console.log(e)
                 })
+            })
+        })
+    }
+
+    handleRiverRaceNews(data) {
+        data.channels.forEach(channelData => {
+            const {
+                channelRiverRaceNewsId
+            } = channelData
+            royaleRepository.getClanRiverRace(channelData.tag).then(riverRaceData => {
+                const riverRace = riverRaceData.clanRiverRace
+
+                discordClient.channels.fetch(channelRiverRaceNewsId).then(channel => {
+                    if (channel === null) {
+                        console.log(`channel: null, channelId: ${channelRiverRaceNewsId}`)
+                        return
+                    }
+
+                    newsRiverRaceInfo(channel, riverRace)
+                })
+            }).catch(error => {
+                console.log(error)
             })
         })
     }

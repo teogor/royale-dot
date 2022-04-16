@@ -121,6 +121,36 @@ const setNewsChannel = {
     ]
 }
 
+const receiveNewsAt = {
+    name: "receive-news-at",
+    description: "Choose the channel where to receive news about the clan",
+    type: 1,
+    options: [
+        {
+            name: "time",
+            description: "Select the time that you want to receive the news at",
+            type: 3,
+            required: true,
+            autocomplete: true
+        }
+    ]
+}
+
+const cancelNewsAt = {
+    name: "cancel-news-at",
+    description: "Choose the channel where to receive news about the clan",
+    type: 1,
+    options: [
+        {
+            name: "time",
+            description: "Select the time that you want to cancel the news at",
+            type: 3,
+            required: true,
+            autocomplete: true
+        }
+    ]
+}
+
 const clanSlashCommands = {
     name: "clan",
     description: "View and manage clan details",
@@ -130,7 +160,9 @@ const clanSlashCommands = {
         getClanInfo,
         linkClan,
         unlinkClan,
-        setNewsChannel
+        setNewsChannel,
+        receiveNewsAt,
+        cancelNewsAt,
     ]
 }
 

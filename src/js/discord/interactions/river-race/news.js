@@ -1,10 +1,8 @@
-const {royaleRepository} = require("../../../royale/repository");
 const {Emojis} = require("../../../../res/values/emojis");
 const {getBadge} = require("../../../../res/values/badges");
 const {MessageEmbed, MessageActionRow, MessageSelectMenu, MessageButton} = require("discord.js");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {buildArgs, buildCustomId} = require("../../../utils/custom-builder");
-const {sendFollowUp, sendButtonResponse} = require("../response");
 
 async function showClanRiverRaceInfo(clanRiverRace) {
     const {
@@ -23,7 +21,7 @@ async function showClanRiverRaceInfo(clanRiverRace) {
 
     let title = ''
     if (periodType === 'warDay') {
-        title += `River Race | `
+        title += `NEWS: River Race | `
     } else if (periodType === 'colloseum') {
         title += `Colloseum | `
     }
@@ -47,10 +45,7 @@ async function showClanRiverRaceInfo(clanRiverRace) {
     clansSorted.forEach(c => {
         getBadge(c.badgeId)
         if (!isTraining) {
-            let value = `${c.fame} ${c.periodPoints} ${Emojis.BoatsAttacked} ${c.attacks.decksUsed} (${c.attacks.decksUsedToday})`
-
-            console.log(c)
-            value = `**Clan Stats:** ${Emojis.Fame} ${c.fame} - ${Emojis.BoatPoints} ${c.periodPoints} - ${Emojis.BoatsAttacked} ${c.attacks.boatAttacks}`
+            let value = `**Clan Stats:** ${Emojis.Fame} ${c.fame} - ${Emojis.BoatPoints} ${c.periodPoints} - ${Emojis.BoatsAttacked} ${c.attacks.boatAttacks}`
             value += `\n**Participants Stats:** ${Emojis.DecksUsedToday} ${c.attacks.decksUsedToday} (${Emojis.DecksUsed} ${c.attacks.decksUsed}) - ${Emojis.ClanMembers} ${c.attacks.participants} (${Emojis.ClanMembers} ${c.participants.length})`
             fields.push({
                 name: `**${currentRank}) ${getBadge(c.badgeId)} __${c.name} (\`${c.tag}\`)__**`,
@@ -188,42 +183,12 @@ async function showClanRiverRaceInfo(clanRiverRace) {
     }
 }
 
-function commandRiverRaceInfo(interaction, client) {
-    const tag = interaction.options.getString('tag')
-    const guildID = interaction.guild.id
-
-    royaleRepository.getClanRiverRace(tag, guildID).then(clanRiverRaceInfo => {
-        if (clanRiverRaceInfo.error) {
-            sendFollowUp(interaction, clanRiverRaceInfo)
-            return
-        }
-        const clanRiverRace = clanRiverRaceInfo.clanRiverRace
-
-        showClanRiverRaceInfo(clanRiverRace).then(followUpMessage => {
-            sendFollowUp(interaction, followUpMessage)
-        }).catch(error => {
-            console.log(error)
-        })
-    }).catch(error => {
-        console.log(error)
-    })
-}
-
-function buttonRiverRaceInfo(interaction, client) {
-    const tag = interaction.arguments[0]
-    const guildID = interaction.guild.id
-
-    royaleRepository.getClanRiverRace(tag, guildID).then(clanRiverRaceInfo => {
-        if (clanRiverRaceInfo.error) {
-            sendFollowUp(interaction, clanRiverRaceInfo)
-            return
-        }
-        const clanRiverRace = clanRiverRaceInfo.clanRiverRace
-
-        showClanRiverRaceInfo(clanRiverRace).then(followUpMessage => {
-            sendButtonResponse(interaction, followUpMessage)
-        }).catch(error => {
-            console.log(error)
+function newsRiverRaceInfo(channel, riverRace) {
+    showClanRiverRaceInfo(riverRace).then(followUpMessage => {
+        channel.send({
+            ...followUpMessage
+        }).catch(e => {
+            console.log(e)
         })
     }).catch(error => {
         console.log(error)
@@ -231,6 +196,5 @@ function buttonRiverRaceInfo(interaction, client) {
 }
 
 module.exports = {
-    commandRiverRaceInfo,
-    buttonRiverRaceInfo
+    newsRiverRaceInfo
 }

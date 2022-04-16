@@ -1,8 +1,9 @@
 const {autocompleteClanUnlink} = require("./clan/unlink");
 const {autocompleteClans} = require("./clan/recommended");
 const {autocompletePlayerUnlink} = require("./player/unlink");
-const {autocompletePlayerLink} = require("./player/link");
 const {autocompletePlayers} = require("./player/recommended");
+const {autocompleteCancelClanNewsAt, autocompleteReceiveClanNewsAt} = require("./clan/news-at");
+const {autocompleteReceiveRiverRaceNewsAt, autocompleteCancelRiverRaceNewsAt} = require("./river-race/news-at");
 
 function onClanAutocomplete(interaction, client) {
 
@@ -16,6 +17,12 @@ function onClanAutocomplete(interaction, client) {
         case 'river-race':
         case 'river-race-participants':
             autocompleteClans(interaction, client)
+            break
+        case 'receive-news-at':
+            autocompleteReceiveClanNewsAt(interaction, client)
+            break
+        case 'cancel-news-at':
+            autocompleteCancelClanNewsAt(interaction, client)
             break
         default:
             console.log(subcommand)
@@ -54,6 +61,12 @@ function onRiverRaceAutocomplete(interaction, client) {
         case 'participants':
         case 'info':
             autocompleteClans(interaction, client)
+            break
+        case 'receive-news-at':
+            autocompleteReceiveRiverRaceNewsAt(interaction, client)
+            break
+        case 'cancel-news-at':
+            autocompleteCancelRiverRaceNewsAt(interaction, client)
             break
         default:
             console.log(subcommand)

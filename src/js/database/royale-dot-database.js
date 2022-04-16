@@ -11,12 +11,15 @@ const RiverRaceDAO = require("./dao/river-race-dao");
 const ParticipantDAO = require("./dao/participant-dao");
 const ParticipantEntity = require("./entity/participant-entity");
 const RiverRaceEntity = require("./entity/river-race-entity");
+const ReportEntity = require("./entity/report-entity");
+const ReportDAO = require("./dao/report-dao");
 
 const entities = [
     new ClanEntity(),
     new GuildEntity(),
     new ParticipantEntity(),
     new PlayerEntity(),
+    new ReportEntity(),
     new RiverRaceEntity(),
     new UserEntity(),
 ]
@@ -26,6 +29,7 @@ const daoClasses = [
     GuildDAO,
     ParticipantDAO,
     PlayerDAO,
+    ReportDAO,
     RiverRaceDAO,
     UserDAO,
 ]
@@ -48,8 +52,9 @@ class RoyaleDotDatabase {
         this.guildDAO = new daoClasses[1](this)
         this.participantDAO = new daoClasses[2](this)
         this.playerDAO = new daoClasses[3](this)
-        this.riverRaceDAO = new daoClasses[4](this)
-        this.userDAO = new daoClasses[5](this)
+        this.reportDAO = new daoClasses[4](this)
+        this.riverRaceDAO = new daoClasses[5](this)
+        this.userDAO = new daoClasses[6](this)
     }
 
     init() {

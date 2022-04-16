@@ -38,6 +38,10 @@ class GuildRepository {
         return royaleDotDB.guildDAO.getRiverRaceNewsChannelsByTag(tag)
     }
 
+    async getRiverRaceNewsChannelsFor(hour, minutes) {
+        return royaleDotDB.guildDAO.getRiverRaceNewsChannelsFor(hour, minutes)
+    }
+
     async linkClan(guild) {
         return royaleDotDB.guildDAO.linkClan(guild)
     }

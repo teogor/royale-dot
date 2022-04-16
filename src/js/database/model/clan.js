@@ -75,10 +75,12 @@ class Clan {
      */
     static fromDatabaseModel(clanDB) {
         const clan = new Clan()
-        Object.entries(clanDB).forEach(([key, value]) => {
-            clan[toUppercaseWords(key)] = value
-        })
-        clan.locationIsCountry = clan.locationIsCountry === 1
+        if (clanDB !== undefined) {
+            Object.entries(clanDB).forEach(([key, value]) => {
+                clan[toUppercaseWords(key)] = value
+            })
+            clan.locationIsCountry = clan.locationIsCountry === 1
+        }
         return clan
     }
 
