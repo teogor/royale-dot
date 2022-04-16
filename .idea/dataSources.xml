@@ -8,5 +8,17 @@
       <jdbc-url>jdbc:sqlite:F:\Business\TeodorHMX1\GitHub\royale-dot\src\res\database\database.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="royale-dot-db" uuid="4d2feea2-004b-4e41-8aab-c42c9469116e">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:F:\Business\TeodorHMX1\GitHub\royale-dot\src\res\database\royale-dot-db.sqlite3</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.36.0.3/sqlite-jdbc-3.36.0.3.jar</url>
+        </library>
+      </libraries>
+    </data-source>
   </component>
 </project>

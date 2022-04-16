@@ -4,7 +4,7 @@ const {buttonClanRiverRace} = require("./clan/river-race");
 const {buttonRiverRaceParticipants} = require("./clan/river-race-participants");
 const {buttonPlayerProfile} = require("./player/profile");
 const {buttonPlayerOverview} = require("./player/overview");
-const {buttonRiverRaceContribution} = require("./player/river-race-contribution");
+const {buttonRiverRaceContribution} = require("./river-race/contribution");
 
 const onButton = (interaction, client) => {
     const components = interaction.customId.split(" ")

@@ -1,3 +1,4 @@
+const {toUppercaseWords} = require("../../utils/functions");
 const participantModel = {
     // id
     id: {
@@ -49,7 +50,7 @@ const participantModel = {
         type: 'INTEGER',
     },
     repairPoints: {
-        name: 'repairPoints',
+        name: 'repair_points',
         type: 'INTEGER',
     },
     fame: {
@@ -59,6 +60,35 @@ const participantModel = {
 }
 
 class Participant {
+
+    /**
+     * @param participantDB
+     */
+    static fromDatabaseModel(participantDB) {
+        const participant = new Participant()
+        if (participantDB !== undefined) {
+            Object.entries(participantDB).forEach(([key, value]) => {
+                participant[toUppercaseWords(key)] = value
+            })
+        }
+        return participant
+    }
+
+    static fromAPIModel(participantAPI) {
+        const participant = new Participant()
+        participant.tag = participantAPI.tag
+        participant.day = participantAPI.day
+        participant.week = participantAPI.week
+        participant.month = participantAPI.month
+        participant.year = participantAPI.year
+        participant.fame = participantAPI.fame
+        participant.repairPoints = participantAPI.repairPoints
+        participant.boatAttacks = participantAPI.boatAttacks
+        participant.decksUsed = participantAPI.decksUsed
+        participant.decksUsedToday = participantAPI.decksUsedToday
+        return participant
+    }
+
     constructor() {
         this.id = 0
         this.createdAt = ""
@@ -73,6 +103,10 @@ class Participant {
         this.decksUsedToday = 0
         this.repairPoints = 0
         this.fame = 0
+    }
+
+    get exists() {
+        return this.tag !== "" && this.tag !== null && this.tag !== undefined
     }
 }
 

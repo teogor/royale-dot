@@ -1,3 +1,4 @@
+const {toUppercaseWords} = require("../../utils/functions");
 const guildModel = {
     // id
     id: {
@@ -59,6 +60,39 @@ const guildModel = {
 }
 
 class Guild {
+
+    /**
+     * @param guildId
+     */
+    static fromID(guildId) {
+        const guild = new Guild()
+        guild.guildId = guildId
+        return guild
+    }
+
+    /**
+     * @param guildDiscord discord-type guild
+     */
+    static fromDiscordModel(guildDiscord) {
+        const guild = new Guild()
+        guild.guildId = guildDiscord.id
+        return guild
+    }
+
+    /**
+     * @param guildDB discord-type guild
+     */
+    static fromDatabaseModel(guildDB) {
+        const guild = new Guild()
+        if (guildDB === undefined) {
+            return guild
+        }
+        Object.entries(guildDB).forEach(([key, value]) => {
+            guild[toUppercaseWords(key)] = value
+        })
+        return guild
+    }
+
     constructor() {
         this.id = 0
         this.updatedAt = ""
@@ -71,9 +105,15 @@ class Guild {
         this.channelClanNewsId = ""
         this.channelRiverRaceNewsId = ""
         this.channelCommandsId = ""
-        this.tag=""
-        this.linkedAt=""
+        this.tag = ""
+        this.linkedAt = ""
     }
+
+    get isLinked() {
+        return this.tag !== null
+    }
+
+
 }
 
 module.exports = {

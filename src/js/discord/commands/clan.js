@@ -107,6 +107,20 @@ const unlinkClan = {
     ]
 }
 
+const setNewsChannel = {
+    name: "set-news-channel",
+    description: "Choose the channel where to receive news about the clan",
+    type: 1,
+    options: [
+        {
+            name: "channel",
+            description: "Targeted Channel",
+            type: 7,
+            required: true,
+        }
+    ]
+}
+
 const clanSlashCommands = {
     name: "clan",
     description: "View and manage clan details",
@@ -114,10 +128,9 @@ const clanSlashCommands = {
         updateClanRankColor,
         getClanMembers,
         getClanInfo,
-        getClanRiverRace,
-        getClanRiverRaceParticipants,
         linkClan,
-        unlinkClan
+        unlinkClan,
+        setNewsChannel
     ]
 }
 

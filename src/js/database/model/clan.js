@@ -1,3 +1,5 @@
+const {toUppercaseWords} = require("../../utils/functions");
+
 const clanModel = {
     // id
     id: {
@@ -25,7 +27,7 @@ const clanModel = {
         type: 'TEXT',
     },
     type: {
-        name: 'clan_tag',
+        name: 'type',
         type: 'INTEGER',
     },
     description: {
@@ -56,8 +58,8 @@ const clanModel = {
         name: 'members',
         type: 'INTEGER',
     },
-    location_name: {
-        name: 'locationName',
+    locationName: {
+        name: 'location_name',
         type: 'TEXT',
     },
     locationIsCountry: {
@@ -67,32 +69,55 @@ const clanModel = {
 }
 
 class Clan {
+
+    /**
+     * @param clanDB
+     */
+    static fromDatabaseModel(clanDB) {
+        const clan = new Clan()
+        Object.entries(clanDB).forEach(([key, value]) => {
+            clan[toUppercaseWords(key)] = value
+        })
+        clan.locationIsCountry = clan.locationIsCountry === 1
+        return clan
+    }
+
+    /**
+     * @param clanAPI
+     */
+    static fromAPIModel(clanAPI) {
+        const clan = new Clan()
+        clan.tag = clanAPI.tag
+        clan.name = clanAPI.name
+        clan.type = clanAPI.type
+        clan.description = clanAPI.description
+        clan.badgeId = clanAPI.badgeId
+        clan.clanScore = clanAPI.clanScore
+        clan.clanWarTrophies = clanAPI.clanWarTrophies
+        clan.requiredTrophies = clanAPI.requiredTrophies
+        clan.donationsPerWeek = clanAPI.donationsPerWeek
+        clan.members = clanAPI.members
+        clan.locationName = clanAPI.locationName
+        clan.locationIsCountry = clanAPI.locationIsCountry
+        return clan
+    }
+
     constructor() {
         this.id = 0
         this.createdAt = ''
         this.updatedAt = ''
         this.tag = ''
-        this.name = ''
-        this.clanTag = ''
-        this.expLevel = 0
-        this.trophies = 0
-        this.bestTrophies = 0
-        this.wins = 0
-        this.losses = 0
-        this.battleCount = 0
-        this.threeCrownWins = 0
-        this.challengeCardsWon = 0
-        this.challengeMaxWins = 0
-        this.tournamentBattleCount = 0
-        this.donations = 0
-        this.donationsReceived = 0
-        this.totalDonations = 0
-        this.warDayWins = 0
-        this.clanCardsCollected = 0
-        this.starPoints = 0
-        this.expPoints = 0
-        this.clanRank = 0
-        this.lastSeen = ""
+        this.name = ""
+        this.type = 0
+        this.description = ""
+        this.badgeId = 0
+        this.clanScore = 0
+        this.clanWarTrophies = 0
+        this.requiredTrophies = 0
+        this.donationsPerWeek = 0
+        this.members = 0
+        this.locationName = ""
+        this.locationIsCountry = false
     }
 }
 

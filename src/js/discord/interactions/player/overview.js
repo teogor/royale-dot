@@ -5,8 +5,9 @@ const {ColorsValues} = require("../../../../res/values/colors");
 const {Emojis} = require("../../../../res/values/emojis");
 const {getBadge} = require("../../../../res/values/badges");
 const {buildCustomId} = require("../../../utils/custom-builder");
-const {linkedAccountsHandler} = require("../../../database2/handle/linked-accounts-handler");
-const {KingLevels, getKingLevel} = require("../../../../res/values/king-levels");
+const {getKingLevel} = require("../../../../res/values/king-levels");
+const userRepository = require("../../../database/repository/user-repository");
+const {User} = require("../../../database/model/user");
 
 async function getPlayerOverviewInfo(player) {
     const embeds = new MessageEmbed()
@@ -70,12 +71,12 @@ async function getPlayerOverviewInfo(player) {
                 .setStyle('PRIMARY')
                 .setEmoji(Emojis.Clan),
         ))
-    const linkedPlayerData = await linkedAccountsHandler.getLinkedData(player.tag)
-    if (linkedPlayerData.isLinked) {
+    const playerLinked = await userRepository.checkPlayerLinked(User.fromTag(player.tag))
+    if (playerLinked.isLinked) {
         embeds.addFields(
             {
                 name: `Linked on Discord`,
-                value: `${Emojis.Verified} Player is linked on Discord <@${linkedPlayerData.id}>`
+                value: `${Emojis.Verified} Player is linked on Discord <@${playerLinked.userId}>`
             }
         )
     }

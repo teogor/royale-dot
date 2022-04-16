@@ -1,9 +1,10 @@
 const {sendFollowUp, sendNew} = require("../response");
-const {guildsHandler} = require("../../../database2/handle/guilds-handler");
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../../../res/values/colors");
+const guildRepository = require("../../../database/repository/guild-repository");
+const {Guild} = require("../../../database/model/guild");
 
-function commandSetClanNews(interaction, client) {
+function commandSetClanNewsChannel(interaction, client) {
     const channel = interaction.options.getChannel("channel")
     if (channel.type !== "GUILD_TEXT") {
         const followUp = {
@@ -11,17 +12,18 @@ function commandSetClanNews(interaction, client) {
         }
         return sendFollowUp(interaction, followUp)
     }
-    guildsHandler.updateClanUpdatesChannel(
-        interaction.guild.id,
-        channel.id
-    )
+    const guild = Guild.fromID(interaction.guildId)
+    guild.channelClanNewsId = channel.id
+    guildRepository.setClanNewsChannels(guild).catch(error => {
+        console.log(error)
+    })
     const channelTargeted = client.channels.cache.get(channel.id)
     if (channelTargeted !== undefined) {
         const message = {
             embeds: [
                 new MessageEmbed()
-                    .setTitle(`Clan Updates were binded successfully!`)
-                    .setDescription(`From now on this will be the channel where the news from Clan are shown`)
+                    .setTitle(`Clan News channel was linked successfully!`)
+                    .setDescription(`In the feature, the notifications from \`Clan\` will appear on this channel`)
                     .setColor(ColorsValues.colorClanUpdates)
             ],
             ephemeral: false,
@@ -39,5 +41,5 @@ function commandSetClanNews(interaction, client) {
 }
 
 module.exports = {
-    commandSetClanNews
+    commandSetClanNewsChannel
 }

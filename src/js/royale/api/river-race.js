@@ -1,9 +1,12 @@
 const Response = require('../response')
-const {riverRacesHandler} = require("../../database2/handle/river-races-handler");
-const {guildsHandler} = require("../../database2/handle/guilds-handler");
 const discordClient = require("../../discord/client");
+const guildRepository = require("../../database/repository/guild-repository");
+const riverRaceRepository = require("../../database/repository/river-race-repository");
+const {RiverRace} = require("../../database/model/river-race");
+const participantRepository = require("../../database/repository/participant-repository");
+const {Participant} = require("../../database/model/participant");
 
-class RiverRace extends Response {
+class RiverRaceAPI extends Response {
     constructor(data) {
         super(data)
 
@@ -12,6 +15,34 @@ class RiverRace extends Response {
         this.initBattleDays()
         this.initParticipantsList()
 
+        const date = new Date();
+        const month = date.getUTCMonth() + 1
+        const year = date.getUTCFullYear()
+        this.details.periodLogs.forEach(periodLog => {
+            const {
+                periodIndex,
+                items
+            } = periodLog
+            items.forEach(item => {
+                item.day = periodIndex + 1
+                item.week = Math.floor(periodIndex / 7) + 1
+                item.month = month
+                item.year = year
+                riverRaceRepository.insertRiverRace(
+                    RiverRace.fromAPILogModel(item)
+                )
+            })
+        })
+        this.details.clans.forEach(clan => {
+            clan.day = this.monthDay
+            clan.week = this.week
+            clan.month = month
+            clan.year = year
+            riverRaceRepository.insertCurrentRiverRace(
+                RiverRace.fromAPIClanModel(clan)
+            )
+        })
+        // console.log(this.details)
         delete this.data
     }
 
@@ -25,55 +56,31 @@ class RiverRace extends Response {
         const month = date.getUTCMonth() + 1
         const year = date.getUTCFullYear()
         this.participants = this.details.clan.participants
-        this.participants.forEach(participant => {
-            riverRacesHandler.entryExists(
-                participant.tag,
-                this.monthDay,
-                this.week,
-                month,
-                year
-            ).then(r => {
-                if (r === undefined) {
-                    riverRacesHandler.create(
-                        participant.tag,
-                        this.monthDay,
-                        this.week,
-                        month,
-                        year,
-                        participant.boatAttacks,
-                        participant.decksUsed,
-                        participant.decksUsedToday,
-                        participant.repairPoints,
-                        participant.fame
-                    )
-                    if(participant.decksUsedToday === 4) {
-                        participant.clan = this.clan
-                        this.handleAllDecksUsed(participant)
+        this.participants.forEach(participantAPI => {
+            participantAPI.day = this.monthDay
+            participantAPI.week = this.week
+            participantAPI.month = month
+            participantAPI.year = year
+            const participantNew = Participant.fromAPIModel(participantAPI)
+            participantRepository.getParticipant(
+                participantNew
+            ).then(participant => {
+                participantRepository.insertParticipant(
+                    participantNew
+                )
+                if (participant.exists) {
+                    const diffDecksUsedToday = participantNew.decksUsedToday - participant.decksUsedToday
+                    if (diffDecksUsedToday > 0 && participantNew.decksUsedToday === 4) {
+                        participantNew.clan = this.clan
+                        participantNew.name = participantAPI.name
+                        this.handleAllDecksUsed(participantNew)
                     }
-                } else if (r.day === this.monthDay && r.week === this.week &&
-                    r.month === month && r.year === year) {
-                    // update handle
-                    const diffBoatAttacks = participant.boatAttacks - r.boatAttacks
-                    const diffDecksUsed = participant.decksUsed - r.decksUsed
-                    const diffDecksUsedToday = participant.decksUsedToday - r.decksUsedToday
-                    const diffRepairPoints = participant.repairPoints - r.repairPoints
-                    const diffFame = participant.fame - r.fame
-                    if (diffDecksUsedToday > 0 && participant.decksUsedToday === 4) {
-                        participant.clan = this.clan
-                        this.handleAllDecksUsed(participant)
+                } else {
+                    if (participantNew.decksUsedToday === 4) {
+                        participantNew.clan = this.clan
+                        participantNew.name = participantAPI.name
+                        this.handleAllDecksUsed(participantNew)
                     }
-                    riverRacesHandler.update(
-                        participant.tag,
-                        this.monthDay,
-                        this.week,
-                        month,
-                        year,
-                        participant.boatAttacks,
-                        participant.decksUsed,
-                        participant.decksUsedToday,
-                        participant.repairPoints,
-                        participant.fame
-                    )
                 }
             })
         })
@@ -81,12 +88,13 @@ class RiverRace extends Response {
     }
 
     handleAllDecksUsed(participant) {
-        guildsHandler.getRiverRaceNewsChannels(participant.clan.tag).then(channels => {
+        const clanTag = participant.clan.tag
+        guildRepository.getRiverRaceNewsChannelsByTag(clanTag).then(newsChannels => {
             discordClient.emit('clash-royale', {
                 update: true,
                 type: 'river-race-all-decks-used',
                 clan: participant.clan,
-                channels,
+                channels: newsChannels,
                 member: participant,
             });
         })
@@ -95,12 +103,16 @@ class RiverRace extends Response {
     initClans() {
         this.details.clans.forEach(clan => {
             let attacks = {
+                boatAttacks: 0,
                 participants: 0,
                 decksUsed: 0,
-                decksUsedToday: 0
+                decksUsedToday: 0,
+                repairPoints: 0
             }
             clan.participants.forEach(participant => {
                 attacks.decksUsed += participant.decksUsed
+                attacks.repairPoints += participant.repairPoints
+                attacks.boatAttacks += participant.boatAttacks
                 if (participant.decksUsedToday > 0) {
                     attacks.decksUsedToday += participant.decksUsedToday
                     attacks.participants += 1
@@ -221,4 +233,4 @@ class RiverRace extends Response {
     }
 }
 
-module.exports = RiverRace
+module.exports = RiverRaceAPI

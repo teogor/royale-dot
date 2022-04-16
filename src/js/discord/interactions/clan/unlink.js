@@ -1,14 +1,14 @@
 const {MessageEmbed} = require("discord.js");
 const {sendFollowUp} = require("../response");
 const {Emojis} = require("../../../../res/values/emojis");
-const {linkedClansHandler} = require("../../../database2/handle/linked-clans-handler");
-const {clansHandler} = require("../../../database2/handle/clans-handler");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {royaleRepository} = require("../../../royale/repository");
+const guildRepository = require("../../../database/repository/guild-repository");
+const clanRepository = require("../../../database/repository/clan-repository");
 
 async function getLinkedClan(guildID) {
-    const guildLinked = await linkedClansHandler.isLinked(guildID)
-    if (!guildLinked.isGuildLinked) {
+    const guild = await guildRepository.getGuild(guildID)
+    if (!guild.isLinked) {
         return {
             error: true,
             embeds: [
@@ -21,20 +21,17 @@ async function getLinkedClan(guildID) {
     }
     return {
         error: false,
-        tag: guildLinked.tag
+        guild
     }
 }
 
-async function unlinkClan(tag, guildID) {
+async function unlinkClan(tag, guild) {
     const tagData = await royaleRepository.getTag(tag)
     if (tagData.error) {
         return tagData
     }
 
-    return await linkedClansHandler.unlinkClan(
-        guildID,
-        tagData.tag
-    )
+    return guildRepository.unlinkClan(guild)
 }
 
 function commandClanUnlink(interaction, client) {
@@ -46,7 +43,7 @@ function commandClanUnlink(interaction, client) {
             sendFollowUp(interaction, linkedClanData)
             return
         }
-        if (linkedClanData.tag !== tag && linkedClanData.tag !== "#" + tag) {
+        if (linkedClanData.guild.tag !== tag && linkedClanData.guild.tag !== "#" + tag) {
             const response = {
                 embeds: [
                     new MessageEmbed()
@@ -58,7 +55,8 @@ function commandClanUnlink(interaction, client) {
             }
             sendFollowUp(interaction, response)
         } else {
-            unlinkClan(tag, guildID).then(_ => {
+            const guild = linkedClanData.guild
+            unlinkClan(tag, guild).then(_ => {
                 const response = {
                     embeds: [
                         new MessageEmbed()
@@ -77,14 +75,12 @@ function commandClanUnlink(interaction, client) {
 function autocompleteClanUnlink(interaction, client) {
     const guildID = interaction.guild.id
 
-    linkedClansHandler.isLinked(guildID).then(linkedData => {
-        if (linkedData.isGuildLinked) {
-            clansHandler.getDetails(
-                linkedData.tag
-            ).then(details => {
+    guildRepository.getGuild(guildID).then(guild => {
+        if (guild.isLinked) {
+            clanRepository.getClan(guild.tag).then(clan => {
                 const autocompleteClan = {
-                    name: `${details.name} (${linkedData.tag})`,
-                    value: `${linkedData.tag}`
+                    name: `${clan.name} (${clan.tag})`,
+                    value: `${clan.tag}`
                 }
                 interaction.respond([
                     autocompleteClan

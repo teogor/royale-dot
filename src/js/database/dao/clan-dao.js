@@ -1,3 +1,5 @@
+const {Clan} = require("../model/clan");
+
 class ClanDAO {
 
     constructor(db) {
@@ -5,46 +7,118 @@ class ClanDAO {
     }
 
     insertClan(clan) {
-        // const values = [
-        //     Date.now(),
-        //     Date.now()
-        // ]
-        // const args = [
-        //     'created_at',
-        //     'updated_at'
-        // ]
-        // const n = [
-        //     '?',
-        //     '?'
-        // ]
-        // const updateSet = []
-        // Object.entries(clan).forEach(([key, data]) => {
-        //     if (clanModel.hasOwnProperty(key)) {
-        //         const keyName = playerModel[key].name
-        //         args.push(keyName)
-        //         values.push(data)
-        //         n.push('?')
-        //         if (keyName !== 'tag') {
-        //             updateSet.push(`${keyName}=?`)
-        //             values.push(data)
-        //         }
-        //     }
-        // })
-        // updateSet.push(`updated_at=?`)
-        // values.push(Date.now())
-        // const sqlInsert=`INSERT INTO players(${args.join(",")}) VALUES(${n.join(",")})`
-        // const sqlOnConflict = `ON CONFLICT(tag) DO UPDATE SET ${updateSet.join(",")}`
-        // const sqlTarget = `WHERE tag=?`
-        // const sql = `${sqlInsert} ${sqlOnConflict} ${sqlTarget}`
-        // values.push(player.tag)
-        // this.db.run(
-        //     sql,
-        //     values
-        // ).catch(error => {
-        //     console.log(error)
-        // })
+        const {
+            tag,
+            name,
+            type,
+            description,
+            badgeId,
+            clanScore,
+            clanWarTrophies,
+            requiredTrophies,
+            donationsPerWeek,
+            members,
+            locationName,
+            locationIsCountry
+        } = clan
+        const insertColumns = [
+            'tag',
+            'name',
+            'type',
+            'description',
+            'badge_id',
+            'clan_score',
+            'clan_war_trophies',
+            'required_trophies',
+            'donations_per_week',
+            'members',
+            'location_name',
+            'location_is_country',
+            'created_at',
+            'updated_at',
+        ]
+        const columnsValuesQ = '?,?,?,?,?,?,?,?,?,?,?,?,?,?'
+        const updateColumns = [
+            'name=?',
+            'type=?',
+            'description=?',
+            'badge_id=?',
+            'clan_score=?',
+            'clan_war_trophies=?',
+            'required_trophies=?',
+            'donations_per_week=?',
+            'members=?',
+            'location_name=?',
+            'location_is_country=?',
+            'updated_at=?',
+        ]
+        const values = [
+            tag,
+            name,
+            type,
+            description,
+            badgeId,
+            clanScore,
+            clanWarTrophies,
+            requiredTrophies,
+            donationsPerWeek,
+            members,
+            locationName,
+            locationIsCountry ? 1 : 0,
+            Date.now(),
+            Date.now(),
+            name,
+            type,
+            description,
+            badgeId,
+            clanScore,
+            clanWarTrophies,
+            requiredTrophies,
+            donationsPerWeek,
+            members,
+            locationName,
+            locationIsCountry ? 1 : 0,
+            Date.now(),
+            tag
+        ]
+        const sqlInsert = `INSERT INTO clans(${insertColumns.join(",")}) VALUES(${columnsValuesQ})`
+        const sqlOnConflict = `ON CONFLICT(tag) DO UPDATE SET ${updateColumns.join(",")}`
+        const sqlTarget = `WHERE tag=?`
+        const sql = `${sqlInsert} ${sqlOnConflict} ${sqlTarget}`
+        this.db.run(
+            sql,
+            values
+        ).catch(error => {
+            console.log(error)
+        })
     }
 
+    async getClan(tag) {
+        const sql = `SELECT * FROM clans WHERE tag=?`
+        const values = [
+            tag
+        ]
+
+        const clanDB = await this.db.get(
+            sql,
+            values
+        )
+
+        return Clan.fromDatabaseModel(clanDB)
+    }
+
+    async getRecommendedClans(keyword) {
+        if (keyword === undefined || keyword === null) {
+            keyword = ''
+        }
+        keyword = `%${keyword.replace(/\s/g, '').split("").join("%")}%`
+        return this.db.all(
+            `SELECT c.tag, c.name
+            FROM clans c
+            WHERE c.name LIKE ? OR c.tag = ?`,
+            [keyword, keyword]
+        )
+    }
 }
 
 module.exports = ClanDAO

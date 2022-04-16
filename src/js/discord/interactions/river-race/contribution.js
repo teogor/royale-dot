@@ -1,10 +1,9 @@
 const {royaleRepository} = require("../../../royale/repository");
-const {MessageActionRow, MessageSelectMenu, MessageButton, MessageEmbed} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 const {buildCustomId, buildArgs} = require("../../../utils/custom-builder");
 const {Emojis} = require("../../../../res/values/emojis");
 const {ColorsValues} = require("../../../../res/values/colors");
-const {clansHandler} = require("../../../database2/handle/clans-handler");
-const {sendFollowUp, sendUpdate, sendButtonResponse} = require("../response");
+const {sendFollowUp} = require("../response");
 
 const sortOptionsTypes = [
     'sort_decks_used_today_desc',

@@ -3,16 +3,16 @@ const {commandClanRanks} = require("./clan/ranks");
 const {commandClanInfo} = require("./clan/info");
 const {commandClanLink} = require("./clan/link");
 const {commandClanUnlink} = require("./clan/unlink");
-const {commandClanRiverRace} = require("./clan/river-race");
-const {commandRiverRaceParticipants} = require("./clan/river-race-participants");
 const {commandPing} = require("./ping/pong");
 const {commandPlayerLink} = require("./player/link");
 const {commandPlayerUnlink} = require("./player/unlink");
 const {commandPlayerOverview} = require("./player/overview");
 const {commandPlayerProfile} = require("./player/profile");
-const {commandRiverRaceContribution} = require("./player/river-race-contribution");
-const {commandSetClanNews} = require("./set/clan-news");
-const {commandSetRiverRaceNews} = require("./set/river-race-news");
+const {commandRiverRaceContribution} = require("./river-race/contribution");
+const {commandSetClanNewsChannel} = require("./clan/news-channel");
+const {commandSetRiverRaceNewsChannel} = require("./river-race/news-channel");
+const {commandRiverRaceInfo} = require("./river-race/info");
+const {commandRiverRaceParticipants} = require("./river-race/participants");
 
 function onClanCommand(interaction, client) {
     if (interaction.options.getSubcommand() === 'rank-color') {
@@ -25,10 +25,8 @@ function onClanCommand(interaction, client) {
         commandClanLink(interaction, client)
     } else if (interaction.options.getSubcommand() === 'unlink') {
         commandClanUnlink(interaction, client)
-    } else if (interaction.options.getSubcommand() === 'river-race') {
-        commandClanRiverRace(interaction, client)
-    } else if (interaction.options.getSubcommand() === 'river-race-participants') {
-        commandRiverRaceParticipants(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'set-news-channel') {
+        commandSetClanNewsChannel(interaction, client)
     } else {
         console.log(`command not handled: ${interaction.options.getSubcommand()}`)
     }
@@ -47,19 +45,20 @@ function onPlayerCommand(interaction, client) {
         commandPlayerOverview(interaction, client)
     } else if (interaction.options.getSubcommand() === 'profile') {
         commandPlayerProfile(interaction, client)
-    } else if (interaction.options.getSubcommand() === 'river-race-contribution') {
-        commandRiverRaceContribution(interaction, client)
     } else {
         console.log(`command not handled: ${interaction.options.getSubcommand()}`)
     }
 }
-
-function onSetCommand(interaction, client) {
-    if (interaction.options.getSubcommand() === 'clan-news') {
-        commandSetClanNews(interaction, client)
-    } else if (interaction.options.getSubcommand() === 'river-race-news') {
-        commandSetRiverRaceNews(interaction, client)
-    } else {
+function onRiverRaceCommand(interaction, client) {
+    if (interaction.options.getSubcommand() === 'set-news-channel') {
+        commandSetRiverRaceNewsChannel(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'contribution') {
+        commandRiverRaceContribution(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'info') {
+        commandRiverRaceInfo(interaction, client)
+    } else if (interaction.options.getSubcommand() === 'participants') {
+        commandRiverRaceParticipants(interaction, client)
+    }  else {
         console.log(`command not handled: ${interaction.options.getSubcommand()}`)
     }
 }
@@ -81,14 +80,14 @@ const onCommand = (interaction, client) => {
         case 'clan':
             onClanCommand(interaction, client)
             break
+        case 'river-race':
+            onRiverRaceCommand(interaction, client)
+            break
         case 'ping':
             onPingCommand(interaction, client)
             break
         case 'player':
             onPlayerCommand(interaction, client)
-            break
-        case 'set':
-            onSetCommand(interaction, client)
             break
     }
 }

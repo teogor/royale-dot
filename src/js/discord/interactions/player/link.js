@@ -3,8 +3,9 @@ const {sendFollowUp} = require("../response");
 const {Emojis} = require("../../../../res/values/emojis");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {royaleRepository} = require("../../../royale/repository");
-const {linkedAccountsHandler} = require("../../../database2/handle/linked-accounts-handler");
-const {guildsHandler} = require("../../../database2/handle/guilds-handler");
+const userRepository = require("../../../database/repository/user-repository");
+const {User} = require("../../../database/model/user");
+const guildRepository = require("../../../database/repository/guild-repository");
 
 async function getLinkedPlayer(userID, tag) {
     const tagData = await royaleRepository.getTag(tag)
@@ -13,42 +14,38 @@ async function getLinkedPlayer(userID, tag) {
     }
     tag = tagData.tag
 
-    const playerLinked = await linkedAccountsHandler.isLinked(userID, tag)
-
-    if (playerLinked.isLinked) {
+    const user = await userRepository.getUser(User.fromID(userID))
+    // todo check tag availability based on playerID and the relevant tag
+    if (user.isLinked) {
         return {
             error: true,
             embeds: [
                 new MessageEmbed()
                     .setColor(ColorsValues.colorBotBlue)
-                    .setDescription(`${Emojis.Check} <@${userID}> is already linked to **${playerLinked.linkedName}**(\`${playerLinked.linkedTag}\`)!`)
-            ],
-            ephemeral: true
-        }
-    } else if (playerLinked.isTagLinked) {
-        return {
-            error: true,
-            embeds: [
-                new MessageEmbed()
-                    .setColor(ColorsValues.colorBotRed)
-                    .setDescription(`${Emojis.Close} failed: tag is already linked to another player!`)
+                    .setDescription(`${Emojis.Check} <@${userID}> is already linked to \`${user.tag}\`!`)
+                    // .setDescription(`${Emojis.Check} <@${userID}> is already linked to **${player.linkedName}**(\`${user.tag}\`)!`)
             ],
             ephemeral: true
         }
     }
-    playerLinked.tag = tag
-    return playerLinked
+    user.tag = tag
+    return {
+        error: false,
+        user
+    }
 }
 
-async function linkPlayer(tag, userID) {
+async function linkPlayer(user) {
+    const tag = user.tag
     const playerInfo = await royaleRepository.getPlayer(tag)
     if (playerInfo.error) {
         return playerInfo
     }
 
     const player = playerInfo.player
-
-    await linkedAccountsHandler.linkPlayer(userID, player.tag)
+    userRepository.linkPlayer(user).catch(error => {
+        console.log(error)
+    })
 
     return {
         embeds: [
@@ -62,12 +59,27 @@ async function linkPlayer(tag, userID) {
 }
 
 function refreshAccountInfo(interaction, guildID, player) {
-    guildsHandler.getRoleID(guildID, player.role).then(roleID => {
+    guildRepository.getGuild(guildID).then(guild => {
+        let roleId = 0
+        switch (player.role.type) {
+            case 1:
+                roleId = guild.roleMemberId
+                break
+            case 2:
+                roleId = guild.roleElderId
+                break
+            case 3:
+                roleId = guild.roleColeaderId
+                break
+            case 4:
+                roleId = guild.roleLeaderId
+                break
+        }
         let userNickname = interaction.user.username
         if (interaction.member.id !== interaction.member.guild.ownerId) {
             interaction.guild.roles.fetch().then(_ => {
                 interaction.guild.roles.cache.forEach(role => {
-                    if (roleID.id === role.id) {
+                    if (roleId === role.id) {
                         interaction.member.roles.add(role)
                     }
                 });
@@ -88,7 +100,7 @@ function refreshAccountInfo(interaction, guildID, player) {
                     .setColor(ColorsValues.colorBotBlue)
                     .setDescription(
                         ` :mag_right: username changed from ~~**${userNickname}**~~ to **${player.name}**\n` +
-                        ` :bookmark_tabs: rank assigned: <@&${roleID.id}>`
+                        ` :bookmark_tabs: rank assigned: <@&${roleId}>`
                     )
             ],
             ephemeral: false
@@ -98,7 +110,7 @@ function refreshAccountInfo(interaction, guildID, player) {
 }
 
 function commandPlayerLink(interaction, client) {
-    const guildID = interaction.guildId
+    const guildID = interaction.guild.id
     const userID = interaction.user.id
     const tag = interaction.options.getString('tag')
 
@@ -107,7 +119,10 @@ function commandPlayerLink(interaction, client) {
             sendFollowUp(interaction, linkedPlayerData)
             return
         }
-        linkPlayer(linkedPlayerData.tag, userID).then(linkedData => {
+        const {
+            user
+        } = linkedPlayerData
+        linkPlayer(user).then(linkedData => {
             sendFollowUp(interaction, linkedData)
             if (!linkedData.error) {
                 refreshAccountInfo(interaction, guildID, linkedData.player)

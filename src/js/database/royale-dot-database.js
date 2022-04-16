@@ -52,6 +52,10 @@ class RoyaleDotDatabase {
         this.userDAO = new daoClasses[5](this)
     }
 
+    init() {
+
+    }
+
     //#region EXECUTORS
     run(sql, params = []) {
         return new Promise((resolve, reject) => {

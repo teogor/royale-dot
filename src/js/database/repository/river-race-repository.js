@@ -10,6 +10,10 @@ class RiverRaceRepository {
         royaleDotDB.riverRaceDAO.insertRiverRace(riverRace)
     }
 
+    insertCurrentRiverRace(riverRace) {
+        royaleDotDB.riverRaceDAO.insertCurrentRiverRace(riverRace)
+    }
+
 }
 
 const riverRaceRepository = new RiverRaceRepository()

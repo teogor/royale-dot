@@ -4,9 +4,9 @@ const {buildCustomId, buildArgs} = require("../../../utils/custom-builder");
 const {Emojis} = require("../../../../res/values/emojis");
 const {TimestampStyles} = require("@discordjs/builders");
 const {ColorsValues} = require("../../../../res/values/colors");
-const {clansHandler} = require("../../../database2/handle/clans-handler");
 const {sendFollowUp, sendUpdate, sendButtonResponse} = require("../response");
 const {getKingLevel} = require("../../../../res/values/king-levels");
+const clanRepository = require("../../../database/repository/clan-repository");
 
 function parseSortType(sortType) {
     switch (sortType) {
@@ -300,10 +300,10 @@ async function showClanMembers(
         .setTimestamp(Date.now())
         .addFields(membersFields)
 
-    const clanDetails = await clansHandler.getDetails(tag)
-    if (clanDetails.badgeID !== 0) {
+    const clan = await clanRepository.getClan(tag)
+    if (clan.badgeId !== 0) {
         embeds = embeds
-            .setThumbnail(`https://www.deckshop.pro/img/badges/${clanDetails.badgeID}.png`)
+            .setThumbnail(`https://www.deckshop.pro/img/badges/${clan.badgeId}.png`)
     }
     return {
         embeds: [embeds],

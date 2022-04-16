@@ -1,9 +1,9 @@
 const {OnReady} = require("./events/on-ready");
-const {OnInteractionCreate} = require("./events/on-interaction-create");
 const discordClient = require("./client");
 const {OnClashRoyaleUpdate} = require("./events/on-clash-royale-update");
 const {env} = require("../env");
 const {OnGuild} = require("./events/on-guild");
+const {OnInteractionCreate} = require("./events/on-interaction-create");
 
 class Discord {
 

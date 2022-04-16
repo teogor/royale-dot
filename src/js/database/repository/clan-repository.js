@@ -10,6 +10,14 @@ class ClanRepository {
         royaleDotDB.clanDAO.insertClan(clan)
     }
 
+    async getClan(tag) {
+        return royaleDotDB.clanDAO.getClan(tag)
+    }
+
+    async getRecommendedClans(keyword) {
+        return royaleDotDB.clanDAO.getRecommendedClans(keyword)
+    }
+
 }
 
 const clanRepository = new ClanRepository()

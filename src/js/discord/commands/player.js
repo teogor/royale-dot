@@ -98,8 +98,7 @@ const playerSlashCommands = {
         linkPlayer,
         unlinkPlayer,
         getPlayerOverview,
-        getPlayerProfile,
-        getPlayerRiverRaceContribution
+        getPlayerProfile
     ]
 }
 

@@ -15,8 +15,18 @@ function toLowercaseWords(string) {
         .join("_")
 }
 
+function toUppercaseWords(string) {
+    return lowercaseFirstLetter(string
+        .trim()
+        .split("_")
+        .map(element => element.trim())
+        .map(element => capitalizeFirstLetter(element))
+        .join(""))
+}
+
 module.exports = {
     capitalizeFirstLetter,
     lowercaseFirstLetter,
-    toLowercaseWords
+    toLowercaseWords,
+    toUppercaseWords
 }
