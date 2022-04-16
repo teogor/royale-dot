@@ -1,20 +1,19 @@
-// const {database} = require("./database2");
-const {discord} = require("./discord");
-const {homePage} = require("./homepage");
-const {isReleaseBuild} = require("./utils/dev");
-const {refresher} = require("./cron/Refresher");
-const royaleDotDB = require("./database/royale-dot-database");
+const databaseImported = false
 
-const databaseClean = false
+if (databaseImported) {
+    const {discord} = require("./discord");
+    const {homePage} = require("./homepage");
+    const {isReleaseBuild} = require("./utils/dev");
+    const {refresher} = require("./cron/Refresher");
+    const royaleDotDB = require("./database/royale-dot-database");
 
-if (databaseClean) {
-    // database.clean()
-} else {
-    // database.initialize()
     royaleDotDB.init()
     discord.initialize()
     refresher.initialize()
     if (isReleaseBuild()) {
         homePage.initialize()
     }
+} else {
+    console.log(`import the database`)
+    console.log(`link:https://glitch.happyfox.com/kb/article/119-importing-code-from-your-computer/`)
 }
