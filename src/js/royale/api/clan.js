@@ -3,6 +3,7 @@ const {Clan} = require("../../database/model/clan");
 const clanRepository = require("../../database/repository/clan-repository");
 const playerRepository = require("../../database/repository/player-repository");
 const {Player} = require("../../database/model/player");
+const {onCheckClan} = require("../../database/mapper/clan");
 
 class ClanAPI extends Response {
     constructor(data) {
@@ -14,7 +15,7 @@ class ClanAPI extends Response {
         delete this.data
 
         const clan = Clan.fromAPIModel(this.details)
-        clanRepository.insertClan(clan)
+        onCheckClan(clan)
         playerRepository.getByClan(this.tag).then(players => {
             const m1 = players.map(m => m.tag)
             const m2 = this.members.map(m => m.tag)

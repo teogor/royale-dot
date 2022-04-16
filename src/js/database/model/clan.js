@@ -89,7 +89,17 @@ class Clan {
         const clan = new Clan()
         clan.tag = clanAPI.tag
         clan.name = clanAPI.name
-        clan.type = clanAPI.type
+        switch (clanAPI.type) {
+            case 'open':
+                clan.type = 0
+                break
+            case 'inviteOnly':
+                clan.type = 1
+                break
+            case 'closed':
+                clan.type = 2
+                break
+        }
         clan.description = clanAPI.description
         clan.badgeId = clanAPI.badgeId
         clan.clanScore = clanAPI.clanScore

@@ -2,7 +2,6 @@ const guildRepository = require("../repository/guild-repository");
 const {Guild} = require("../model/guild");
 const {ColorsValues} = require("../../../res/values/colors");
 
-
 function onCheckGuild(guildDiscord) {
     guildRepository.insertGuild(
         Guild.fromDiscordModel(guildDiscord)

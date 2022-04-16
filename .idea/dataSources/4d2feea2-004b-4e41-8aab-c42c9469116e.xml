@@ -1319,7 +1319,7 @@
       <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="488" parent="473" name="clan_tag">
+    <column id="488" parent="473" name="type">
       <DataType>INTEGER|0s</DataType>
       <Position>6</Position>
     </column>
@@ -1541,7 +1541,7 @@ column_name</ColNames>
       <DataType>INTEGER|0s</DataType>
       <Position>11</Position>
     </column>
-    <column id="541" parent="477" name="repairPoints">
+    <column id="541" parent="477" name="repair_points">
       <DataType>INTEGER|0s</DataType>
       <Position>12</Position>
     </column>
@@ -1595,149 +1595,225 @@ year</ColNames>
       <DataType>TEXT|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="552" parent="478" name="exp_level">
+    <column id="552" parent="478" name="clan_role">
       <DataType>INTEGER|0s</DataType>
       <Position>7</Position>
     </column>
-    <column id="553" parent="478" name="trophies">
+    <column id="553" parent="478" name="clan_rank">
       <DataType>INTEGER|0s</DataType>
       <Position>8</Position>
     </column>
-    <column id="554" parent="478" name="best_trophies">
+    <column id="554" parent="478" name="exp_level">
       <DataType>INTEGER|0s</DataType>
       <Position>9</Position>
     </column>
-    <column id="555" parent="478" name="wins">
+    <column id="555" parent="478" name="trophies">
       <DataType>INTEGER|0s</DataType>
       <Position>10</Position>
     </column>
-    <column id="556" parent="478" name="losses">
+    <column id="556" parent="478" name="best_trophies">
       <DataType>INTEGER|0s</DataType>
       <Position>11</Position>
     </column>
-    <column id="557" parent="478" name="battle_count">
+    <column id="557" parent="478" name="wins">
       <DataType>INTEGER|0s</DataType>
       <Position>12</Position>
     </column>
-    <column id="558" parent="478" name="three_crown_wins">
+    <column id="558" parent="478" name="losses">
       <DataType>INTEGER|0s</DataType>
       <Position>13</Position>
     </column>
-    <column id="559" parent="478" name="challenge_cards_won">
+    <column id="559" parent="478" name="battle_count">
       <DataType>INTEGER|0s</DataType>
       <Position>14</Position>
     </column>
-    <column id="560" parent="478" name="challenge_max_wins">
+    <column id="560" parent="478" name="three_crown_wins">
       <DataType>INTEGER|0s</DataType>
       <Position>15</Position>
     </column>
-    <column id="561" parent="478" name="tournament_battle_count">
+    <column id="561" parent="478" name="challenge_cards_won">
       <DataType>INTEGER|0s</DataType>
       <Position>16</Position>
     </column>
-    <column id="562" parent="478" name="donations">
+    <column id="562" parent="478" name="challenge_max_wins">
       <DataType>INTEGER|0s</DataType>
       <Position>17</Position>
     </column>
-    <column id="563" parent="478" name="donations_received">
+    <column id="563" parent="478" name="tournament_cards_won">
       <DataType>INTEGER|0s</DataType>
       <Position>18</Position>
     </column>
-    <column id="564" parent="478" name="total_donations">
+    <column id="564" parent="478" name="tournament_battle_count">
       <DataType>INTEGER|0s</DataType>
       <Position>19</Position>
     </column>
-    <column id="565" parent="478" name="war_day_wins">
+    <column id="565" parent="478" name="donations">
       <DataType>INTEGER|0s</DataType>
       <Position>20</Position>
     </column>
-    <column id="566" parent="478" name="clan_cards_collected">
+    <column id="566" parent="478" name="donations_received">
       <DataType>INTEGER|0s</DataType>
       <Position>21</Position>
     </column>
-    <column id="567" parent="478" name="star_points">
+    <column id="567" parent="478" name="total_donations">
       <DataType>INTEGER|0s</DataType>
       <Position>22</Position>
     </column>
-    <column id="568" parent="478" name="exp_points">
+    <column id="568" parent="478" name="war_day_wins">
       <DataType>INTEGER|0s</DataType>
       <Position>23</Position>
     </column>
-    <column id="569" parent="478" name="clan_rank">
+    <column id="569" parent="478" name="clan_cards_collected">
       <DataType>INTEGER|0s</DataType>
       <Position>24</Position>
     </column>
-    <column id="570" parent="478" name="last_seen">
-      <DataType>TEXT|0s</DataType>
+    <column id="570" parent="478" name="star_points">
+      <DataType>INTEGER|0s</DataType>
       <Position>25</Position>
     </column>
-    <column id="571" parent="478" name="arena_id">
+    <column id="571" parent="478" name="exp_points">
       <DataType>INTEGER|0s</DataType>
       <Position>26</Position>
     </column>
-    <index id="572" parent="478" name="sqlite_autoindex_players_1">
+    <column id="572" parent="478" name="last_seen">
+      <DataType>TEXT|0s</DataType>
+      <Position>27</Position>
+    </column>
+    <column id="573" parent="478" name="arena_id">
+      <DataType>INTEGER|0s</DataType>
+      <Position>28</Position>
+    </column>
+    <column id="574" parent="478" name="league_current_season_trophies">
+      <DataType>INTEGER|0s</DataType>
+      <Position>29</Position>
+    </column>
+    <column id="575" parent="478" name="league_current_season_best_trophies">
+      <DataType>INTEGER|0s</DataType>
+      <Position>30</Position>
+    </column>
+    <column id="576" parent="478" name="league_previous_season_trophies">
+      <DataType>INTEGER|0s</DataType>
+      <Position>31</Position>
+    </column>
+    <column id="577" parent="478" name="league_previous_season_best_trophies">
+      <DataType>INTEGER|0s</DataType>
+      <Position>32</Position>
+    </column>
+    <column id="578" parent="478" name="league_previous_season_id">
+      <DataType>TEXT|0s</DataType>
+      <Position>33</Position>
+    </column>
+    <column id="579" parent="478" name="league_best_season_trophies">
+      <DataType>INTEGER|0s</DataType>
+      <Position>34</Position>
+    </column>
+    <column id="580" parent="478" name="league_best_season_id">
+      <DataType>TEXT|0s</DataType>
+      <Position>35</Position>
+    </column>
+    <index id="581" parent="478" name="sqlite_autoindex_players_1">
       <ColNames>tag</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="573" parent="478">
+    <key id="582" parent="478">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="574" parent="478">
+    <key id="583" parent="478">
       <ColNames>tag</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_players_1</UnderlyingIndexName>
     </key>
-    <column id="575" parent="479" name="id">
+    <column id="584" parent="479" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="576" parent="479" name="created_at">
+    <column id="585" parent="479" name="created_at">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="577" parent="479" name="updated_at">
+    <column id="586" parent="479" name="updated_at">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="578" parent="479" name="tag">
+    <column id="587" parent="479" name="tag">
       <DataType>TEXT|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="579" parent="479" name="day">
+    <column id="588" parent="479" name="day">
       <DataType>INTEGER|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="580" parent="479" name="week">
+    <column id="589" parent="479" name="week">
       <DataType>INTEGER|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="581" parent="479" name="month">
+    <column id="590" parent="479" name="month">
       <DataType>INTEGER|0s</DataType>
       <Position>7</Position>
     </column>
-    <column id="582" parent="479" name="year">
+    <column id="591" parent="479" name="year">
       <DataType>INTEGER|0s</DataType>
       <Position>8</Position>
     </column>
-    <column id="583" parent="479" name="fame">
+    <column id="592" parent="479" name="fame">
       <DataType>INTEGER|0s</DataType>
       <Position>9</Position>
     </column>
-    <column id="584" parent="479" name="boat_points">
+    <column id="593" parent="479" name="participants">
       <DataType>INTEGER|0s</DataType>
       <Position>10</Position>
     </column>
-    <column id="585" parent="479" name="boat_attacks">
+    <column id="594" parent="479" name="repair_points">
       <DataType>INTEGER|0s</DataType>
       <Position>11</Position>
     </column>
-    <column id="586" parent="479" name="battle_type">
+    <column id="595" parent="479" name="decks_used">
       <DataType>INTEGER|0s</DataType>
       <Position>12</Position>
     </column>
-    <index id="587" parent="479" name="sqlite_autoindex_river_races_1">
+    <column id="596" parent="479" name="decks_used_today">
+      <DataType>INTEGER|0s</DataType>
+      <Position>13</Position>
+    </column>
+    <column id="597" parent="479" name="boat_attacks">
+      <DataType>INTEGER|0s</DataType>
+      <Position>14</Position>
+    </column>
+    <column id="598" parent="479" name="battle_type">
+      <DataType>INTEGER|0s</DataType>
+      <Position>15</Position>
+    </column>
+    <column id="599" parent="479" name="points_earned">
+      <DataType>INTEGER|0s</DataType>
+      <Position>16</Position>
+    </column>
+    <column id="600" parent="479" name="progress_start_of_day">
+      <DataType>INTEGER|0s</DataType>
+      <Position>17</Position>
+    </column>
+    <column id="601" parent="479" name="progress_end_of_day">
+      <DataType>INTEGER|0s</DataType>
+      <Position>18</Position>
+    </column>
+    <column id="602" parent="479" name="end_of_day_rank">
+      <DataType>INTEGER|0s</DataType>
+      <Position>19</Position>
+    </column>
+    <column id="603" parent="479" name="progress_earned">
+      <DataType>INTEGER|0s</DataType>
+      <Position>20</Position>
+    </column>
+    <column id="604" parent="479" name="num_of_defenses_remaining">
+      <DataType>INTEGER|0s</DataType>
+      <Position>21</Position>
+    </column>
+    <column id="605" parent="479" name="progress_earned_from_defenses">
+      <DataType>INTEGER|0s</DataType>
+      <Position>22</Position>
+    </column>
+    <index id="606" parent="479" name="sqlite_autoindex_river_races_1">
       <ColNames>tag
 day
 week
@@ -1746,11 +1822,11 @@ year</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="588" parent="479">
+    <key id="607" parent="479">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="589" parent="479">
+    <key id="608" parent="479">
       <ColNames>tag
 day
 week
@@ -1758,71 +1834,71 @@ month
 year</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_river_races_1</UnderlyingIndexName>
     </key>
-    <column id="590" parent="480" name="type">
+    <column id="609" parent="480" name="type">
       <DataType>text|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="591" parent="480" name="name">
+    <column id="610" parent="480" name="name">
       <DataType>text|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="592" parent="480" name="tbl_name">
+    <column id="611" parent="480" name="tbl_name">
       <DataType>text|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="593" parent="480" name="rootpage">
+    <column id="612" parent="480" name="rootpage">
       <DataType>int|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="594" parent="480" name="sql">
+    <column id="613" parent="480" name="sql">
       <DataType>text|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="595" parent="481" name="name">
+    <column id="614" parent="481" name="name">
       <Position>1</Position>
     </column>
-    <column id="596" parent="481" name="seq">
+    <column id="615" parent="481" name="seq">
       <Position>2</Position>
     </column>
-    <column id="597" parent="482" name="id">
+    <column id="616" parent="482" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="598" parent="482" name="created_at">
+    <column id="617" parent="482" name="created_at">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="599" parent="482" name="updated_at">
+    <column id="618" parent="482" name="updated_at">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="600" parent="482" name="user_id">
+    <column id="619" parent="482" name="user_id">
       <DataType>TEXT|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="601" parent="482" name="tag">
+    <column id="620" parent="482" name="tag">
       <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="602" parent="482" name="linked_at">
+    <column id="621" parent="482" name="linked_at">
       <DataType>TEXT|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="603" parent="482" name="commands_used">
+    <column id="622" parent="482" name="commands_used">
       <DataType>BIGINT|0s</DataType>
       <Position>7</Position>
     </column>
-    <index id="604" parent="482" name="sqlite_autoindex_users_1">
+    <index id="623" parent="482" name="sqlite_autoindex_users_1">
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="605" parent="482">
+    <key id="624" parent="482">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="606" parent="482">
+    <key id="625" parent="482">
       <ColNames>user_id</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_users_1</UnderlyingIndexName>
     </key>

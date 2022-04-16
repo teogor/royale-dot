@@ -42,7 +42,6 @@ class RiverRaceAPI extends Response {
                 RiverRace.fromAPIClanModel(clan)
             )
         })
-        // console.log(this.details)
         delete this.data
     }
 

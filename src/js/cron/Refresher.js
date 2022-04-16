@@ -13,7 +13,7 @@ class Refresher {
     }
 
     clansNews() {
-        const jobUpdateClans = new CronJob('0 */2 * * * *', function () {
+        const jobUpdateClans = new CronJob('*/10 * * * * *', function () {
             guildRepository.getClanNewsChannels().then(updatesChannels => {
                 updatesChannels.forEach(updatesChannel => {
                     royaleRepository.getClan(updatesChannel.tag).catch(error => {

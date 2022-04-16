@@ -24,6 +24,10 @@ const deepDiffMapper = function () {
 
             const diff = {};
             for (key in obj1) {
+                if (key === 'id' || key === 'createdAt' || key === 'updatedAt') {
+                    continue;
+                }
+
                 if (this.isFunction(obj1[key])) {
                     continue;
                 }
@@ -33,18 +37,27 @@ const deepDiffMapper = function () {
                     value2 = obj2[key];
                 }
 
-                diff[key] = this.map(obj1[key], value2);
+                const value = this.map(obj1[key], value2)
+                if (value !== undefined) {
+                    diff[key] = value;
+                }
             }
             for (key in obj2) {
+                if (key === 'id' || key === 'createdAt' || key === 'updatedAt') {
+                    continue;
+                }
+
                 if (this.isFunction(obj2[key]) || diff[key] !== undefined) {
                     continue;
                 }
 
-                diff[key] = this.map(undefined, obj2[key]);
+                const value = this.map(undefined, obj2[key]);
+                if (value !== undefined) {
+                    diff[key] = value;
+                }
             }
 
-            return diff;
-
+            return diff
         },
         compareValues: function (value1, value2) {
             if (value1 === value2) {

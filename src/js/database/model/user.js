@@ -77,6 +77,7 @@ class User {
     }
 
     get isLinked() {
+        console.log(this.tag)
         return this.tag !== null
     }
 }

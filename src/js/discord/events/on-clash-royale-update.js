@@ -68,7 +68,7 @@ class OnClashRoyaleUpdate {
                     )
                 }
                 if (elements.type !== undefined) {
-                    whatHasChanged += `type, `
+                    whatHasChanged += `join type, `
                     const {
                         newValue,
                         oldValue
@@ -97,8 +97,19 @@ class OnClashRoyaleUpdate {
                         name: `What's Changed:`,
                         value: `${whatHasChanged}`,
                     })
-                    data.channelsId.forEach(channelId => {
-                        discordClient.channels.fetch(channelId).then(channel => {
+
+                    data.channels.forEach(channelData => {
+                        const {
+                            channelClanNewsId
+                        } = channelData
+                        discordClient.channels.fetch(channelClanNewsId).then(channel => {
+                            if (channel === null) {
+                                console.log(`channel: null, channelId: ${channelClanNewsId}`)
+                                return
+                            }
+                            const {
+                                clan
+                            } = data
                             channel.send({
                                 embeds: [
                                     new MessageEmbed()

@@ -204,13 +204,21 @@ class Player {
         player.clanTag = playerAPI.clanTag
         player.arenaId = playerAPI.arena.id
         const league = playerAPI.leagueStatistics
-        player.leagueCurrentSeasonTrophies = league.currentSeason.trophies
-        player.leagueCurrentSeasonBestTrophies = league.currentSeason.bestTrophies
-        player.leaguePreviousSeasonTrophies = league.previousSeason.trophies
-        player.leaguePreviousSeasonBestTrophies = league.previousSeason.bestTrophies
-        player.leaguePreviousSeasonId = league.previousSeason.id
-        player.leagueBestSeasonTrophies = league.bestSeason.trophies
-        player.leagueBestSeasonId = league.bestSeason.id
+        if (league !== undefined) {
+            if (league.currentSeason !== undefined) {
+                player.leagueCurrentSeasonTrophies = league.currentSeason.trophies
+                player.leagueCurrentSeasonBestTrophies = league.currentSeason.bestTrophies
+            }
+            if (league.previousSeason !== undefined) {
+                player.leaguePreviousSeasonTrophies = league.previousSeason.trophies
+                player.leaguePreviousSeasonBestTrophies = league.previousSeason.bestTrophies
+                player.leaguePreviousSeasonId = league.previousSeason.id
+            }
+            if (league.bestSeason !== undefined) {
+                player.leagueBestSeasonTrophies = league.bestSeason.trophies
+                player.leagueBestSeasonId = league.bestSeason.id
+            }
+        }
         return player
     }
 

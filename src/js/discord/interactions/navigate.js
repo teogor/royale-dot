@@ -1,5 +1,5 @@
 const {navigateClanMembers} = require("./clan/clan-members");
-const {navigateRiverRaceParticipants} = require("./clan/river-race-participants");
+const {navigateRiverRaceParticipants} = require("./river-race/participants");
 
 const onNavigate = (interaction, client) => {
     const components = interaction.customId.split(" ")
