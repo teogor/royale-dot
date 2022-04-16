@@ -1,7 +1,8 @@
 const Response = require('../response')
-const {playersHandler} = require("../../database/handle/players-handler");
+const {Player} = require("../../database/model/player");
+const playerRepository = require("../../database/repository/player-repository");
 
-class Player extends Response {
+class PlayerAPI extends Response {
     constructor(data) {
         super(data)
 
@@ -42,8 +43,9 @@ class Player extends Response {
         delete this.data
 
         this.player.clanTag = this.player.clan.tag
-        playersHandler.connectPlayer(this.player)
+        const player = Player.fromAPIModel(this.player)
+        playerRepository.insertPlayer(player)
     }
 }
 
-module.exports = Player
+module.exports = PlayerAPI

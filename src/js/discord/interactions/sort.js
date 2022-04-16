@@ -1,5 +1,5 @@
 const {sortClanMembers} = require("./clan/clan-members");
-const {sortRiverRaceParticipants} = require("./clan/river-race-participants");
+const {sortRiverRaceParticipants} = require("./river-race/participants");
 
 const onSort = (interaction, client) => {
     interaction.arguments = interaction.values[0].split("-").slice(1)

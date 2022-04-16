@@ -187,7 +187,7 @@ async function showClanRiverRaceInfo(clanRiverRace) {
     }
 }
 
-function commandClanRiverRace(interaction, client) {
+function commandRiverRaceInfo(interaction, client) {
     const tag = interaction.options.getString('tag')
     const guildID = interaction.guild.id
 
@@ -207,7 +207,7 @@ function commandClanRiverRace(interaction, client) {
         console.log(error)
     })
 }
-function buttonClanRiverRace(interaction, client) {
+function buttonRiverRaceInfo(interaction, client) {
     const tag = interaction.arguments[0]
     const guildID = interaction.guild.id
 
@@ -229,6 +229,6 @@ function buttonClanRiverRace(interaction, client) {
 }
 
 module.exports = {
-    commandClanRiverRace,
-    buttonClanRiverRace
+    commandRiverRaceInfo,
+    buttonRiverRaceInfo
 }

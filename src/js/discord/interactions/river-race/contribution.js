@@ -1,128 +1,9 @@
 const {royaleRepository} = require("../../../royale/repository");
-const {MessageActionRow, MessageSelectMenu, MessageButton, MessageEmbed} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed} = require("discord.js");
 const {buildCustomId, buildArgs} = require("../../../utils/custom-builder");
 const {Emojis} = require("../../../../res/values/emojis");
 const {ColorsValues} = require("../../../../res/values/colors");
-const {clansHandler} = require("../../../database/handle/clans-handler");
-const {sendFollowUp, sendUpdate, sendButtonResponse} = require("../response");
-
-const sortOptionsTypes = [
-    'sort_decks_used_today_desc',
-    'sort_decks_used_today_asc',
-    'sort_decks_used_desc',
-    'sort_decks_used_asc',
-    'sort_fame_desc',
-    'sort_fame_asc',
-    'sort_boat_attacks_desc',
-    'sort_boat_attacks_asc',
-    'sort_name_asc',
-    'sort_name_desc',
-]
-
-function prepareSortOptions(tag, currentPage) {
-    const optionFilterAndSort = []
-    optionFilterAndSort.push({
-        label: `Decks Used Today (desc)`,
-        description: `Sort by the amount of decks used today (desc)`,
-        value: buildArgs(
-            sortOptionsTypes[0],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.Trophies,
-    })
-    optionFilterAndSort.push({
-        label: `Decks Used Today (asc)`,
-        description: `Sort by the amount of decks used today (asc)`,
-        value: buildArgs(
-            sortOptionsTypes[1],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.Trophies,
-    })
-    optionFilterAndSort.push({
-        label: `Decks Used (desc)`,
-        description: `Sort by the amount of decks used (desc)`,
-        value: buildArgs(
-            sortOptionsTypes[2],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.Trophies,
-    })
-    optionFilterAndSort.push({
-        label: `Decks Used (asc)`,
-        description: `Sort by the amount of decks used (asc)`,
-        value: buildArgs(
-            sortOptionsTypes[3],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.Trophies,
-    })
-    optionFilterAndSort.push({
-        label: `Fame (desc)`,
-        description: `Sort by the fame (desc)`,
-        value: buildArgs(
-            sortOptionsTypes[4],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.Trophies,
-    })
-    optionFilterAndSort.push({
-        label: `Fame (asc)`,
-        description: `Sort by the fame (asc)`,
-        value: buildArgs(
-            sortOptionsTypes[5],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.Trophies,
-    })
-    optionFilterAndSort.push({
-        label: `Boats Attacks (desc)`,
-        description: `Sort by the boats attacks (desc)`,
-        value: buildArgs(
-            sortOptionsTypes[6],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.Trophies,
-    })
-    optionFilterAndSort.push({
-        label: `Boats Attacks (asc)`,
-        description: `Sort by the boats attacks (asc)`,
-        value: buildArgs(
-            sortOptionsTypes[7],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.Trophies,
-    })
-    optionFilterAndSort.push({
-        label: `Name (asc)`,
-        description: `Sort the members alphabetically (asc)`,
-        value: buildArgs(
-            sortOptionsTypes[8],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.ClanRankUp,
-    })
-    optionFilterAndSort.push({
-        label: `Name (desc)`,
-        description: `Sort the members alphabetically (desc)`,
-        value: buildArgs(
-            sortOptionsTypes[9],
-            tag,
-            currentPage
-        ),
-        emoji: Emojis.ClanRankDown,
-    })
-    return optionFilterAndSort
-}
+const {sendFollowUp} = require("../response");
 
 async function showPlayerRiverRaceContribution(player, clanRiverRace) {
 
@@ -156,27 +37,27 @@ async function showPlayerRiverRaceContribution(player, clanRiverRace) {
         .addFields([
             {
                 name: `Total Decks Used`,
-                value: `${Emojis.Battles} ${playerContribution.decksUsed}`,
+                value: `${Emojis.DecksUsed} ${playerContribution.decksUsed}`,
                 inline: true
             },
             {
                 name: `Remaining Decks`,
-                value: `${Emojis.Battles} ${4-playerContribution.decksUsedToday}/4`,
+                value: `${Emojis.DecksUsedToday} ${4-playerContribution.decksUsedToday}/4`,
                 inline: true
             },
             {
                 name: `Decks Used Today`,
-                value: `${Emojis.Battles} ${playerContribution.decksUsedToday}`,
+                value: `${Emojis.DecksUsedToday} ${playerContribution.decksUsedToday}`,
                 inline: true
             },
             {
                 name: `Fame`,
-                value: `${Emojis.Trophies} ${playerContribution.fame}`,
+                value: `${Emojis.Fame} ${playerContribution.fame}`,
                 inline: true
             },
             {
                 name: `Boats Attacked`,
-                value: `${Emojis.Battles} ${playerContribution.boatAttacks}`,
+                value: `${Emojis.BoatBattle} ${playerContribution.boatAttacks}`,
                 inline: true
             }
         ])

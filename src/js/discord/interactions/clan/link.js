@@ -1,29 +1,32 @@
 const {MessageEmbed} = require("discord.js");
 const {sendFollowUp} = require("../response");
 const {Emojis} = require("../../../../res/values/emojis");
-const {linkedClansHandler} = require("../../../database/handle/linked-clans-handler");
-const {clansHandler} = require("../../../database/handle/clans-handler");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {royaleRepository} = require("../../../royale/repository");
+const guildRepository = require("../../../database/repository/guild-repository");
+const clanRepository = require("../../../database/repository/clan-repository");
 
 async function getLinkedClan(guildID) {
-    const guildLinked = await linkedClansHandler.isLinked(guildID)
-    if (guildLinked.isGuildLinked) {
-        const clanDetails = await clansHandler.getDetails(guildLinked.tag)
+    const guild = await guildRepository.getGuild(guildID)
+    if (guild.isLinked) {
+        const tag = guild.tag
+        const clan = await clanRepository.getClan(tag)
         return {
             error: true,
             embeds: [
                 new MessageEmbed()
                     .setColor(ColorsValues.colorBotBlue)
-                    .setDescription(`${Emojis.Check} Server is already linked to **${clanDetails.name}** (\`${guildLinked.tag}\`)!`)
+                    .setDescription(`${Emojis.Check} Server is already linked to **${clan.name}** (\`${clan.tag}\`)!`)
             ],
             ephemeral: true
         }
     }
-    return guildLinked
+    return {
+        guild
+    }
 }
 
-async function linkClan(tag, guildID) {
+async function linkClan(tag, guild) {
     const tagData = await royaleRepository.getTag(tag)
     if (tagData.error) {
         return tagData
@@ -34,7 +37,10 @@ async function linkClan(tag, guildID) {
         return clanInfo
     }
     const clan = clanInfo.clan.details
-    linkedClansHandler.linkClan(guildID, clan.tag)
+    guild.tag = clan.tag
+    guildRepository.linkClan(guild).catch(error => {
+        console.log(error)
+    })
 
     return {
         error: false,
@@ -56,7 +62,8 @@ function commandClanLink(interaction, client) {
             sendFollowUp(interaction, linkedClanData)
             return
         }
-        linkClan(tag, guildID).then(linkedData => {
+        const guild = linkedClanData.guild
+        linkClan(tag, guild).then(linkedData => {
             sendFollowUp(interaction, linkedData)
         })
     })

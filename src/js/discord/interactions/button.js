@@ -1,10 +1,10 @@
 const {buttonClanMembers} = require("./clan/clan-members");
 const {buttonClanInfo} = require("./clan/info");
-const {buttonClanRiverRace} = require("./clan/river-race");
-const {buttonRiverRaceParticipants} = require("./clan/river-race-participants");
 const {buttonPlayerProfile} = require("./player/profile");
 const {buttonPlayerOverview} = require("./player/overview");
-const {buttonRiverRaceContribution} = require("./player/river-race-contribution");
+const {buttonRiverRaceContribution} = require("./river-race/contribution");
+const {buttonRiverRaceInfo} = require("./river-race/info");
+const {buttonRiverRaceParticipants} = require("./river-race/participants");
 
 const onButton = (interaction, client) => {
     const components = interaction.customId.split(" ")
@@ -23,7 +23,7 @@ const onButton = (interaction, client) => {
             buttonClanInfo(interaction, client)
             break
         case 'button_current_river_race':
-            buttonClanRiverRace(interaction, client)
+            buttonRiverRaceInfo(interaction, client)
             break
         case 'button_river_race_participants':
             buttonRiverRaceParticipants(interaction, client)

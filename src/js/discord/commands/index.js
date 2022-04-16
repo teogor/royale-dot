@@ -3,7 +3,7 @@ const interactionHandler = require("../interactions");
 const {pingSlashCommands} = require("./ping");
 const {clanSlashCommands} = require("./clan");
 const {playerSlashCommands} = require("./player");
-const {setSlashCommands} = require("./set");
+const {riverRaceSlashCommands} = require("./river-race");
 
 class Commands {
 
@@ -39,7 +39,7 @@ class Commands {
             clanSlashCommands,
             pingSlashCommands,
             playerSlashCommands,
-            setSlashCommands
+            riverRaceSlashCommands
         ]
 
         this.client.slashCommands = this.slashCommands

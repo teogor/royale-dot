@@ -1,10 +1,11 @@
-const {linkedClansHandler} = require("../../../database/handle/linked-clans-handler");
-const {playersHandler} = require("../../../database/handle/players-handler");
+const guildRepository = require("../../../database/repository/guild-repository");
+const playerRepository = require("../../../database/repository/player-repository");
 
-async function getPlayers(tag, guildID) {
-    const guildLinked = await linkedClansHandler.isLinked(guildID)
-    if (guildLinked.isGuildLinked) {
-        const members = await playersHandler.getForClan(guildLinked.tag, tag)
+async function getPlayers(keyword, guildID) {
+    const guild = await guildRepository.getGuild(guildID)
+    if (guild.isLinked) {
+        const tag = guild.tag
+        const members = await playerRepository.getRecommended(tag, keyword)
         let recommendedClans = []
         members.forEach(member => {
             const autocompleteClan = {

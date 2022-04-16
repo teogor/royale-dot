@@ -1,5 +1,5 @@
 const {Commands} = require("../commands");
-const {guildsHandler} = require("../../database/handle/guilds-handler");
+const {onCheckGuild} = require("../../database/mapper/guild");
 
 class OnReady {
 
@@ -79,12 +79,7 @@ class OnReady {
     handleGuilds() {
         this.client.guilds.cache.filter(guild => !guild.name.startsWith('royale-dot-')).each(guild => {
             this.commands.set(guild)
-            guildsHandler
-                .connectGuild(guild)
-                .catch(error => {
-                    console.error(error)
-                })
-
+            onCheckGuild(guild)
         })
     }
 }

@@ -1,12 +1,10 @@
-const {linkedClansHandler} = require("../../database/handle/linked-clans-handler");
 const discordClient = require("../client");
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../../res/values/colors");
 const {Emojis} = require("../../../res/values/emojis");
 const {getBadge} = require("../../../res/values/badges");
-const {playersHandler} = require("../../database/handle/players-handler");
-const {guildsHandler} = require("../../database/handle/guilds-handler");
 const {getKingLevel} = require("../../../res/values/king-levels");
+const guildRepository = require("../../database/repository/guild-repository");
 
 class OnClashRoyaleUpdate {
 
@@ -70,7 +68,7 @@ class OnClashRoyaleUpdate {
                     )
                 }
                 if (elements.type !== undefined) {
-                    whatHasChanged += `type, `
+                    whatHasChanged += `join type, `
                     const {
                         newValue,
                         oldValue
@@ -99,8 +97,19 @@ class OnClashRoyaleUpdate {
                         name: `What's Changed:`,
                         value: `${whatHasChanged}`,
                     })
-                    data.channelsId.forEach(channelId => {
-                        discordClient.channels.fetch(channelId).then(channel => {
+
+                    data.channels.forEach(channelData => {
+                        const {
+                            channelClanNewsId
+                        } = channelData
+                        discordClient.channels.fetch(channelClanNewsId).then(channel => {
+                            if (channel === null) {
+                                console.log(`channel: null, channelId: ${channelClanNewsId}`)
+                                return
+                            }
+                            const {
+                                clan
+                            } = data
                             channel.send({
                                 embeds: [
                                     new MessageEmbed()
@@ -133,19 +142,19 @@ class OnClashRoyaleUpdate {
                             channelId,
                             guildId
                         } = channelData
-                        guildsHandler.getRoles(guildId).then(roles => {
-                            discordClient.guilds.fetch(guildId).then(guild => {
+                        guildRepository.getGuild(guildId).then(guild => {
+                            discordClient.guilds.fetch(guildId).then(discordGuild => {
                                 const {
-                                    leader,
-                                    coleader,
-                                    elder,
-                                    member
-                                } = roles
+                                    roleLeaderId,
+                                    roleColeaderId,
+                                    roleElderId,
+                                    roleMemberId
+                                } = guild
 
-                                const leaderRole = guild.roles.cache.get(leader)
-                                const coleaderRole = guild.roles.cache.get(coleader)
-                                const elderRole = guild.roles.cache.get(elder)
-                                const memberRole = guild.roles.cache.get(member)
+                                const leaderRole = discordGuild.roles.cache.get(roleLeaderId)
+                                const coleaderRole = discordGuild.roles.cache.get(roleColeaderId)
+                                const elderRole = discordGuild.roles.cache.get(roleElderId)
+                                const memberRole = discordGuild.roles.cache.get(roleMemberId)
 
                                 let newRole, oldRole
                                 switch (newValue.type) {
@@ -303,11 +312,12 @@ class OnClashRoyaleUpdate {
     handlePlayerUsedAllDecksRiverRace(data) {
         data.channels.forEach(channelData => {
             const {
-                channelId
+                channelRiverRaceNewsId
             } = channelData
-            discordClient.channels.fetch(channelId).then(channel => {
+            discordClient.channels.fetch(channelRiverRaceNewsId).then(channel => {
                 if (channel === null) {
-                    console.log(`channel: null, channelId: ${channelId}`)
+                    console.log(`channel: null, channelId: ${channelRiverRaceNewsId}`)
+                    return
                 }
                 const {
                     clan,

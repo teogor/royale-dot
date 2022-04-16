@@ -1,8 +1,11 @@
 const Response = require('../response')
-const {clansHandler} = require("../../database/handle/clans-handler");
-const {playersHandler} = require("../../database/handle/players-handler");
+const {Clan} = require("../../database/model/clan");
+const clanRepository = require("../../database/repository/clan-repository");
+const playerRepository = require("../../database/repository/player-repository");
+const {Player} = require("../../database/model/player");
+const {onCheckClan} = require("../../database/mapper/clan");
 
-class Clan extends Response {
+class ClanAPI extends Response {
     constructor(data) {
         super(data)
 
@@ -11,9 +14,10 @@ class Clan extends Response {
 
         delete this.data
 
-        clansHandler.connectClan(this.details)
-        playersHandler.getForClan(this.tag, "").then(previousMembers => {
-            const m1 = previousMembers.map(m => m.tag)
+        const clan = Clan.fromAPIModel(this.details)
+        onCheckClan(clan)
+        playerRepository.getByClan(this.tag).then(players => {
+            const m1 = players.map(m => m.tag)
             const m2 = this.members.map(m => m.tag)
             let membersLeft = m1.filter(x => !m2.includes(x));
             let membersJoined = m2.filter(x => !m1.includes(x));
@@ -25,18 +29,29 @@ class Clan extends Response {
                 }
                 if (membersJoined.includes(member.tag)) {
                     member.joined = true
+                    const index = m2.indexOf(member.tag);
+                    if (index !== -1) {
+                        m2.splice(index, 1);
+                    }
                 }
-                playersHandler.connectPlayer(member)
+                const player = Player.fromAPIMemberModel(member)
+                playerRepository.insertFromMember(player)
             })
-            previousMembers.filter(m => membersLeft.includes(m.tag)).forEach(member => {
+            players.filter(m => membersLeft.includes(m.tag)).forEach(member => {
                 member.clan = {
                     tag: this.tag,
                     name: this.details.name,
                     badgeId: this.details.badgeId
                 }
                 member.left = true
-                playersHandler.handlePlayerLeft(member)
+                const index = m2.indexOf(member.tag);
+                if (index !== -1) {
+                    m2.splice(index, 1);
+                }
+                const player = Player.fromAPIMemberModel(member)
+                playerRepository.insertFromMember(player)
             })
+            // todo handle remained players `m2`
         })
     }
 
@@ -126,4 +141,4 @@ class Clan extends Response {
     }
 }
 
-module.exports = Clan
+module.exports = ClanAPI

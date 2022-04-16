@@ -3,8 +3,8 @@ const {MessageActionRow, MessageSelectMenu, MessageButton, MessageEmbed} = requi
 const {buildCustomId, buildArgs} = require("../../../utils/custom-builder");
 const {Emojis} = require("../../../../res/values/emojis");
 const {ColorsValues} = require("../../../../res/values/colors");
-const {clansHandler} = require("../../../database/handle/clans-handler");
 const {sendFollowUp, sendUpdate, sendButtonResponse} = require("../response");
+const clanRepository = require("../../../database/repository/clan-repository");
 
 const sortOptionsTypes = [
     'sort_decks_used_today_desc',
@@ -235,10 +235,10 @@ async function showClanRiverRaceParticipants(
         .setTimestamp(Date.now())
         .addFields(membersFields)
 
-    const clanDetails = await clansHandler.getDetails(tag)
-    if (clanDetails.badgeID !== 0) {
+    const clanData = await clanRepository.getClan(tag)
+    if (clanData.badgeId !== 0) {
         embeds = embeds
-            .setThumbnail(`https://www.deckshop.pro/img/badges/${clanDetails.badgeID}.png`)
+            .setThumbnail(`https://www.deckshop.pro/img/badges/${clanData.badgeId}.png`)
     }
     return {
         embeds: [embeds],

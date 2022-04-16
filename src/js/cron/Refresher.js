@@ -1,5 +1,5 @@
-const {guildsHandler} = require("../database/handle/guilds-handler");
 const {royaleRepository} = require("../royale/repository");
+const guildRepository = require("../database/repository/guild-repository");
 const CronJob = require('cron').CronJob;
 
 class Refresher {
@@ -13,12 +13,10 @@ class Refresher {
     }
 
     clansNews() {
-        const jobUpdateClans = new CronJob('0 */2 * * * *', function () {
-            guildsHandler.getUpdatesChannelsForClan().then(updatesChannels => {
+        const jobUpdateClans = new CronJob('*/10 * * * * *', function () {
+            guildRepository.getClanNewsChannels().then(updatesChannels => {
                 updatesChannels.forEach(updatesChannel => {
-                    royaleRepository.getClan(updatesChannel.clan_tag).then(result =>{
-
-                    }).catch(error => {
+                    royaleRepository.getClan(updatesChannel.tag).catch(error => {
                         console.log(error)
                     })
                 })
@@ -27,11 +25,9 @@ class Refresher {
         }, null, true, 'America/Los_Angeles');
         jobUpdateClans.start()
         const jobUpdateRiverRaces = new CronJob('0 */5 * * * *', function () {
-            guildsHandler.getRiverRaceNewsChannelsForClans().then(updatesChannels => {
+            guildRepository.getRiverRaceNewsChannels().then(updatesChannels => {
                 updatesChannels.forEach(updatesChannel => {
-                    royaleRepository.getClanRiverRace(updatesChannel.clan_tag).then(result =>{
-
-                    }).catch(error => {
+                    royaleRepository.getClanRiverRace(updatesChannel.tag).catch(error => {
                         console.log(error)
                     })
                 })

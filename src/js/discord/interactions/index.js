@@ -1,15 +1,16 @@
-const {usersHandler} = require("../../database/handle/users-handler");
 const onAutocomplete = require("./autocomplete");
 const onCommand = require("./command");
 const onSort = require("./sort");
 const onButton = require("./button");
 const onNavigate = require("./navigate");
 const onSelect = require("./select");
+const userRepository = require("../../database/repository/user-repository");
+const {User} = require("../../database/model/user");
 
 const interactionHandler = (interaction, client) => {
 
-    // const userID = interaction.user.id
-    // usersHandler.connectUser(userID)
+    const user = User.fromID(interaction.user.id)
+    userRepository.updateCommands(user)
 
     if (interaction.isAutocomplete()) {
         interaction.handlerData = {

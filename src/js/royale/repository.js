@@ -1,9 +1,10 @@
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../res/values/colors");
-const {linkedClansHandler} = require("../database/handle/linked-clans-handler");
 const {royaleDAO} = require("./dao");
-const {linkedAccountsHandler} = require("../database/handle/linked-accounts-handler");
 const {Emojis} = require("../../res/values/emojis");
+const guildRepository = require("../database/repository/guild-repository");
+const userRepository = require("../database/repository/user-repository");
+const {User} = require("../database/model/user");
 
 class RoyaleRepository {
 
@@ -53,9 +54,9 @@ class RoyaleRepository {
 
     async getTag(tag, guildID) {
         if (!this.isValidString(tag)) {
-            const guildLinked = await linkedClansHandler.isLinked(guildID)
-            if (guildLinked.isGuildLinked) {
-                tag = guildLinked.tag
+            const guild = await guildRepository.getGuild(guildID)
+            if (guild.isLinked) {
+                tag = guild.tag
             } else {
                 return {
                     error: true,
@@ -75,23 +76,23 @@ class RoyaleRepository {
         if (tag !== null ){
             return this.parseTag(tag)
         } else if (providedUserID !== null) {
-            const linkedPlayer = await linkedAccountsHandler.isLinked(providedUserID)
+            const linkedPlayer = await userRepository.getLinkedPlayer(User.fromID(providedUserID))
             if (!linkedPlayer.isLinked) {
                 return {
                     error: true,
                     embeds: [
                         new MessageEmbed()
                             .setColor(ColorsValues.colorBotRed)
-                            .setDescription(`${Emojis.Close} No CR accounts linked to this profile`)
+                            .setDescription(`${Emojis.Close} No CR accounts linked to the requested profile`)
                     ],
                     ephemeral: true
                 }
             }
             return {
-                tag: linkedPlayer.linkedTag
+                tag: linkedPlayer.tag
             }
         } else {
-            const linkedPlayer = await linkedAccountsHandler.isLinked(userID)
+            const linkedPlayer = await userRepository.getLinkedPlayer(User.fromID(userID))
             if (!linkedPlayer.isLinked) {
                 return {
                     error: true,
@@ -104,7 +105,7 @@ class RoyaleRepository {
                 }
             }
             return {
-                tag: linkedPlayer.linkedTag
+                tag: linkedPlayer.tag
             }
         }
     }

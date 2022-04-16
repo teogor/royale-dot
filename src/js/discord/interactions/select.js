@@ -1,5 +1,5 @@
 const {selectPlayerOverview} = require("./player/overview");
-const {selectRiverRaceContribution} = require("./player/river-race-contribution");
+const {selectRiverRaceContribution} = require("./river-race/contribution");
 const onSelect = (interaction, client) => {
     interaction.deferReply({ephemeral: true}).catch(error => {
         console.error(error)

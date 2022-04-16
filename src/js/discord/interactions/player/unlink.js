@@ -1,12 +1,11 @@
-const {MessageEmbed, Emoji} = require("discord.js");
+const {MessageEmbed} = require("discord.js");
 const {sendFollowUp} = require("../response");
 const {Emojis} = require("../../../../res/values/emojis");
-const {linkedClansHandler} = require("../../../database/handle/linked-clans-handler");
-const {clansHandler} = require("../../../database/handle/clans-handler");
 const {ColorsValues} = require("../../../../res/values/colors");
 const {royaleRepository} = require("../../../royale/repository");
-const {linkedAccountsHandler} = require("../../../database/handle/linked-accounts-handler");
-const {guildsHandler} = require("../../../database/handle/guilds-handler");
+const userRepository = require("../../../database/repository/user-repository");
+const {User} = require("../../../database/model/user");
+const guildRepository = require("../../../database/repository/guild-repository");
 
 async function getLinkedPlayer(userID, tag) {
     const tagData = await royaleRepository.getTag(tag)
@@ -15,9 +14,10 @@ async function getLinkedPlayer(userID, tag) {
     }
     tag = tagData.tag
 
-    const playerLinked = await linkedAccountsHandler.isLinked(userID, tag)
 
-    if (!playerLinked.isLinked) {
+    const user = await userRepository.getUser(User.fromID(userID))
+    user.tag = tag
+    if (!user.isLinked) {
         return {
             error: true,
             embeds: [
@@ -28,22 +28,24 @@ async function getLinkedPlayer(userID, tag) {
             ephemeral: true
         }
     }
-    return playerLinked
+    return {
+        error: false,
+        user
+    }
 }
 
-async function unlinkPlayer(tag, playerID) {
-    return await linkedAccountsHandler.unlinkPlayer(
-        playerID,
-        tag
-    )
+async function unlinkPlayer(user) {
+    return await userRepository.unlinkPlayer(user)
 }
 
 function refreshAccountInfo(interaction, guildID) {
-    guildsHandler.getRoles(guildID).then(roles => {
-        let rolesIDs = []
-        for (const rolesKey in roles) {
-            rolesIDs.push(roles[rolesKey])
-        }
+    guildRepository.getGuild(guildID).then(guild => {
+        let rolesIDs = [
+            guild.roleLeaderId,
+            guild.roleColeaderId,
+            guild.roleElderId,
+            guild.roleMemberId
+        ]
         if (interaction.member.id !== interaction.member.guild.ownerId) {
             interaction.guild.roles.cache.filter(role => {
                 return rolesIDs.includes(role.id)
@@ -63,7 +65,6 @@ function refreshAccountInfo(interaction, guildID) {
     })
 }
 
-
 function commandPlayerUnlink(interaction, client) {
     const guildID = interaction.guildId
     const userID = interaction.user.id
@@ -74,7 +75,10 @@ function commandPlayerUnlink(interaction, client) {
             sendFollowUp(interaction, linkedPlayerData)
             return
         }
-        if (linkedPlayerData.linkedTag !== tag && linkedPlayerData.linkedTag !== "#" + tag) {
+        const {
+            user
+        } = linkedPlayerData
+        if (user.tag !== tag && user.tag !== "#" + tag) {
             const response = {
                 embeds: [
                     new MessageEmbed()
@@ -86,7 +90,7 @@ function commandPlayerUnlink(interaction, client) {
             }
             sendFollowUp(interaction, response)
         } else {
-            unlinkPlayer(linkedPlayerData.tag, userID).then(_ => {
+            unlinkPlayer(user).then(_ => {
                 const response = {
                     embeds: [
                         new MessageEmbed()
@@ -105,11 +109,11 @@ function commandPlayerUnlink(interaction, client) {
 
 function autocompletePlayerUnlink(interaction, client) {
     const userID = interaction.user.id
-    linkedAccountsHandler.isLinked(userID, "").then(playerLinked => {
-        if (playerLinked.isLinked) {
+    userRepository.getLinkedPlayer(User.fromID(userID)).then(linkedPlayer => {
+        if (linkedPlayer.isLinked) {
             const autocompleteClan = {
-                name: `${playerLinked.linkedName} (${playerLinked.linkedTag})`,
-                value: `${playerLinked.linkedTag}`
+                name: `${linkedPlayer.name} (${linkedPlayer.tag})`,
+                value: `${linkedPlayer.tag}`
             }
             interaction.respond([autocompleteClan]);
         } else {

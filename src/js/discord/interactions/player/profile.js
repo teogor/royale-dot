@@ -5,8 +5,9 @@ const {ColorsValues} = require("../../../../res/values/colors");
 const {Emojis} = require("../../../../res/values/emojis");
 const {getBadge} = require("../../../../res/values/badges");
 const {buildCustomId} = require("../../../utils/custom-builder");
-const {linkedAccountsHandler} = require("../../../database/handle/linked-accounts-handler");
 const {getKingLevel} = require("../../../../res/values/king-levels");
+const userRepository = require("../../../database/repository/user-repository");
+const {User} = require("../../../database/model/user");
 
 async function getPlayerProfileInfo(player) {
     let link = "https://link.clashroyale.com/deck/en?deck="
@@ -207,12 +208,12 @@ async function getPlayerProfileInfo(player) {
                 .setStyle('PRIMARY')
                 .setEmoji(Emojis.Clan),
         ))
-    const linkedPlayerData = await linkedAccountsHandler.getLinkedData(player.tag)
-    if (linkedPlayerData.isLinked) {
+    const playerLinked = await userRepository.checkPlayerLinked(User.fromTag(player.tag))
+    if (playerLinked.isLinked) {
         embeds.addFields(
             {
                 name: `Linked on Discord`,
-                value: `${Emojis.Verified} Player is linked on Discord <@${linkedPlayerData.id}>`
+                value: `${Emojis.Verified} Player is linked on Discord <@${playerLinked.userId}>`
             }
         )
     }
@@ -223,7 +224,6 @@ async function getPlayerProfileInfo(player) {
 }
 
 function commandPlayerProfile(interaction, client) {
-    const guildID = interaction.guildId
     const user = interaction.options.getUser('user')
     const tag = interaction.options.getString('tag')
     const userID = user ? user.id : null
@@ -250,7 +250,6 @@ function commandPlayerProfile(interaction, client) {
 
 function buttonPlayerProfile(interaction, client) {
     const tag = interaction.arguments[0]
-
 
     royaleRepository.getPlayer(tag).then(playerInfo => {
         if (playerInfo.error) {

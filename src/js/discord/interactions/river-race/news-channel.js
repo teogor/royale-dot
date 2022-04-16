@@ -1,9 +1,10 @@
 const {sendFollowUp, sendNew} = require("../response");
-const {guildsHandler} = require("../../../database/handle/guilds-handler");
 const {MessageEmbed} = require("discord.js");
 const {ColorsValues} = require("../../../../res/values/colors");
+const guildRepository = require("../../../database/repository/guild-repository");
+const {Guild} = require("../../../database/model/guild");
 
-function commandSetRiverRaceNews(interaction, client) {
+function commandSetRiverRaceNewsChannel(interaction, client) {
     const channel = interaction.options.getChannel("channel")
     if (channel.type !== "GUILD_TEXT") {
         const followUp = {
@@ -11,17 +12,18 @@ function commandSetRiverRaceNews(interaction, client) {
         }
         return sendFollowUp(interaction, followUp)
     }
-    guildsHandler.updateRiverRaceUpdatesChannel(
-        interaction.guild.id,
-        channel.id
-    )
+    const guild = Guild.fromID(interaction.guildId)
+    guild.channelRiverRaceNewsId = channel.id
+    guildRepository.setRiverRaceNewsChannels(guild).catch(error => {
+        console.log(error)
+    })
     const channelTargeted = client.channels.cache.get(channel.id)
     if (channelTargeted !== undefined) {
         const message = {
             embeds: [
                 new MessageEmbed()
-                    .setTitle(`Clan Updates were binded successfully!`)
-                    .setDescription(`From now on this will be the channel where the news from River Race are shown`)
+                    .setTitle(`River Race News channel was linked successfully!`)
+                    .setDescription(`In the feature, the notifications from \`River Race\` will appear on this channel`)
                     .setColor(ColorsValues.colorRiverRaceUpdates)
             ],
             ephemeral: false,
@@ -30,8 +32,8 @@ function commandSetRiverRaceNews(interaction, client) {
         const response = {
             embeds: [
                 new MessageEmbed()
-                    .setDescription(`Channel for River Race News set successfully`)
-                    .setColor(ColorsValues.colorBotBlue)
+                    .setDescription(`Channel for Clan News set successfully`)
+                    .setColor(ColorsValues.colorBotGreen)
             ]
         }
         sendFollowUp(interaction, response)
@@ -39,5 +41,5 @@ function commandSetRiverRaceNews(interaction, client) {
 }
 
 module.exports = {
-    commandSetRiverRaceNews
+    commandSetRiverRaceNewsChannel
 }

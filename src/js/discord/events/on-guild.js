@@ -1,5 +1,5 @@
 const {Commands} = require("../commands");
-const {guildsHandler} = require("../../database/handle/guilds-handler");
+const {onCheckGuild} = require("../../database/mapper/guild");
 
 class OnGuild {
 
@@ -40,20 +40,12 @@ class OnGuild {
         this.client.on("guildCreate", guild => {
             this.handlePresence()
             this.commands.set(guild)
-            guildsHandler
-                .connectGuild(guild)
-                .catch(error => {
-                    console.error(error)
-                })
+            onCheckGuild(guild)
         })
 
         this.client.on("guildDelete", guild => {
             this.handlePresence()
-            guildsHandler
-                .disconnectGuild(guild)
-                .catch(error => {
-                    console.error(error)
-                })
+            onCheckGuild(guild)
         })
     }
 

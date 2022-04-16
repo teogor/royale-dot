@@ -44,6 +44,24 @@ function onPlayerAutocomplete(interaction, client) {
 
 }
 
+function onRiverRaceAutocomplete(interaction, client) {
+
+    const subcommand = interaction.options.getSubcommand()
+    switch (subcommand) {
+        case 'contribution':
+            autocompletePlayers(interaction, client)
+            break
+        case 'participants':
+        case 'info':
+            autocompleteClans(interaction, client)
+            break
+        default:
+            console.log(subcommand)
+            break
+    }
+
+}
+
 const onAutocomplete = (interaction, client) => {
     const command = client.slashCommands.find(command => command.name === interaction.commandName)
     if (!command) {
@@ -59,6 +77,9 @@ const onAutocomplete = (interaction, client) => {
             break
         case 'player':
             onPlayerAutocomplete(interaction, client)
+            break
+        case 'river-race':
+            onRiverRaceAutocomplete(interaction, client)
             break
     }
 
